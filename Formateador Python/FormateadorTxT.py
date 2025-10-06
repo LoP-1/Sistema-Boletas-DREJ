@@ -22,7 +22,7 @@ from typing import List, Dict, Any, Optional
 
 # Regex helpers
 RE_START = re.compile(r'(^|\n)DRE JUNIN[^\n]*', re.MULTILINE)
-RE_END_NUMBER = re.compile(r'\n\s{0,100}(?P<seq>0{4,}\d+)\n\.\s*\n?')  # Captura el número final y el punto
+RE_END_NUMBER = re.compile(r'\n\s{0,100}(?P<seq>0{4,}\d+)\n\.\s*\n?', re.MULTILINE)
 RE_FIELD = re.compile(r'^([A-ZÁÉÍÓÚÑ./ ]+):\s*(.*)$')
 RE_APELLIDOS = re.compile(r'Apellidos\s*:\s*(.*)', re.IGNORECASE)
 RE_NOMBRES = re.compile(r'Nombres\s*:\s*(.*)', re.IGNORECASE)
@@ -34,7 +34,7 @@ RE_TIPO_SERV = re.compile(r'Tipo de Servidor\s*:\s*(.*)')
 RE_TIPO_PENS = re.compile(r'Tipo de Pensionista\s*:\s*(.*)')
 RE_TIPO_PENSION = re.compile(r'Tipo de Pension\s*:\s*(.*)')
 RE_NIV_MAG = re.compile(r'Niv\.Mag\./[^:]*:\s*(.*)')
-RE_TIEMPO_SERV = re.compile(r'Tiempo de Servicio.*:\s*([0-9\-]{2,}|--)')
+RE_TIEMPO_SERV = re.compile(r'Tiempo de Servicio.*:\s*([^\n]*)')
 RE_FECHA_REG = re.compile(r'Fecha de Registro\s*:\s*Ingr\.:(\d{2}/\d{2}/\d{4})\s+Termino:(\d{2}/\d{2}/\d{4})')
 RE_FECHA_REG_ALT = re.compile(r'Fecha de Registro\s*:\s*Cese\s*:\s*Termino:(\d{2}/\d{2}/\d{4})')
 RE_CTA = re.compile(r'Cta\. TeleAhorro o Nro\. Cheque:\s*(.*)')
@@ -134,7 +134,7 @@ def parse_boleta(bloque: str, origen: str) -> Dict[str, Any]:
 
     # Periodo (ej: DICIEMBRE - 2015)
     MESES = "ENERO|FEBRERO|MARZO|ABRIL|MAYO|JUNIO|JULIO|AGOSTO|SETIEMBRE|SEPTIEMBRE|OCTUBRE|NOVIEMBRE|DICIEMBRE"
-    RE_PERIODO = re.compile(rf'({MESES})\s*-\s*(\d{{4}})', re.IGNORECASE)
+    RE_PERIODO = re.compile(rf'({MESES})\s*-+\s*(\d{{4}})', re.IGNORECASE)
     periodo = RE_PERIODO.search(bloque)
     if periodo:
         d["mes"] = periodo.group(1).capitalize()
@@ -178,6 +178,7 @@ def parse_boleta(bloque: str, origen: str) -> Dict[str, Any]:
     else:
         mfr_alt = RE_FECHA_REG_ALT.search(bloque)
         if mfr_alt:
+            # En este formato solo viene Termino, no hay fecha de ingreso
             d["fecha_termino_registro"] = mfr_alt.group(1)
 
     # Cuenta (si hay varias, tomamos la primera y listamos todas)

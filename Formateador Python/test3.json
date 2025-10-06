@@ -1,0 +1,2693 @@
+[
+  {
+    "archivo_origen": "chupaca.lis",
+    "raw_length": 1330,
+    "conceptos": [
+      {
+        "tipo": "ingreso",
+        "concepto": "cts",
+        "monto": 7934.55
+      }
+    ],
+    "secuencia": "00000001",
+    "codigo_encabezado": "CL150760",
+    "ruc_bloque": "RUC - 20188468706                                    1019823226-239006-1",
+    "mes": "Diciembre",
+    "anio": "2015",
+    "estado": "Activo",
+    "apellidos": "FLORES VALENZUELA",
+    "nombres": "ELISEO",
+    "fecha_nacimiento": "29/08/1946",
+    "documento_identidad": "19823226",
+    "establecimiento": "AREA DE DESARROLLO EDUCATIVO DE CH",
+    "cargo": "ESP.EDUC. II",
+    "tipo_servidor": "DOCENTE NOMBRADO",
+    "nivel_mag_horas": "5/00- /40",
+    "tiempo_servicio": "35-00-00",
+    "leyenda_permanente": "3452-13",
+    "regimen_pensionario": "Ley 20530",
+    "fecha_ingreso_registro": "17/12/2015",
+    "fecha_termino_registro": "17/12/2015",
+    "cuenta_principal": "CTA- 4381594691",
+    "cuentas_todas": [
+      "CTA- 4381594691",
+      "CTA- 4381594691"
+    ],
+    "total_remuneraciones": 7934.55,
+    "total_descuentos": 0.0,
+    "total_liquido": 7934.55,
+    "monto_imponible": 0.0
+  },
+  {
+    "archivo_origen": "chupaca.lis",
+    "raw_length": 1330,
+    "conceptos": [
+      {
+        "tipo": "ingreso",
+        "concepto": "cts",
+        "monto": 2150.12
+      }
+    ],
+    "secuencia": "00000002",
+    "codigo_encabezado": "CL151065",
+    "ruc_bloque": "RUC - 20188468706                                    1021277105-239004-1",
+    "mes": "Diciembre",
+    "anio": "2015",
+    "estado": "Activo",
+    "apellidos": "RAMON RAMOS",
+    "nombres": "HAYDEE FLORA",
+    "fecha_nacimiento": "22/12/1956",
+    "documento_identidad": "21277105",
+    "establecimiento": "JNE. Nº 381 - HUAMANCACA CHICO - C",
+    "cargo": "PROF. DE AULA",
+    "tipo_servidor": "DOCENTE NOMBRADO",
+    "nivel_mag_horas": "C/00- /30",
+    "tiempo_servicio": "25-00-00",
+    "leyenda_permanente": "515-15",
+    "regimen_pensionario": "Ley 19990",
+    "fecha_ingreso_registro": "16/12/2015",
+    "fecha_termino_registro": "16/12/2015",
+    "cuenta_principal": "CTA- 4381511532",
+    "cuentas_todas": [
+      "CTA- 4381511532",
+      "CTA- 4381511532"
+    ],
+    "total_remuneraciones": 2150.12,
+    "total_descuentos": 0.0,
+    "total_liquido": 2150.12,
+    "monto_imponible": 0.0
+  },
+  {
+    "archivo_origen": "chupaca.lis",
+    "raw_length": 1493,
+    "conceptos": [
+      {
+        "tipo": "ingreso",
+        "concepto": "cts",
+        "monto": 2073.33
+      }
+    ],
+    "secuencia": "00000003",
+    "codigo_encabezado": "CL151085",
+    "ruc_bloque": "RUC - 20188468706                                    1019952191-239004-1",
+    "mes": "Diciembre",
+    "anio": "2015",
+    "estado": "Activo",
+    "apellidos": "VERASTEGUI SAMANIEGO",
+    "nombres": "VICTORIA ALICIA",
+    "fecha_nacimiento": "07/09/1960",
+    "documento_identidad": "19952191",
+    "establecimiento": "JNE. Nº 420 - DE ANGASMAYO",
+    "cargo": "PROF. DE AULA",
+    "tipo_servidor": "DOCENTE NOMBRADO",
+    "nivel_mag_horas": "C/00- /30",
+    "tiempo_servicio": "15-00-00",
+    "leyenda_permanente": "1562-15",
+    "fecha_ingreso_registro": "16/12/2015",
+    "fecha_termino_registro": "16/12/2015",
+    "cuenta_principal": "CTA- 4381601574",
+    "cuentas_todas": [
+      "CTA- 4381601574",
+      "CTA- 4381601574"
+    ],
+    "reg_pensionario_detalle": {
+      "raw": "AFP Profutur/221330VVSAA8 CFija      :      0.00 FAfiliacion  : 13/01/1994 CVariable  :      0.00 FDevengue    : 13/01/1994 Seguro     :      0.00",
+      "afiliacion": "13/01/1994"
+    },
+    "total_remuneraciones": 2073.33,
+    "total_descuentos": 0.0,
+    "total_liquido": 2073.33,
+    "monto_imponible": 0.0
+  },
+  {
+    "archivo_origen": "chupaca.lis",
+    "raw_length": 1308,
+    "conceptos": [
+      {
+        "tipo": "ingreso",
+        "concepto": "cts",
+        "monto": 6195.21
+      }
+    ],
+    "secuencia": "00000004",
+    "codigo_encabezado": "CL151110",
+    "ruc_bloque": "RUC - 20188468706                                    1020103243-239004-1",
+    "mes": "Diciembre",
+    "anio": "2015",
+    "estado": "Activo",
+    "apellidos": "MIRANDA SUAREZ",
+    "nombres": "TEODOLINDA",
+    "fecha_nacimiento": "08/02/1949",
+    "documento_identidad": "20103243",
+    "establecimiento": "JNE. Nº 500 - CHURAMPI-TRES DE DIC",
+    "cargo": "DIRECTOR IE",
+    "tipo_servidor": "DOCENTE NOMBRADO",
+    "nivel_mag_horas": "2/00- /40",
+    "tiempo_servicio": "20-00-00",
+    "leyenda_permanente": "1189-14",
+    "regimen_pensionario": "Ley 19990",
+    "fecha_ingreso_registro": "17/12/2015",
+    "fecha_termino_registro": "17/12/2015",
+    "cuenta_principal": "CTA-",
+    "cuentas_todas": [
+      "CTA-",
+      "CTA-"
+    ],
+    "total_remuneraciones": 6195.21,
+    "total_descuentos": 0.0,
+    "total_liquido": 6195.21,
+    "monto_imponible": 0.0
+  },
+  {
+    "archivo_origen": "chupaca.lis",
+    "raw_length": 1487,
+    "conceptos": [
+      {
+        "tipo": "ingreso",
+        "concepto": "cts",
+        "monto": 1998.62
+      }
+    ],
+    "secuencia": "00000005",
+    "codigo_encabezado": "CL152225",
+    "ruc_bloque": "RUC - 20188468706                                    1020000543-239005-1",
+    "mes": "Diciembre",
+    "anio": "2015",
+    "estado": "Activo",
+    "apellidos": "CERRON MARQUEZ",
+    "nombres": "CESAR AUGUSTO",
+    "fecha_nacimiento": "30/12/1953",
+    "documento_identidad": "20000543",
+    "establecimiento": "EEM. No 30001-3 \"19 DE ABRIL\" - LA",
+    "cargo": "PROF. DE AULA",
+    "tipo_servidor": "DOCENTE NOMBRADO",
+    "nivel_mag_horas": "A/00- /30",
+    "tiempo_servicio": "0--",
+    "leyenda_permanente": "634-15",
+    "fecha_ingreso_registro": "16/12/2015",
+    "fecha_termino_registro": "16/12/2015",
+    "cuenta_principal": "CTA- 4381593377",
+    "cuentas_todas": [
+      "CTA- 4381593377",
+      "CTA- 4381593377"
+    ],
+    "reg_pensionario_detalle": {
+      "raw": "AFP Prima Mi/197211CCMRQ4 CFija      :      0.00 FAfiliacion  : 11/02/1994 CVariable  :      0.00 FDevengue    : 11/02/1994 Seguro     :      0.00",
+      "afiliacion": "11/02/1994"
+    },
+    "total_remuneraciones": 1998.62,
+    "total_descuentos": 0.0,
+    "total_liquido": 1998.62,
+    "monto_imponible": 0.0
+  },
+  {
+    "archivo_origen": "chupaca.lis",
+    "raw_length": 1321,
+    "conceptos": [
+      {
+        "tipo": "ingreso",
+        "concepto": "gratific",
+        "monto": 3109.8
+      }
+    ],
+    "secuencia": "00000006",
+    "codigo_encabezado": "CL152225",
+    "ruc_bloque": "RUC - 20188468706                                    1019901996-239005-1",
+    "mes": "Diciembre",
+    "anio": "2015",
+    "estado": "Activo",
+    "apellidos": "POMALAYA MATOS",
+    "nombres": "LUZ MERCEDES",
+    "fecha_nacimiento": "15/04/1960",
+    "documento_identidad": "19901996",
+    "establecimiento": "EEM. No 30001-3 \"19 DE ABRIL\" - LA",
+    "cargo": "PROFESOR",
+    "tipo_servidor": "DOCENTE NOMBRADO",
+    "nivel_mag_horas": "2/00- /30",
+    "tiempo_servicio": "20-00-00",
+    "leyenda_permanente": "Regimen Pensionario          : Ley 19990",
+    "regimen_pensionario": "Ley 19990",
+    "fecha_ingreso_registro": "22/12/2015",
+    "fecha_termino_registro": "22/12/2015",
+    "cuenta_principal": "CTA- 4381598808",
+    "cuentas_todas": [
+      "CTA- 4381598808",
+      "CTA- 4381598808"
+    ],
+    "total_remuneraciones": 3109.8,
+    "total_descuentos": 0.0,
+    "total_liquido": 3109.8,
+    "monto_imponible": 0.0
+  },
+  {
+    "archivo_origen": "chupaca.lis",
+    "raw_length": 1466,
+    "conceptos": [
+      {
+        "tipo": "ingreso",
+        "concepto": "sepelio",
+        "monto": 3000.0
+      }
+    ],
+    "secuencia": "00000007",
+    "codigo_encabezado": "CL152235",
+    "ruc_bloque": "RUC - 20188468706                                    1021262803-239002-1",
+    "mes": "Diciembre",
+    "anio": "2015",
+    "estado": "Activo",
+    "apellidos": "VASQUEZ POVIS",
+    "nombres": "SUSANA LUCY",
+    "fecha_nacimiento": "29/07/1971",
+    "documento_identidad": "21262803",
+    "establecimiento": "30063",
+    "cargo": "PROFESOR",
+    "tipo_servidor": "DOCENTE NOMBRADO",
+    "nivel_mag_horas": "2/00- /30",
+    "tiempo_servicio": "20-00-00",
+    "leyenda_permanente": "1408-15 SUB Y LUT",
+    "fecha_ingreso_registro": "18/12/2015",
+    "fecha_termino_registro": "18/12/2015",
+    "cuenta_principal": "CTA- 4381442980",
+    "cuentas_todas": [
+      "CTA- 4381442980",
+      "CTA- 4381442980"
+    ],
+    "reg_pensionario_detalle": {
+      "raw": "AFP Integra /561410SVPQI5 CFija      :      0.00 FAfiliacion  : 22/09/1996 CVariable  :      0.00 FDevengue    : 22/09/1996 Seguro     :      0.00",
+      "afiliacion": "22/09/1996"
+    },
+    "total_remuneraciones": 3000.0,
+    "total_descuentos": 0.0,
+    "total_liquido": 3000.0,
+    "monto_imponible": 0.0
+  },
+  {
+    "archivo_origen": "chupaca.lis",
+    "raw_length": 1293,
+    "conceptos": [
+      {
+        "tipo": "ingreso",
+        "concepto": "gratific",
+        "monto": 3109.8
+      }
+    ],
+    "secuencia": "00000008",
+    "codigo_encabezado": "CL152240",
+    "ruc_bloque": "RUC - 20188468706                                    1023201421-239004-1",
+    "mes": "Diciembre",
+    "anio": "2015",
+    "estado": "Activo",
+    "apellidos": "QUISPE TORRES",
+    "nombres": "AMERICA CATITA",
+    "fecha_nacimiento": "28/09/1964",
+    "documento_identidad": "23201421",
+    "establecimiento": "30064",
+    "cargo": "PROFESOR",
+    "tipo_servidor": "DOCENTE NOMBRADO",
+    "nivel_mag_horas": "2/00- /30",
+    "tiempo_servicio": "20-00-00",
+    "leyenda_permanente": "Regimen Pensionario          : Ley 19990",
+    "regimen_pensionario": "Ley 19990",
+    "fecha_ingreso_registro": "22/12/2015",
+    "fecha_termino_registro": "22/12/2015",
+    "cuenta_principal": "CTA- 4381599200",
+    "cuentas_todas": [
+      "CTA- 4381599200",
+      "CTA- 4381599200"
+    ],
+    "total_remuneraciones": 3109.8,
+    "total_descuentos": 0.0,
+    "total_liquido": 3109.8,
+    "monto_imponible": 0.0
+  },
+  {
+    "archivo_origen": "chupaca.lis",
+    "raw_length": 1298,
+    "conceptos": [
+      {
+        "tipo": "ingreso",
+        "concepto": "gratific",
+        "monto": 3109.8
+      }
+    ],
+    "secuencia": "00000009",
+    "codigo_encabezado": "CL152270",
+    "ruc_bloque": "RUC - 20188468706                                    1020007179-239004-1",
+    "mes": "Diciembre",
+    "anio": "2015",
+    "estado": "Activo",
+    "apellidos": "OSPINAL LAZO",
+    "nombres": "ALICIA",
+    "fecha_nacimiento": "05/07/1969",
+    "documento_identidad": "20007179",
+    "establecimiento": "30070",
+    "cargo": "PROFESOR",
+    "tipo_servidor": "DOCENTE NOMBRADO",
+    "nivel_mag_horas": "2/00- /30",
+    "tiempo_servicio": "20-00-00",
+    "leyenda_permanente": "864-14 25 AÑO",
+    "regimen_pensionario": "Ley 19990",
+    "fecha_ingreso_registro": "18/12/2015",
+    "fecha_termino_registro": "18/12/2015",
+    "cuenta_principal": "CTA- 4473312838",
+    "cuentas_todas": [
+      "CTA- 4473312838",
+      "CTA- 4473312838"
+    ],
+    "total_remuneraciones": 3109.8,
+    "total_descuentos": 0.0,
+    "total_liquido": 3109.8,
+    "monto_imponible": 0.0
+  },
+  {
+    "archivo_origen": "chupaca.lis",
+    "raw_length": 1325,
+    "conceptos": [
+      {
+        "tipo": "ingreso",
+        "concepto": "gratific",
+        "monto": 3109.8
+      }
+    ],
+    "secuencia": "00000010",
+    "codigo_encabezado": "CL152280",
+    "ruc_bloque": "RUC - 20188468706                                    1020091502-239004-1",
+    "mes": "Diciembre",
+    "anio": "2015",
+    "estado": "Activo",
+    "apellidos": "ALIAGA GAGO",
+    "nombres": "JOVITA ELBA",
+    "fecha_nacimiento": "15/02/1956",
+    "documento_identidad": "20091502",
+    "establecimiento": "EEM. Nº 30072 - LA VICTORIA",
+    "cargo": "PROFESOR",
+    "tipo_servidor": "DOCENTE NOMBRADO",
+    "nivel_mag_horas": "2/00- /30",
+    "tiempo_servicio": "15-00-00",
+    "leyenda_permanente": "PAGO X 30 AÑOS",
+    "regimen_pensionario": "Ley 19990",
+    "fecha_ingreso_registro": "22/12/2015",
+    "fecha_termino_registro": "22/12/2015",
+    "cuenta_principal": "CTA- 4381591250",
+    "cuentas_todas": [
+      "CTA- 4381591250",
+      "CTA- 4381591250"
+    ],
+    "total_remuneraciones": 3109.8,
+    "total_descuentos": 0.0,
+    "total_liquido": 3109.8,
+    "monto_imponible": 0.0
+  },
+  {
+    "archivo_origen": "chupaca.lis",
+    "raw_length": 1310,
+    "conceptos": [
+      {
+        "tipo": "ingreso",
+        "concepto": "cts",
+        "monto": 2927.88
+      }
+    ],
+    "secuencia": "00000011",
+    "codigo_encabezado": "CL152285",
+    "ruc_bloque": "RUC - 20188468706                                    1020092873-239005-1",
+    "mes": "Diciembre",
+    "anio": "2015",
+    "estado": "Activo",
+    "apellidos": "GUTIERREZ SALAZAR DE VILCHEZ",
+    "nombres": "HAYDEE VIRGINIA",
+    "fecha_nacimiento": "14/07/1948",
+    "documento_identidad": "20092873",
+    "establecimiento": "EEM. N§ 30073 - YAUYOS",
+    "cargo": "PROFESOR",
+    "tipo_servidor": "DOCENTE NOMBRADO",
+    "nivel_mag_horas": "1/00- /30",
+    "tiempo_servicio": "--",
+    "leyenda_permanente": "RD 1469-13",
+    "regimen_pensionario": "Ley 19990",
+    "fecha_ingreso_registro": "18/12/2014",
+    "fecha_termino_registro": "18/12/2014",
+    "cuenta_principal": "CTA-",
+    "cuentas_todas": [
+      "CTA-",
+      "CTA-"
+    ],
+    "total_remuneraciones": 2927.88,
+    "total_descuentos": 0.0,
+    "total_liquido": 2927.88,
+    "monto_imponible": 0.0
+  },
+  {
+    "archivo_origen": "chupaca.lis",
+    "raw_length": 1484,
+    "conceptos": [
+      {
+        "tipo": "ingreso",
+        "concepto": "cts",
+        "monto": 1905.02
+      }
+    ],
+    "secuencia": "00000012",
+    "codigo_encabezado": "CL152285",
+    "ruc_bloque": "RUC - 20188468706                                    1020419131-239003-1",
+    "mes": "Diciembre",
+    "anio": "2015",
+    "estado": "Activo",
+    "apellidos": "MORALES QUISPE",
+    "nombres": "PAULINO",
+    "fecha_nacimiento": "12/07/1945",
+    "documento_identidad": "20419131",
+    "establecimiento": "EEM. N§ 30073 - YAUYOS",
+    "cargo": "TRAB.SERV.   II",
+    "tipo_servidor": "ADMINISTRATIVO NOMBRADO",
+    "nivel_mag_horas": "0/AB- /40",
+    "tiempo_servicio": "20-00-00",
+    "leyenda_permanente": "1778-15",
+    "fecha_ingreso_registro": "21/12/2015",
+    "fecha_termino_registro": "21/12/2015",
+    "cuenta_principal": "CTA- 4381597399",
+    "cuentas_todas": [
+      "CTA- 4381597399",
+      "CTA- 4381597399"
+    ],
+    "reg_pensionario_detalle": {
+      "raw": "AFP Profutur/466281PMQAS8 CFija      :      0.00 FAfiliacion  : 24/09/1996 CVariable  :      0.00 FDevengue    : 24/09/1996 Seguro     :      0.00",
+      "afiliacion": "24/09/1996"
+    },
+    "total_remuneraciones": 1905.02,
+    "total_descuentos": 0.0,
+    "total_liquido": 1905.02,
+    "monto_imponible": 0.0
+  },
+  {
+    "archivo_origen": "chupaca.lis",
+    "raw_length": 1334,
+    "conceptos": [
+      {
+        "tipo": "ingreso",
+        "concepto": "gratific",
+        "monto": 3109.8
+      }
+    ],
+    "secuencia": "00000013",
+    "codigo_encabezado": "CL152290",
+    "ruc_bloque": "RUC - 20188468706                                    1023440007-239003-1",
+    "mes": "Diciembre",
+    "anio": "2015",
+    "estado": "Activo",
+    "apellidos": "DAVILA DE LA TORRE",
+    "nombres": "FREDY CARLOS",
+    "fecha_nacimiento": "18/01/1966",
+    "documento_identidad": "23440007",
+    "establecimiento": "30074 SEÑOR DE LOS MILAGROS",
+    "cargo": "PROFESOR",
+    "tipo_servidor": "DOCENTE NOMBRADO",
+    "nivel_mag_horas": "2/00- /30",
+    "tiempo_servicio": "20-00-00",
+    "leyenda_permanente": "1288-15 25 AÑOS",
+    "regimen_pensionario": "Ley 19990",
+    "fecha_ingreso_registro": "18/12/2015",
+    "fecha_termino_registro": "18/12/2015",
+    "cuenta_principal": "CTA- 4421326849",
+    "cuentas_todas": [
+      "CTA- 4421326849",
+      "CTA- 4421326849"
+    ],
+    "total_remuneraciones": 3109.8,
+    "total_descuentos": 0.0,
+    "total_liquido": 3109.8,
+    "monto_imponible": 0.0
+  },
+  {
+    "archivo_origen": "chupaca.lis",
+    "raw_length": 1494,
+    "conceptos": [
+      {
+        "tipo": "ingreso",
+        "concepto": "cts",
+        "monto": 2177.61
+      }
+    ],
+    "secuencia": "00000014",
+    "codigo_encabezado": "CL152315",
+    "ruc_bloque": "RUC - 20188468706                                    1019827575-239003-1",
+    "mes": "Diciembre",
+    "anio": "2015",
+    "estado": "Activo",
+    "apellidos": "ASCARZA CAHUANA",
+    "nombres": "JOSE WALTER",
+    "fecha_nacimiento": "05/04/1963",
+    "documento_identidad": "19827575",
+    "establecimiento": "EEM. N§ 30080 - HUAMANCACA CHICO",
+    "cargo": "PROF. DE AULA",
+    "tipo_servidor": "DOCENTE NOMBRADO",
+    "nivel_mag_horas": "E/00- /30",
+    "tiempo_servicio": "20-00-00",
+    "leyenda_permanente": "1096-15 CTS",
+    "fecha_ingreso_registro": "15/12/2015",
+    "fecha_termino_registro": "15/12/2015",
+    "cuenta_principal": "CTA- 4381591919",
+    "cuentas_todas": [
+      "CTA- 4381591919",
+      "CTA- 4381591919"
+    ],
+    "reg_pensionario_detalle": {
+      "raw": "AFP Prima   /231041JACAU3 CFija      :      0.00 FAfiliacion  : 24/08/1994 CVariable  :      0.00 FDevengue    : 24/08/1994 Seguro     :      0.00",
+      "afiliacion": "24/08/1994"
+    },
+    "total_remuneraciones": 2177.61,
+    "total_descuentos": 0.0,
+    "total_liquido": 2177.61,
+    "monto_imponible": 0.0
+  },
+  {
+    "archivo_origen": "chupaca.lis",
+    "raw_length": 1478,
+    "conceptos": [
+      {
+        "tipo": "ingreso",
+        "concepto": "gratific",
+        "monto": 3109.8
+      }
+    ],
+    "secuencia": "00000015",
+    "codigo_encabezado": "CL152340",
+    "ruc_bloque": "RUC - 20188468706                                    1020006855-239007-1",
+    "mes": "Diciembre",
+    "anio": "2015",
+    "estado": "Activo",
+    "apellidos": "OCHOA VASQUEZ",
+    "nombres": "LOURDES",
+    "fecha_nacimiento": "12/04/1968",
+    "documento_identidad": "20006855",
+    "establecimiento": "30086 SANTA ROSA DE LIMA",
+    "cargo": "PROFESOR",
+    "tipo_servidor": "DOCENTE NOMBRADO",
+    "nivel_mag_horas": "2/00- /30",
+    "tiempo_servicio": "20-00-00",
+    "leyenda_permanente": "PAGO X 25 AÑOS",
+    "fecha_ingreso_registro": "22/12/2015",
+    "fecha_termino_registro": "22/12/2015",
+    "cuenta_principal": "CTA- 4381539488",
+    "cuentas_todas": [
+      "CTA- 4381539488",
+      "CTA- 4381539488"
+    ],
+    "reg_pensionario_detalle": {
+      "raw": "AFP Integra /549380LOVOQ0 CFija      :      0.00 FAfiliacion  : 20/10/2000 CVariable  :      0.00 FDevengue    : 20/10/2000 Seguro     :      0.00",
+      "afiliacion": "20/10/2000"
+    },
+    "total_remuneraciones": 3109.8,
+    "total_descuentos": 0.0,
+    "total_liquido": 3109.8,
+    "monto_imponible": 0.0
+  },
+  {
+    "archivo_origen": "chupaca.lis",
+    "raw_length": 1462,
+    "conceptos": [
+      {
+        "tipo": "ingreso",
+        "concepto": "cts",
+        "monto": 2252.7
+      }
+    ],
+    "secuencia": "00000016",
+    "codigo_encabezado": "CL152345",
+    "ruc_bloque": "RUC - 20188468706                                    1019968673-239004-1",
+    "mes": "Diciembre",
+    "anio": "2015",
+    "estado": "Activo",
+    "apellidos": "CASAS GUERRA",
+    "nombres": "ORESTES BRADIO",
+    "fecha_nacimiento": "14/12/1959",
+    "documento_identidad": "19968673",
+    "establecimiento": "30088",
+    "cargo": "PROF. DE AULA",
+    "tipo_servidor": "DOCENTE NOMBRADO",
+    "nivel_mag_horas": "E/00- /30",
+    "tiempo_servicio": "15-00-00",
+    "leyenda_permanente": "512-15",
+    "fecha_ingreso_registro": "16/12/2015",
+    "fecha_termino_registro": "16/12/2015",
+    "cuenta_principal": "CTA- 4381593016",
+    "cuentas_todas": [
+      "CTA- 4381593016",
+      "CTA- 4381593016"
+    ],
+    "reg_pensionario_detalle": {
+      "raw": "AFP Profutur/518961OCGAR5 CFija      :      0.00 FAfiliacion  : 08/11/1996 CVariable  :      0.00 FDevengue    : 08/11/1996 Seguro     :      0.00",
+      "afiliacion": "08/11/1996"
+    },
+    "total_remuneraciones": 2252.7,
+    "total_descuentos": 0.0,
+    "total_liquido": 2252.7,
+    "monto_imponible": 0.0
+  },
+  {
+    "archivo_origen": "chupaca.lis",
+    "raw_length": 1303,
+    "conceptos": [
+      {
+        "tipo": "ingreso",
+        "concepto": "cts",
+        "monto": 1998.62
+      }
+    ],
+    "secuencia": "00000017",
+    "codigo_encabezado": "CL152345",
+    "ruc_bloque": "RUC - 20188468706                                    1019972102-239003-1",
+    "mes": "Diciembre",
+    "anio": "2015",
+    "estado": "Activo",
+    "apellidos": "ROJAS CLEMENTE",
+    "nombres": "FELIX JOEL",
+    "fecha_nacimiento": "07/01/1957",
+    "documento_identidad": "19972102",
+    "establecimiento": "30088",
+    "cargo": "PROF. DE AULA",
+    "tipo_servidor": "DOCENTE NOMBRADO",
+    "nivel_mag_horas": "A/00- /30",
+    "tiempo_servicio": "20-00-00",
+    "leyenda_permanente": "1101-15",
+    "regimen_pensionario": "Ley 19990",
+    "fecha_ingreso_registro": "16/12/2015",
+    "fecha_termino_registro": "16/12/2015",
+    "cuenta_principal": "CTA- 4381599944",
+    "cuentas_todas": [
+      "CTA- 4381599944",
+      "CTA- 4381599944"
+    ],
+    "total_remuneraciones": 1998.62,
+    "total_descuentos": 0.0,
+    "total_liquido": 1998.62,
+    "monto_imponible": 0.0
+  },
+  {
+    "archivo_origen": "chupaca.lis",
+    "raw_length": 1324,
+    "conceptos": [
+      {
+        "tipo": "ingreso",
+        "concepto": "cts",
+        "monto": 2229.23
+      }
+    ],
+    "secuencia": "00000018",
+    "codigo_encabezado": "CL152355",
+    "ruc_bloque": "RUC - 20188468706                                    1019982634-239005-1",
+    "mes": "Diciembre",
+    "anio": "2015",
+    "estado": "Activo",
+    "apellidos": "GUTARRA FLORES",
+    "nombres": "JORGE LUIS",
+    "fecha_nacimiento": "22/10/1959",
+    "documento_identidad": "19982634",
+    "establecimiento": "EEM. Nº 30098 - YANACANCHA",
+    "cargo": "PROF. DE AULA",
+    "tipo_servidor": "DOCENTE NOMBRADO",
+    "nivel_mag_horas": "A/00- /30",
+    "tiempo_servicio": "25-00-00",
+    "leyenda_permanente": "1099-15",
+    "regimen_pensionario": "Ley 19990",
+    "fecha_ingreso_registro": "16/12/2015",
+    "fecha_termino_registro": "16/12/2015",
+    "cuenta_principal": "CTA- 4381137258",
+    "cuentas_todas": [
+      "CTA- 4381137258",
+      "CTA- 4381137258"
+    ],
+    "total_remuneraciones": 2229.23,
+    "total_descuentos": 0.0,
+    "total_liquido": 2229.23,
+    "monto_imponible": 0.0
+  },
+  {
+    "archivo_origen": "chupaca.lis",
+    "raw_length": 1303,
+    "conceptos": [
+      {
+        "tipo": "ingreso",
+        "concepto": "cts",
+        "monto": 6095.32
+      }
+    ],
+    "secuencia": "00000019",
+    "codigo_encabezado": "CL152385",
+    "ruc_bloque": "RUC - 20188468706                                    1019981509-239005-1",
+    "mes": "Diciembre",
+    "anio": "2015",
+    "estado": "Activo",
+    "apellidos": "LAZARTE ORELLANA",
+    "nombres": "MARCIANO EDILBERTO",
+    "fecha_nacimiento": "06/03/1949",
+    "documento_identidad": "19981509",
+    "establecimiento": "EEM. Nº 30104 - ANTUYO",
+    "cargo": "PROFESOR",
+    "tipo_servidor": "DOCENTE NOMBRADO",
+    "nivel_mag_horas": "2/00- /30",
+    "tiempo_servicio": "25-00-00",
+    "leyenda_permanente": "1211-14",
+    "regimen_pensionario": "Ley 19990",
+    "fecha_ingreso_registro": "16/12/2015",
+    "fecha_termino_registro": "16/12/2015",
+    "cuenta_principal": "CTA-",
+    "cuentas_todas": [
+      "CTA-",
+      "CTA-"
+    ],
+    "total_remuneraciones": 6095.32,
+    "total_descuentos": 0.0,
+    "total_liquido": 6095.32,
+    "monto_imponible": 0.0
+  },
+  {
+    "archivo_origen": "chupaca.lis",
+    "raw_length": 1301,
+    "conceptos": [
+      {
+        "tipo": "ingreso",
+        "concepto": "gratific",
+        "monto": 3109.8
+      }
+    ],
+    "secuencia": "00000020",
+    "codigo_encabezado": "CL152405",
+    "ruc_bloque": "RUC - 20188468706                                    1019906753-239005-1",
+    "mes": "Diciembre",
+    "anio": "2015",
+    "estado": "Activo",
+    "apellidos": "FERNANDEZ MELGAR",
+    "nombres": "MERY ZENAIDA",
+    "fecha_nacimiento": "22/04/1961",
+    "documento_identidad": "19906753",
+    "establecimiento": "30108",
+    "cargo": "PROFESOR",
+    "tipo_servidor": "DOCENTE NOMBRADO",
+    "nivel_mag_horas": "2/00- /30",
+    "tiempo_servicio": "25-00-00",
+    "leyenda_permanente": "549-13",
+    "regimen_pensionario": "Ley 19990",
+    "fecha_ingreso_registro": "22/12/2015",
+    "fecha_termino_registro": "22/12/2015",
+    "cuenta_principal": "CTA- 4381903007",
+    "cuentas_todas": [
+      "CTA- 4381903007",
+      "CTA- 4381903007"
+    ],
+    "total_remuneraciones": 3109.8,
+    "total_descuentos": 0.0,
+    "total_liquido": 3109.8,
+    "monto_imponible": 0.0
+  },
+  {
+    "archivo_origen": "chupaca.lis",
+    "raw_length": 1284,
+    "conceptos": [
+      {
+        "tipo": "ingreso",
+        "concepto": "gratific",
+        "monto": 3420.78
+      }
+    ],
+    "secuencia": "00000021",
+    "codigo_encabezado": "CL152405",
+    "ruc_bloque": "RUC - 20188468706                                    1019901226-239004-1",
+    "mes": "Diciembre",
+    "anio": "2015",
+    "estado": "Activo",
+    "apellidos": "PEREZ SANTANA",
+    "nombres": "DAVID",
+    "fecha_nacimiento": "23/07/1955",
+    "documento_identidad": "19901226",
+    "establecimiento": "30108",
+    "cargo": "PROFESOR",
+    "tipo_servidor": "DOCENTE NOMBRADO",
+    "nivel_mag_horas": "3/00- /30",
+    "tiempo_servicio": "30-00-00",
+    "leyenda_permanente": "Regimen Pensionario          : Ley 19990",
+    "regimen_pensionario": "Ley 19990",
+    "fecha_ingreso_registro": "22/12/2015",
+    "fecha_termino_registro": "22/12/2015",
+    "cuenta_principal": "CTA- 4381598689",
+    "cuentas_todas": [
+      "CTA- 4381598689",
+      "CTA- 4381598689"
+    ],
+    "total_remuneraciones": 3420.78,
+    "total_descuentos": 0.0,
+    "total_liquido": 3420.78,
+    "monto_imponible": 0.0
+  },
+  {
+    "archivo_origen": "chupaca.lis",
+    "raw_length": 1302,
+    "conceptos": [
+      {
+        "tipo": "ingreso",
+        "concepto": "cts",
+        "monto": 7934.55
+      }
+    ],
+    "secuencia": "00000022",
+    "codigo_encabezado": "CL152420",
+    "ruc_bloque": "RUC - 20188468706                                    1019980818-239007-1",
+    "mes": "Diciembre",
+    "anio": "2015",
+    "estado": "Activo",
+    "apellidos": "CARBAJAL ROJAS",
+    "nombres": "MAURO",
+    "fecha_nacimiento": "22/11/1945",
+    "documento_identidad": "19980818",
+    "establecimiento": "30111 CRISTO REY",
+    "cargo": "DIRECTOR IE",
+    "tipo_servidor": "DOCENTE NOMBRADO",
+    "nivel_mag_horas": "1/00- /40",
+    "tiempo_servicio": "--",
+    "leyenda_permanente": "1466-13",
+    "regimen_pensionario": "Ley 20530",
+    "fecha_ingreso_registro": "16/12/2015",
+    "fecha_termino_registro": "16/12/2015",
+    "cuenta_principal": "CTA- 4381592885",
+    "cuentas_todas": [
+      "CTA- 4381592885",
+      "CTA- 4381592885"
+    ],
+    "total_remuneraciones": 7934.55,
+    "total_descuentos": 0.0,
+    "total_liquido": 7934.55,
+    "monto_imponible": 0.0
+  },
+  {
+    "archivo_origen": "chupaca.lis",
+    "raw_length": 1330,
+    "conceptos": [
+      {
+        "tipo": "ingreso",
+        "concepto": "gratific",
+        "monto": 3109.8
+      }
+    ],
+    "secuencia": "00000023",
+    "codigo_encabezado": "CL152430",
+    "ruc_bloque": "RUC - 20188468706                                    1019968705-239004-1",
+    "mes": "Diciembre",
+    "anio": "2015",
+    "estado": "Activo",
+    "apellidos": "MAYHUASCA MUÑICO",
+    "nombres": "MARIA SANTISIMA",
+    "fecha_nacimiento": "21/04/1960",
+    "documento_identidad": "19968705",
+    "establecimiento": "EEM. Nº 30113 - TINYARI GRANDE",
+    "cargo": "PROFESOR",
+    "tipo_servidor": "DOCENTE NOMBRADO",
+    "nivel_mag_horas": "2/00- /30",
+    "tiempo_servicio": "15-00-00",
+    "leyenda_permanente": "25 AÑOS",
+    "regimen_pensionario": "Ley 19990",
+    "fecha_ingreso_registro": "22/12/2015",
+    "fecha_termino_registro": "22/12/2015",
+    "cuenta_principal": "CTA- 4381596996",
+    "cuentas_todas": [
+      "CTA- 4381596996",
+      "CTA- 4381596996"
+    ],
+    "total_remuneraciones": 3109.8,
+    "total_descuentos": 0.0,
+    "total_liquido": 3109.8,
+    "monto_imponible": 0.0
+  },
+  {
+    "archivo_origen": "chupaca.lis",
+    "raw_length": 1484,
+    "conceptos": [
+      {
+        "tipo": "ingreso",
+        "concepto": "gratific",
+        "monto": 3420.78
+      }
+    ],
+    "secuencia": "00000024",
+    "codigo_encabezado": "CL152445",
+    "ruc_bloque": "RUC - 20188468706                                    1020007282-239006-1",
+    "mes": "Diciembre",
+    "anio": "2015",
+    "estado": "Activo",
+    "apellidos": "SOTOMAYOR PARIONA",
+    "nombres": "ZACARIAS",
+    "fecha_nacimiento": "07/09/1968",
+    "documento_identidad": "20007282",
+    "establecimiento": "EEM. Nº 30121 - ACHIPAMPA",
+    "cargo": "PROFESOR",
+    "tipo_servidor": "DOCENTE NOMBRADO",
+    "nivel_mag_horas": "2/00- /30",
+    "tiempo_servicio": "25-00-00",
+    "leyenda_permanente": "PAGO X 25 AÑOS",
+    "fecha_ingreso_registro": "22/12/2015",
+    "fecha_termino_registro": "22/12/2015",
+    "cuenta_principal": "CTA- 4381533293",
+    "cuentas_todas": [
+      "CTA- 4381533293",
+      "CTA- 4381533293"
+    ],
+    "reg_pensionario_detalle": {
+      "raw": "AFP Profutur/550861ZSPOI8 CFija      :      0.00 FAfiliacion  : 24/02/1998 CVariable  :      0.00 FDevengue    : 24/02/1998 Seguro     :      0.00",
+      "afiliacion": "24/02/1998"
+    },
+    "total_remuneraciones": 3420.78,
+    "total_descuentos": 0.0,
+    "total_liquido": 3420.78,
+    "monto_imponible": 0.0
+  },
+  {
+    "archivo_origen": "chupaca.lis",
+    "raw_length": 1463,
+    "conceptos": [
+      {
+        "tipo": "ingreso",
+        "concepto": "cts",
+        "monto": 1952.34
+      }
+    ],
+    "secuencia": "00000025",
+    "codigo_encabezado": "CL152450",
+    "ruc_bloque": "RUC - 20188468706                                    1019988973-239003-1",
+    "mes": "Diciembre",
+    "anio": "2015",
+    "estado": "Activo",
+    "apellidos": "ARTICA CAMAYO",
+    "nombres": "LEON ISAAC",
+    "fecha_nacimiento": "11/04/1953",
+    "documento_identidad": "19988973",
+    "establecimiento": "30122",
+    "cargo": "PROF. DE AULA",
+    "tipo_servidor": "DOCENTE NOMBRADO",
+    "nivel_mag_horas": "E/00- /30",
+    "tiempo_servicio": "20-00-00",
+    "leyenda_permanente": "513-15 CTS",
+    "fecha_ingreso_registro": "15/12/2015",
+    "fecha_termino_registro": "15/12/2015",
+    "cuenta_principal": "CTA- 4381591889",
+    "cuentas_todas": [
+      "CTA- 4381591889",
+      "CTA- 4381591889"
+    ],
+    "reg_pensionario_detalle": {
+      "raw": "AFP Profutur/494581LACIA7 CFija      :      0.00 FAfiliacion  : 04/12/1996 CVariable  :      0.00 FDevengue    : 04/12/1996 Seguro     :      0.00",
+      "afiliacion": "04/12/1996"
+    },
+    "total_remuneraciones": 1952.34,
+    "total_descuentos": 0.0,
+    "total_liquido": 1952.34,
+    "monto_imponible": 0.0
+  },
+  {
+    "archivo_origen": "chupaca.lis",
+    "raw_length": 1336,
+    "conceptos": [
+      {
+        "tipo": "ingreso",
+        "concepto": "cts",
+        "monto": 2306.12
+      }
+    ],
+    "secuencia": "00000026",
+    "codigo_encabezado": "CL152457",
+    "ruc_bloque": "RUC - 20188468706                                    1019877690-239004-1",
+    "mes": "Diciembre",
+    "anio": "2015",
+    "estado": "Activo",
+    "apellidos": "CARDENAS COSSER",
+    "nombres": "FRANCISCO",
+    "fecha_nacimiento": "04/10/1956",
+    "documento_identidad": "19877690",
+    "establecimiento": "EEM. N§ 30161 JR. GRAU S/N. - CHON",
+    "cargo": "PROF. DE AULA",
+    "tipo_servidor": "DOCENTE NOMBRADO",
+    "nivel_mag_horas": "A/00- /30",
+    "tiempo_servicio": "25-00-00",
+    "leyenda_permanente": "1097-15 CTS",
+    "regimen_pensionario": "Ley 19990",
+    "fecha_ingreso_registro": "15/12/2015",
+    "fecha_termino_registro": "15/12/2015",
+    "cuenta_principal": "CTA- 4381473541",
+    "cuentas_todas": [
+      "CTA- 4381473541",
+      "CTA- 4381473541"
+    ],
+    "total_remuneraciones": 2306.12,
+    "total_descuentos": 0.0,
+    "total_liquido": 2306.12,
+    "monto_imponible": 0.0
+  },
+  {
+    "archivo_origen": "chupaca.lis",
+    "raw_length": 1459,
+    "conceptos": [
+      {
+        "tipo": "ingreso",
+        "concepto": "cts",
+        "monto": 3994.43
+      }
+    ],
+    "secuencia": "00000027",
+    "codigo_encabezado": "CL152457",
+    "ruc_bloque": "RUC - 20188468706                                    1020895378-239007-1",
+    "mes": "Diciembre",
+    "anio": "2015",
+    "estado": "Activo",
+    "apellidos": "COLLANA AYALA",
+    "nombres": "DOMINICA",
+    "fecha_nacimiento": "13/01/1958",
+    "documento_identidad": "20895377",
+    "establecimiento": "EEM. N§ 30161 JR. GRAU S/N. - CHON",
+    "cargo": "PROFESOR",
+    "tipo_servidor": "DOCENTE NOMBRADO",
+    "nivel_mag_horas": "3/00- /30",
+    "tiempo_servicio": "10-00-00",
+    "leyenda_permanente": "507-14",
+    "fecha_ingreso_registro": "17/12/2015",
+    "fecha_termino_registro": "17/12/2015",
+    "cuenta_principal": "CTA-",
+    "cuentas_todas": [
+      "CTA-",
+      "CTA-"
+    ],
+    "reg_pensionario_detalle": {
+      "raw": "AFP Profutur/479161EVAAA7 CFija      :      0.00 FAfiliacion  : 28/08/1996 CVariable  :      0.00 FDevengue    : 28/08/1996 Seguro     :      0.00",
+      "afiliacion": "28/08/1996"
+    },
+    "total_remuneraciones": 3994.43,
+    "total_descuentos": 0.0,
+    "total_liquido": 3994.43,
+    "monto_imponible": 0.0
+  },
+  {
+    "archivo_origen": "chupaca.lis",
+    "raw_length": 1484,
+    "conceptos": [
+      {
+        "tipo": "ingreso",
+        "concepto": "gratific",
+        "monto": 3109.8
+      }
+    ],
+    "secuencia": "00000028",
+    "codigo_encabezado": "CL152457",
+    "ruc_bloque": "RUC - 20188468706                                    1020083337-239005-1",
+    "mes": "Diciembre",
+    "anio": "2015",
+    "estado": "Activo",
+    "apellidos": "RUIZ FLORES",
+    "nombres": "ANA VICTORIA",
+    "fecha_nacimiento": "14/10/1964",
+    "documento_identidad": "20083337",
+    "establecimiento": "EEM. N§ 30161 JR. GRAU S/N. - CHON",
+    "cargo": "PROFESOR",
+    "tipo_servidor": "DOCENTE NOMBRADO",
+    "nivel_mag_horas": "2/00- /30",
+    "tiempo_servicio": "20-00-00",
+    "leyenda_permanente": "1411-15",
+    "fecha_ingreso_registro": "18/12/2015",
+    "fecha_termino_registro": "18/12/2015",
+    "cuenta_principal": "CTA- 4381473088",
+    "cuentas_todas": [
+      "CTA- 4381473088",
+      "CTA- 4381473088"
+    ],
+    "reg_pensionario_detalle": {
+      "raw": "AFP Profutur/536620ARFZR1 CFija      :      0.00 FAfiliacion  : 28/08/1996 CVariable  :      0.00 FDevengue    : 28/08/1996 Seguro     :      0.00",
+      "afiliacion": "28/08/1996"
+    },
+    "total_remuneraciones": 3109.8,
+    "total_descuentos": 0.0,
+    "total_liquido": 3109.8,
+    "monto_imponible": 0.0
+  },
+  {
+    "archivo_origen": "chupaca.lis",
+    "raw_length": 1497,
+    "conceptos": [
+      {
+        "tipo": "ingreso",
+        "concepto": "cts",
+        "monto": 2306.1
+      }
+    ],
+    "secuencia": "00000029",
+    "codigo_encabezado": "CL152457",
+    "ruc_bloque": "RUC - 20188468706                                    1019992196-239004-1",
+    "mes": "Diciembre",
+    "anio": "2015",
+    "estado": "Activo",
+    "apellidos": "VARILLAS ESPEJO",
+    "nombres": "LEONIDAS TEODORO",
+    "fecha_nacimiento": "22/04/1950",
+    "documento_identidad": "19992196",
+    "establecimiento": "EEM. N§ 30161 JR. GRAU S/N. - CHON",
+    "cargo": "PROF. DE AULA",
+    "tipo_servidor": "DOCENTE NOMBRADO",
+    "nivel_mag_horas": "A/00- /30",
+    "tiempo_servicio": "20-00-00",
+    "leyenda_permanente": "1100-15",
+    "fecha_ingreso_registro": "16/12/2015",
+    "fecha_termino_registro": "16/12/2015",
+    "cuenta_principal": "CTA- 4381601361",
+    "cuentas_todas": [
+      "CTA- 4381601361",
+      "CTA- 4381601361"
+    ],
+    "reg_pensionario_detalle": {
+      "raw": "AFP Integra /183731LVEIE8 CFija      :      0.00 FAfiliacion  : 05/04/1994 CVariable  :      0.00 FDevengue    : 20/04/2000 Seguro     :      0.00",
+      "afiliacion": "05/04/1994"
+    },
+    "total_remuneraciones": 2306.1,
+    "total_descuentos": 0.0,
+    "total_liquido": 2306.1,
+    "monto_imponible": 0.0
+  },
+  {
+    "archivo_origen": "chupaca.lis",
+    "raw_length": 1303,
+    "conceptos": [
+      {
+        "tipo": "ingreso",
+        "concepto": "gratific",
+        "monto": 3109.8
+      }
+    ],
+    "secuencia": "00000030",
+    "codigo_encabezado": "CL152458",
+    "ruc_bloque": "RUC - 20188468706                                    1019901767-239005-1",
+    "mes": "Diciembre",
+    "anio": "2015",
+    "estado": "Activo",
+    "apellidos": "SOBREVILLA MEDINA",
+    "nombres": "DORIS",
+    "fecha_nacimiento": "19/03/1966",
+    "documento_identidad": "19901767",
+    "establecimiento": "30163",
+    "cargo": "PROFESOR",
+    "tipo_servidor": "DOCENTE NOMBRADO",
+    "nivel_mag_horas": "2/00- /30",
+    "tiempo_servicio": "15-00-00",
+    "leyenda_permanente": "PAGO X 25 AÑOS",
+    "regimen_pensionario": "Ley 19990",
+    "fecha_ingreso_registro": "22/12/2015",
+    "fecha_termino_registro": "22/12/2015",
+    "cuenta_principal": "CTA- 4381651881",
+    "cuentas_todas": [
+      "CTA- 4381651881",
+      "CTA- 4381651881"
+    ],
+    "total_remuneraciones": 3109.8,
+    "total_descuentos": 0.0,
+    "total_liquido": 3109.8,
+    "monto_imponible": 0.0
+  },
+  {
+    "archivo_origen": "chupaca.lis",
+    "raw_length": 1475,
+    "conceptos": [
+      {
+        "tipo": "ingreso",
+        "concepto": "cts",
+        "monto": 2710.19
+      }
+    ],
+    "secuencia": "00000031",
+    "codigo_encabezado": "CL152460",
+    "ruc_bloque": "RUC - 20188468706                                    1019813318-239005-1",
+    "mes": "Diciembre",
+    "anio": "2015",
+    "estado": "Activo",
+    "apellidos": "HUAMANI BAUTISTA",
+    "nombres": "ABEL MELECIO",
+    "fecha_nacimiento": "12/02/1949",
+    "documento_identidad": "19813318",
+    "establecimiento": "I.E 30179 - TRES DE DICIEMBRE",
+    "cargo": "PROFESOR",
+    "tipo_servidor": "DOCENTE NOMBRADO",
+    "nivel_mag_horas": "2/00- /30",
+    "tiempo_servicio": "25-00-00",
+    "leyenda_permanente": "301-14PAGO TOTAL CTS",
+    "fecha_ingreso_registro": "16/12/2015",
+    "fecha_termino_registro": "16/12/2015",
+    "cuenta_principal": "CTA-",
+    "cuentas_todas": [
+      "CTA-",
+      "CTA-"
+    ],
+    "reg_pensionario_detalle": {
+      "raw": "AFP Prima   /179391AHBMT0 CFija      :      0.00 FAfiliacion  : 02/07/1994 CVariable  :      0.00 FDevengue    : 02/07/1994 Seguro     :      0.00",
+      "afiliacion": "02/07/1994"
+    },
+    "total_remuneraciones": 2710.19,
+    "total_descuentos": 0.0,
+    "total_liquido": 2710.19,
+    "monto_imponible": 0.0
+  },
+  {
+    "archivo_origen": "chupaca.lis",
+    "raw_length": 1324,
+    "conceptos": [
+      {
+        "tipo": "ingreso",
+        "concepto": "gratific",
+        "monto": 3109.8
+      }
+    ],
+    "secuencia": "00000032",
+    "codigo_encabezado": "CL152475",
+    "ruc_bloque": "RUC - 20188468706                                    1019911157-239005-1",
+    "mes": "Diciembre",
+    "anio": "2015",
+    "estado": "Activo",
+    "apellidos": "ROJAS CHAVEZ",
+    "nombres": "HAYDEE LUZ",
+    "fecha_nacimiento": "26/04/1965",
+    "documento_identidad": "19911157",
+    "establecimiento": "EEM. Nº 30306 - ANGASMAYO",
+    "cargo": "PROFESOR",
+    "tipo_servidor": "DOCENTE NOMBRADO",
+    "nivel_mag_horas": "2/00- /30",
+    "tiempo_servicio": "20-00-00",
+    "leyenda_permanente": "1409-15 25 AÑOS",
+    "regimen_pensionario": "Ley 19990",
+    "fecha_ingreso_registro": "18/12/2015",
+    "fecha_termino_registro": "18/12/2015",
+    "cuenta_principal": "CTA- 4381599901",
+    "cuentas_todas": [
+      "CTA- 4381599901",
+      "CTA- 4381599901"
+    ],
+    "total_remuneraciones": 3109.8,
+    "total_descuentos": 0.0,
+    "total_liquido": 3109.8,
+    "monto_imponible": 0.0
+  },
+  {
+    "archivo_origen": "chupaca.lis",
+    "raw_length": 1335,
+    "conceptos": [
+      {
+        "tipo": "ingreso",
+        "concepto": "gratific",
+        "monto": 3887.26
+      }
+    ],
+    "secuencia": "00000033",
+    "codigo_encabezado": "CL152480",
+    "ruc_bloque": "RUC - 20188468706                                    1020421560-239005-1",
+    "mes": "Diciembre",
+    "anio": "2015",
+    "estado": "Activo",
+    "apellidos": "CHUQUICHAICO LAZO",
+    "nombres": "WALTER SEBASTIAN",
+    "fecha_nacimiento": "21/01/1958",
+    "documento_identidad": "20421560",
+    "establecimiento": "EEM. Nº 30307 - SANTA ROSA DE TIST",
+    "cargo": "PROFESOR",
+    "tipo_servidor": "DOCENTE NOMBRADO",
+    "nivel_mag_horas": "3/00- /30",
+    "tiempo_servicio": "20-00-00",
+    "leyenda_permanente": "677-13",
+    "regimen_pensionario": "Ley 19990",
+    "fecha_ingreso_registro": "22/12/2015",
+    "fecha_termino_registro": "22/12/2015",
+    "cuenta_principal": "CTA- 4381593687",
+    "cuentas_todas": [
+      "CTA- 4381593687",
+      "CTA- 4381593687"
+    ],
+    "total_remuneraciones": 3887.26,
+    "total_descuentos": 0.0,
+    "total_liquido": 3887.26,
+    "monto_imponible": 0.0
+  },
+  {
+    "archivo_origen": "chupaca.lis",
+    "raw_length": 1297,
+    "conceptos": [
+      {
+        "tipo": "ingreso",
+        "concepto": "gratific",
+        "monto": 3109.8
+      }
+    ],
+    "secuencia": "00000034",
+    "codigo_encabezado": "CL152500",
+    "ruc_bloque": "RUC - 20188468706                                    1020431692-239003-1",
+    "mes": "Diciembre",
+    "anio": "2015",
+    "estado": "Activo",
+    "apellidos": "AQUINO QUIÑONES",
+    "nombres": "VALERIANO",
+    "fecha_nacimiento": "01/12/1951",
+    "documento_identidad": "20431692",
+    "establecimiento": "30329",
+    "cargo": "PROFESOR",
+    "tipo_servidor": "DOCENTE NOMBRADO",
+    "nivel_mag_horas": "2/00- /30",
+    "tiempo_servicio": "25-00-00",
+    "leyenda_permanente": "611-13",
+    "regimen_pensionario": "Ley 19990",
+    "fecha_ingreso_registro": "22/12/2015",
+    "fecha_termino_registro": "22/12/2015",
+    "cuenta_principal": "CTA- 4381591684",
+    "cuentas_todas": [
+      "CTA- 4381591684",
+      "CTA- 4381591684"
+    ],
+    "total_remuneraciones": 3109.8,
+    "total_descuentos": 0.0,
+    "total_liquido": 3109.8,
+    "monto_imponible": 0.0
+  },
+  {
+    "archivo_origen": "chupaca.lis",
+    "raw_length": 1302,
+    "conceptos": [
+      {
+        "tipo": "ingreso",
+        "concepto": "cts",
+        "monto": 5006.87
+      }
+    ],
+    "secuencia": "00000035",
+    "codigo_encabezado": "CL152505",
+    "ruc_bloque": "RUC - 20188468706                                    1020421502-239003-1",
+    "mes": "Diciembre",
+    "anio": "2015",
+    "estado": "Activo",
+    "apellidos": "CANCHUMANYA CERRON",
+    "nombres": "ABEL DANIEL",
+    "fecha_nacimiento": "03/01/1949",
+    "documento_identidad": "20421502",
+    "establecimiento": "EEM. Nº 30331 - CHALANUEVA",
+    "cargo": "PROFESOR",
+    "tipo_servidor": "DOCENTE NOMBRADO",
+    "nivel_mag_horas": "2/00- /30",
+    "tiempo_servicio": "20-00-00",
+    "leyenda_permanente": "1184-14",
+    "regimen_pensionario": "Ley 19990",
+    "fecha_ingreso_registro": "16/12/2015",
+    "fecha_termino_registro": "16/12/2015",
+    "cuenta_principal": "CTA-",
+    "cuentas_todas": [
+      "CTA-",
+      "CTA-"
+    ],
+    "total_remuneraciones": 5006.87,
+    "total_descuentos": 0.0,
+    "total_liquido": 5006.87,
+    "monto_imponible": 0.0
+  },
+  {
+    "archivo_origen": "chupaca.lis",
+    "raw_length": 1489,
+    "conceptos": [
+      {
+        "tipo": "ingreso",
+        "concepto": "cts",
+        "monto": 2051.56
+      }
+    ],
+    "secuencia": "00000036",
+    "codigo_encabezado": "CL152515",
+    "ruc_bloque": "RUC - 20188468706                                    1019903017-239002-1",
+    "mes": "Diciembre",
+    "anio": "2015",
+    "estado": "Activo",
+    "apellidos": "QUIÑONES MACHA",
+    "nombres": "SIXTO ROGATO",
+    "fecha_nacimiento": "02/04/1945",
+    "documento_identidad": "19903017",
+    "establecimiento": "EEM. Nº 30334 - CHAQUICOCHA",
+    "cargo": "TRAB.SERV.   II",
+    "tipo_servidor": "ADMINISTRATIVO NOMBRADO",
+    "nivel_mag_horas": "0/AB- /40",
+    "tiempo_servicio": "--",
+    "leyenda_permanente": "1355-15",
+    "fecha_ingreso_registro": "18/12/2015",
+    "fecha_termino_registro": "18/12/2015",
+    "cuenta_principal": "CTA- 4381480629",
+    "cuentas_todas": [
+      "CTA- 4381480629",
+      "CTA- 4381480629"
+    ],
+    "reg_pensionario_detalle": {
+      "raw": "AFP Integra /465271SQMÑH2 CFija      :      0.00 FAfiliacion  : 03/08/1996 CVariable  :      0.00 FDevengue    : 03/08/1996 Seguro     :      0.00",
+      "afiliacion": "03/08/1996"
+    },
+    "total_remuneraciones": 2051.56,
+    "total_descuentos": 0.0,
+    "total_liquido": 2051.56,
+    "monto_imponible": 0.0
+  },
+  {
+    "archivo_origen": "chupaca.lis",
+    "raw_length": 1336,
+    "conceptos": [
+      {
+        "tipo": "ingreso",
+        "concepto": "cts",
+        "monto": 1919.75
+      }
+    ],
+    "secuencia": "00000037",
+    "codigo_encabezado": "CL152560",
+    "ruc_bloque": "RUC - 20188468706                                    1019918741-239006-1",
+    "mes": "Diciembre",
+    "anio": "2015",
+    "estado": "Activo",
+    "apellidos": "CRISPIN RODRIGUEZ",
+    "nombres": "JUAN ARNALDO",
+    "fecha_nacimiento": "28/03/1949",
+    "documento_identidad": "19918741",
+    "establecimiento": "EEM. Nº 30403 - SAN FRAN. DE SALVI",
+    "cargo": "PROF. DE AULA",
+    "tipo_servidor": "DOCENTE NOMBRADO",
+    "nivel_mag_horas": "C/00- /30",
+    "tiempo_servicio": "20-00-00",
+    "leyenda_permanente": "522-15",
+    "regimen_pensionario": "Ley 19990",
+    "fecha_ingreso_registro": "16/12/2015",
+    "fecha_termino_registro": "16/12/2015",
+    "cuenta_principal": "CTA- 4381594020",
+    "cuentas_todas": [
+      "CTA- 4381594020",
+      "CTA- 4381594020"
+    ],
+    "total_remuneraciones": 1919.75,
+    "total_descuentos": 0.0,
+    "total_liquido": 1919.75,
+    "monto_imponible": 0.0
+  },
+  {
+    "archivo_origen": "chupaca.lis",
+    "raw_length": 1481,
+    "conceptos": [
+      {
+        "tipo": "ingreso",
+        "concepto": "cts",
+        "monto": 2252.7
+      }
+    ],
+    "secuencia": "00000038",
+    "codigo_encabezado": "CL152596",
+    "ruc_bloque": "RUC - 20188468706                                    1020011077-239004-1",
+    "mes": "Diciembre",
+    "anio": "2015",
+    "estado": "Activo",
+    "apellidos": "NINAMANGO PINTO",
+    "nombres": "JOSE RODOLFO",
+    "fecha_nacimiento": "01/08/1954",
+    "documento_identidad": "20011077",
+    "establecimiento": "EEA. Nº 31425 - CHUPACA",
+    "cargo": "PROF. DE AULA",
+    "tipo_servidor": "DOCENTE NOMBRADO",
+    "nivel_mag_horas": "E/00- /30",
+    "tiempo_servicio": "20-00-00",
+    "leyenda_permanente": "525-15",
+    "fecha_ingreso_registro": "16/12/2015",
+    "fecha_termino_registro": "16/12/2015",
+    "cuenta_principal": "CTA- 4381597569",
+    "cuentas_todas": [
+      "CTA- 4381597569",
+      "CTA- 4381597569"
+    ],
+    "reg_pensionario_detalle": {
+      "raw": "AFP Prima Mi/499351JNPAT8 CFija      :      0.00 FAfiliacion  : 02/04/1996 CVariable  :      0.00 FDevengue    : 02/04/1996 Seguro     :      0.00",
+      "afiliacion": "02/04/1996"
+    },
+    "total_remuneraciones": 2252.7,
+    "total_descuentos": 0.0,
+    "total_liquido": 2252.7,
+    "monto_imponible": 0.0
+  },
+  {
+    "archivo_origen": "chupaca.lis",
+    "raw_length": 1478,
+    "conceptos": [
+      {
+        "tipo": "ingreso",
+        "concepto": "cts",
+        "monto": 2102.52
+      }
+    ],
+    "secuencia": "00000039",
+    "codigo_encabezado": "CL152610",
+    "ruc_bloque": "RUC - 20188468706                                    1019912043-239004-1",
+    "mes": "Diciembre",
+    "anio": "2015",
+    "estado": "Activo",
+    "apellidos": "MAYTA CASIMIRO",
+    "nombres": "EPIFANIO",
+    "fecha_nacimiento": "20/01/1954",
+    "documento_identidad": "19912043",
+    "establecimiento": "EEM. Nº 31905 - CHURAMPI",
+    "cargo": "PROF. DE AULA",
+    "tipo_servidor": "DOCENTE NOMBRADO",
+    "nivel_mag_horas": "E/00- /30",
+    "tiempo_servicio": "20-00-00",
+    "leyenda_permanente": "1098-15",
+    "fecha_ingreso_registro": "16/12/2015",
+    "fecha_termino_registro": "16/12/2015",
+    "cuenta_principal": "CTA- 4381597003",
+    "cuentas_todas": [
+      "CTA- 4381597003",
+      "CTA- 4381597003"
+    ],
+    "reg_pensionario_detalle": {
+      "raw": "AFP Profutur/197421EMCTI4 CFija      :      0.00 FAfiliacion  : 18/08/1993 CVariable  :      0.00 FDevengue    : 18/08/1993 Seguro     :      0.00",
+      "afiliacion": "18/08/1993"
+    },
+    "total_remuneraciones": 2102.52,
+    "total_descuentos": 0.0,
+    "total_liquido": 2102.52,
+    "monto_imponible": 0.0
+  },
+  {
+    "archivo_origen": "chupaca.lis",
+    "raw_length": 1323,
+    "conceptos": [
+      {
+        "tipo": "ingreso",
+        "concepto": "cts",
+        "monto": 10000.0
+      }
+    ],
+    "secuencia": "00000040",
+    "codigo_encabezado": "CL152615",
+    "ruc_bloque": "RUC - 20188468706                                    1020010504-239004-1",
+    "mes": "Diciembre",
+    "anio": "2015",
+    "estado": "Activo",
+    "apellidos": "CASTILLO MELGAR",
+    "nombres": "TEOFILO ALBERTO",
+    "fecha_nacimiento": "10/02/1956",
+    "documento_identidad": "20010504",
+    "establecimiento": "ADICIONAL PRIMARIA",
+    "cargo": "DIRECTOR IE",
+    "tipo_servidor": "DOCENTE NOMBRADO",
+    "nivel_mag_horas": "4/00- /40",
+    "tiempo_servicio": "35-00-00",
+    "leyenda_permanente": "119-15 CTS",
+    "regimen_pensionario": "Ley 20530",
+    "fecha_ingreso_registro": "18/12/2015",
+    "fecha_termino_registro": "18/12/2015",
+    "cuenta_principal": "CTA- 4381593148",
+    "cuentas_todas": [
+      "CTA- 4381593148",
+      "CTA- 4381593148"
+    ],
+    "total_remuneraciones": 10000.0,
+    "total_descuentos": 0.0,
+    "total_liquido": 10000.0,
+    "monto_imponible": 0.0
+  },
+  {
+    "archivo_origen": "chupaca.lis",
+    "raw_length": 1323,
+    "conceptos": [
+      {
+        "tipo": "ingreso",
+        "concepto": "cts",
+        "monto": 884.3
+      }
+    ],
+    "secuencia": "00000041",
+    "codigo_encabezado": "CL152615",
+    "ruc_bloque": "RUC - 20188468706                                    1020010504-239004-2",
+    "mes": "Diciembre",
+    "anio": "2015",
+    "estado": "Activo",
+    "apellidos": "CASTILLO MELGAR",
+    "nombres": "TEOFILO ALBERTO",
+    "fecha_nacimiento": "10/02/1956",
+    "documento_identidad": "20010504",
+    "establecimiento": "ADICIONAL PRIMARIA",
+    "cargo": "DIRECTOR IE",
+    "tipo_servidor": "DOCENTE NOMBRADO",
+    "nivel_mag_horas": "4/00- /40",
+    "tiempo_servicio": "35-00-00",
+    "leyenda_permanente": "119-15 CTS",
+    "regimen_pensionario": "Ley 20530",
+    "fecha_ingreso_registro": "18/12/2015",
+    "fecha_termino_registro": "18/12/2015",
+    "cuenta_principal": "CTA- 4381593148",
+    "cuentas_todas": [
+      "CTA- 4381593148",
+      "CTA- 4381593148"
+    ],
+    "total_remuneraciones": 884.3,
+    "total_descuentos": 0.0,
+    "total_liquido": 884.3,
+    "monto_imponible": 0.0
+  },
+  {
+    "archivo_origen": "chupaca.lis",
+    "raw_length": 1305,
+    "conceptos": [
+      {
+        "tipo": "ingreso",
+        "concepto": "cts",
+        "monto": 7934.55
+      }
+    ],
+    "secuencia": "00000042",
+    "codigo_encabezado": "CL153615",
+    "ruc_bloque": "RUC - 20188468706                                    1019932443-239005-1",
+    "mes": "Diciembre",
+    "anio": "2015",
+    "estado": "Activo",
+    "apellidos": "AGUILAR BERNIA",
+    "nombres": "LUIS TEODOSIO",
+    "fecha_nacimiento": "17/07/1946",
+    "documento_identidad": "19932443",
+    "establecimiento": "19 DE ABRIL",
+    "cargo": "DIRECTOR IE",
+    "tipo_servidor": "DOCENTE NOMBRADO",
+    "nivel_mag_horas": "1/00- /40",
+    "tiempo_servicio": "--",
+    "leyenda_permanente": "1470-13",
+    "regimen_pensionario": "Ley 20530",
+    "fecha_ingreso_registro": "16/12/2015",
+    "fecha_termino_registro": "16/12/2015",
+    "cuenta_principal": "CTA- 4381466952",
+    "cuentas_todas": [
+      "CTA- 4381466952",
+      "CTA- 4381466952"
+    ],
+    "total_remuneraciones": 7934.55,
+    "total_descuentos": 0.0,
+    "total_liquido": 7934.55,
+    "monto_imponible": 0.0
+  },
+  {
+    "archivo_origen": "chupaca.lis",
+    "raw_length": 1326,
+    "conceptos": [
+      {
+        "tipo": "ingreso",
+        "concepto": "gratific",
+        "monto": 2487.84
+      }
+    ],
+    "secuencia": "00000043",
+    "codigo_encabezado": "CL153660",
+    "ruc_bloque": "RUC - 20188468706                                    1020007045-239002-2",
+    "mes": "Diciembre",
+    "anio": "2015",
+    "estado": "Activo",
+    "apellidos": "SANTANA ALIAGA",
+    "nombres": "JEANET",
+    "fecha_nacimiento": "17/02/1969",
+    "documento_identidad": "20007045",
+    "establecimiento": "CEM. AGROP.-IND. \"SAN ROQUE\" - CHA",
+    "cargo": "PROFESOR",
+    "tipo_servidor": "DOCENTE NOMBRADO",
+    "nivel_mag_horas": "1/00- /26",
+    "tiempo_servicio": "--",
+    "leyenda_permanente": "1477-15 25 AÑOS",
+    "regimen_pensionario": "Ley 19990",
+    "fecha_ingreso_registro": "18/12/2015",
+    "fecha_termino_registro": "18/12/2015",
+    "cuenta_principal": "CTA- 4381903910",
+    "cuentas_todas": [
+      "CTA- 4381903910",
+      "CTA- 4381903910"
+    ],
+    "total_remuneraciones": 2487.84,
+    "total_descuentos": 0.0,
+    "total_liquido": 2487.84,
+    "monto_imponible": 0.0
+  },
+  {
+    "archivo_origen": "chupaca.lis",
+    "raw_length": 1478,
+    "conceptos": [
+      {
+        "tipo": "ingreso",
+        "concepto": "gratific",
+        "monto": 2487.84
+      }
+    ],
+    "secuencia": "00000044",
+    "codigo_encabezado": "CL153670",
+    "ruc_bloque": "RUC - 20188468706                                    1019906053-239004-1",
+    "mes": "Diciembre",
+    "anio": "2015",
+    "estado": "Activo",
+    "apellidos": "CERRON ORDAYA",
+    "nombres": "ELIZABETH CAROLINA",
+    "fecha_nacimiento": "21/04/1964",
+    "documento_identidad": "19906053",
+    "establecimiento": "CEM. \"AMAUTA\" - AHUAC",
+    "cargo": "PROFESOR",
+    "tipo_servidor": "DOCENTE NOMBRADO",
+    "nivel_mag_horas": "2/00- /26",
+    "tiempo_servicio": "20-00-00",
+    "leyenda_permanente": "677-13",
+    "fecha_ingreso_registro": "22/12/2015",
+    "fecha_termino_registro": "22/12/2015",
+    "cuenta_principal": "CTA- 4381605243",
+    "cuentas_todas": [
+      "CTA- 4381605243",
+      "CTA- 4381605243"
+    ],
+    "reg_pensionario_detalle": {
+      "raw": "AFP Profutur/234860ECORA5 CFija      :      0.00 FAfiliacion  : 24/08/1993 CVariable  :      0.00 FDevengue    : 24/08/1993 Seguro     :      0.00",
+      "afiliacion": "24/08/1993"
+    },
+    "total_remuneraciones": 2487.84,
+    "total_descuentos": 0.0,
+    "total_liquido": 2487.84,
+    "monto_imponible": 0.0
+  },
+  {
+    "archivo_origen": "chupaca.lis",
+    "raw_length": 1461,
+    "conceptos": [
+      {
+        "tipo": "ingreso",
+        "concepto": "cts",
+        "monto": 5746.8
+      }
+    ],
+    "secuencia": "00000045",
+    "codigo_encabezado": "CL153670",
+    "ruc_bloque": "RUC - 20188468706                                    1020089408-239007-1",
+    "mes": "Diciembre",
+    "anio": "2015",
+    "estado": "Activo",
+    "apellidos": "MONTALVO GONZALES",
+    "nombres": "NOEMI BLANCANIEVES",
+    "fecha_nacimiento": "29/01/1949",
+    "documento_identidad": "20089408",
+    "establecimiento": "CEM. \"AMAUTA\" - AHUAC",
+    "cargo": "PROFESOR",
+    "tipo_servidor": "DOCENTE NOMBRADO",
+    "nivel_mag_horas": "2/00- /26",
+    "tiempo_servicio": "00-00-00",
+    "leyenda_permanente": "1188-14",
+    "fecha_ingreso_registro": "17/12/2015",
+    "fecha_termino_registro": "17/12/2015",
+    "cuenta_principal": "CTA-",
+    "cuentas_todas": [
+      "CTA-",
+      "CTA-"
+    ],
+    "reg_pensionario_detalle": {
+      "raw": "AFP Profutur/479250NMGTZ5 CFija      :      0.00 FAfiliacion  : 18/02/1996 CVariable  :      0.00 FDevengue    : 19/02/1996 Seguro     :      0.00",
+      "afiliacion": "18/02/1996"
+    },
+    "total_remuneraciones": 5746.8,
+    "total_descuentos": 0.0,
+    "total_liquido": 5746.8,
+    "monto_imponible": 0.0
+  },
+  {
+    "archivo_origen": "chupaca.lis",
+    "raw_length": 1321,
+    "conceptos": [
+      {
+        "tipo": "ingreso",
+        "concepto": "cts",
+        "monto": 2103.92
+      }
+    ],
+    "secuencia": "00000046",
+    "codigo_encabezado": "CL153670",
+    "ruc_bloque": "RUC - 20188468706                                    1019904174-239006-1",
+    "mes": "Diciembre",
+    "anio": "2015",
+    "estado": "Activo",
+    "apellidos": "REYES SALVATIERRA",
+    "nombres": "PROCOPIO",
+    "fecha_nacimiento": "01/04/1953",
+    "documento_identidad": "19904174",
+    "establecimiento": "CEM. \"AMAUTA\" - AHUAC",
+    "cargo": "PROF. POR HORA",
+    "tipo_servidor": "DOCENTE NOMBRADO",
+    "nivel_mag_horas": "C/00- /24",
+    "tiempo_servicio": "25-00-00",
+    "leyenda_permanente": "1105-15",
+    "regimen_pensionario": "Ley 19990",
+    "fecha_ingreso_registro": "16/12/2015",
+    "fecha_termino_registro": "16/12/2015",
+    "cuenta_principal": "CTA- 4381599545",
+    "cuentas_todas": [
+      "CTA- 4381599545",
+      "CTA- 4381599545"
+    ],
+    "total_remuneraciones": 2103.92,
+    "total_descuentos": 0.0,
+    "total_liquido": 2103.92,
+    "monto_imponible": 0.0
+  },
+  {
+    "archivo_origen": "chupaca.lis",
+    "raw_length": 1333,
+    "conceptos": [
+      {
+        "tipo": "ingreso",
+        "concepto": "cts",
+        "monto": 2028.24
+      }
+    ],
+    "secuencia": "00000047",
+    "codigo_encabezado": "CL153675",
+    "ruc_bloque": "RUC - 20188468706                                    1019841700-239006-1",
+    "mes": "Diciembre",
+    "anio": "2015",
+    "estado": "Activo",
+    "apellidos": "ARROYO GAVILAN",
+    "nombres": "ALFREDO MAXIMO",
+    "fecha_nacimiento": "06/09/1953",
+    "documento_identidad": "19841700",
+    "establecimiento": "CEM. \"ANTONIO RAYMONDI\" - SAN PEDR",
+    "cargo": "PROFESOR.",
+    "tipo_servidor": "DOCENTE CONTRATADO",
+    "nivel_mag_horas": "G/00- /24",
+    "tiempo_servicio": "--",
+    "leyenda_permanente": "1104-15 CTS",
+    "regimen_pensionario": "Ley 19990",
+    "fecha_ingreso_registro": "15/12/2015",
+    "fecha_termino_registro": "15/12/2015",
+    "cuenta_principal": "CTA- 4381591870",
+    "cuentas_todas": [
+      "CTA- 4381591870",
+      "CTA- 4381591870"
+    ],
+    "total_remuneraciones": 2028.24,
+    "total_descuentos": 0.0,
+    "total_liquido": 2028.24,
+    "monto_imponible": 0.0
+  },
+  {
+    "archivo_origen": "chupaca.lis",
+    "raw_length": 1329,
+    "conceptos": [
+      {
+        "tipo": "ingreso",
+        "concepto": "gratific",
+        "monto": 2487.84
+      }
+    ],
+    "secuencia": "00000048",
+    "codigo_encabezado": "CL153680",
+    "ruc_bloque": "RUC - 20188468706                                    1019900056-239004-1",
+    "mes": "Diciembre",
+    "anio": "2015",
+    "estado": "Activo",
+    "apellidos": "MACHA ORIHUELA",
+    "nombres": "REGULO OVIDIO",
+    "fecha_nacimiento": "09/04/1959",
+    "documento_identidad": "19900056",
+    "establecimiento": "CEM. \"AUGUSTO SALAZAR BONDY\" - USI",
+    "cargo": "PROFESOR",
+    "tipo_servidor": "DOCENTE NOMBRADO",
+    "nivel_mag_horas": "2/00- /26",
+    "tiempo_servicio": "20-00-00",
+    "leyenda_permanente": "936-13",
+    "regimen_pensionario": "Ley 19990",
+    "fecha_ingreso_registro": "22/12/2015",
+    "fecha_termino_registro": "22/12/2015",
+    "cuenta_principal": "CTA- 4381596694",
+    "cuentas_todas": [
+      "CTA- 4381596694",
+      "CTA- 4381596694"
+    ],
+    "total_remuneraciones": 2487.84,
+    "total_descuentos": 0.0,
+    "total_liquido": 2487.84,
+    "monto_imponible": 0.0
+  },
+  {
+    "archivo_origen": "chupaca.lis",
+    "raw_length": 1496,
+    "conceptos": [
+      {
+        "tipo": "ingreso",
+        "concepto": "cts",
+        "monto": 2105.6
+      }
+    ],
+    "secuencia": "00000049",
+    "codigo_encabezado": "CL153685",
+    "ruc_bloque": "RUC - 20188468706                                    1019925176-239004-1",
+    "mes": "Diciembre",
+    "anio": "2015",
+    "estado": "Activo",
+    "apellidos": "AGUILAR GALARZA",
+    "nombres": "VICTOR RAUL",
+    "fecha_nacimiento": "10/10/1957",
+    "documento_identidad": "19925176",
+    "establecimiento": "CEM. \"AGRO-IND.\"CAHUIDE\" - YANACAN",
+    "cargo": "PROF. POR HORA",
+    "tipo_servidor": "DOCENTE NOMBRADO",
+    "nivel_mag_horas": "A/00- /24",
+    "tiempo_servicio": "20-00-00",
+    "leyenda_permanente": "521-15 CTS",
+    "fecha_ingreso_registro": "15/12/2015",
+    "fecha_termino_registro": "15/12/2015",
+    "cuenta_principal": "CTA- 4381591048",
+    "cuentas_todas": [
+      "CTA- 4381591048",
+      "CTA- 4381591048"
+    ],
+    "reg_pensionario_detalle": {
+      "raw": "AFP Integra /511011VAGIA3 CFija      :      0.00 FAfiliacion  : 17/08/1996 CVariable  :      0.00 FDevengue    : 17/08/1996 Seguro     :      0.00",
+      "afiliacion": "17/08/1996"
+    },
+    "total_remuneraciones": 2105.6,
+    "total_descuentos": 0.0,
+    "total_liquido": 2105.6,
+    "monto_imponible": 0.0
+  },
+  {
+    "archivo_origen": "chupaca.lis",
+    "raw_length": 1304,
+    "conceptos": [
+      {
+        "tipo": "ingreso",
+        "concepto": "cts",
+        "monto": 1229.82
+      }
+    ],
+    "secuencia": "00000050",
+    "codigo_encabezado": "CL153685",
+    "ruc_bloque": "RUC - 20188468706                                    1019906544-239003-1",
+    "mes": "Diciembre",
+    "anio": "2015",
+    "estado": "Activo",
+    "apellidos": "SOCUALAYA LEIVA",
+    "nombres": "ELOY ANGEL",
+    "fecha_nacimiento": "13/10/1948",
+    "documento_identidad": "19906544",
+    "establecimiento": "CEM. \"AGRO-IND.\"CAHUIDE\" - YANACAN",
+    "cargo": "PROFESOR",
+    "tipo_servidor": "DOCENTE NOMBRADO",
+    "nivel_mag_horas": "1/00- /24",
+    "tiempo_servicio": "--",
+    "leyenda_permanente": "RD 1186-14",
+    "regimen_pensionario": "Ley 19990",
+    "fecha_ingreso_registro": "18/12/2014",
+    "fecha_termino_registro": "18/12/2014",
+    "cuenta_principal": "CTA-",
+    "cuentas_todas": [
+      "CTA-",
+      "CTA-"
+    ],
+    "total_remuneraciones": 1229.82,
+    "total_descuentos": 0.0,
+    "total_liquido": 1229.82,
+    "monto_imponible": 0.0
+  },
+  {
+    "archivo_origen": "chupaca.lis",
+    "raw_length": 1324,
+    "conceptos": [
+      {
+        "tipo": "ingreso",
+        "concepto": "gratific",
+        "monto": 4146.4
+      }
+    ],
+    "secuencia": "00000051",
+    "codigo_encabezado": "CL153690",
+    "ruc_bloque": "RUC - 20188468706                                    1020084314-239002-1",
+    "mes": "Diciembre",
+    "anio": "2015",
+    "estado": "Activo",
+    "apellidos": "INFANTES RAMOS",
+    "nombres": "JUAN IGNACIO",
+    "fecha_nacimiento": "23/10/1958",
+    "documento_identidad": "20084314",
+    "establecimiento": "CEM. \"DOS DE MAYO\" - ANGASMAYO",
+    "cargo": "PROFESOR",
+    "tipo_servidor": "DOCENTE NOMBRADO",
+    "nivel_mag_horas": "1/00- /26",
+    "tiempo_servicio": "00-00-00",
+    "leyenda_permanente": "677-13",
+    "regimen_pensionario": "Ley 19990",
+    "fecha_ingreso_registro": "22/12/2015",
+    "fecha_termino_registro": "22/12/2015",
+    "cuenta_principal": "CTA- 4382314625",
+    "cuentas_todas": [
+      "CTA- 4382314625",
+      "CTA- 4382314625"
+    ],
+    "total_remuneraciones": 4146.4,
+    "total_descuentos": 0.0,
+    "total_liquido": 4146.4,
+    "monto_imponible": 0.0
+  },
+  {
+    "archivo_origen": "chupaca.lis",
+    "raw_length": 1318,
+    "conceptos": [
+      {
+        "tipo": "ingreso",
+        "concepto": "cts",
+        "monto": 9578.1
+      }
+    ],
+    "secuencia": "00000052",
+    "codigo_encabezado": "CL153690",
+    "ruc_bloque": "RUC - 20188468706                                    1020434599-239010-1",
+    "mes": "Diciembre",
+    "anio": "2015",
+    "estado": "Activo",
+    "apellidos": "RUIZ BRUNO",
+    "nombres": "DIOMEDES",
+    "fecha_nacimiento": "08/11/1957",
+    "documento_identidad": "20434599",
+    "establecimiento": "CEM. \"DOS DE MAYO\" - ANGASMAYO",
+    "cargo": "DIRECTOR IE",
+    "tipo_servidor": "DOCENTE NOMBRADO",
+    "nivel_mag_horas": "2/00- /40",
+    "tiempo_servicio": "--",
+    "leyenda_permanente": "145-15 CTS",
+    "regimen_pensionario": "Ley 20530",
+    "fecha_ingreso_registro": "18/12/2015",
+    "fecha_termino_registro": "18/12/2015",
+    "cuenta_principal": "CTA- 4381600284",
+    "cuentas_todas": [
+      "CTA- 4381600284",
+      "CTA- 4381600284"
+    ],
+    "total_remuneraciones": 9578.1,
+    "total_descuentos": 0.0,
+    "total_liquido": 9578.1,
+    "monto_imponible": 0.0
+  },
+  {
+    "archivo_origen": "chupaca.lis",
+    "raw_length": 1492,
+    "conceptos": [
+      {
+        "tipo": "ingreso",
+        "concepto": "cts",
+        "monto": 2256.0
+      }
+    ],
+    "secuencia": "00000053",
+    "codigo_encabezado": "CL153695",
+    "ruc_bloque": "RUC - 20188468706                                    1019976934-239005-1",
+    "mes": "Diciembre",
+    "anio": "2015",
+    "estado": "Activo",
+    "apellidos": "BUENDIA COLONIO",
+    "nombres": "BARTOLOME ROMAN",
+    "fecha_nacimiento": "24/08/1962",
+    "documento_identidad": "19976934",
+    "establecimiento": "CEM. AGROP.-IND.\"HEROES DE LA BREÑ",
+    "cargo": "PROFESOR.",
+    "tipo_servidor": "DOCENTE CONTRATADO",
+    "nivel_mag_horas": "A/00- /14",
+    "tiempo_servicio": "--",
+    "leyenda_permanente": "523-15 CTS",
+    "fecha_ingreso_registro": "15/12/2015",
+    "fecha_termino_registro": "15/12/2015",
+    "cuenta_principal": "CTA- 4381592486",
+    "cuentas_todas": [
+      "CTA- 4381592486",
+      "CTA- 4381592486"
+    ],
+    "reg_pensionario_detalle": {
+      "raw": "AFP Profutur/228801BBCNO0 CFija      :      0.00 FAfiliacion  : 09/03/1994 CVariable  :      0.00 FDevengue    : 09/03/1994 Seguro     :      0.00",
+      "afiliacion": "09/03/1994"
+    },
+    "total_remuneraciones": 2256.0,
+    "total_descuentos": 0.0,
+    "total_liquido": 2256.0,
+    "monto_imponible": 0.0
+  },
+  {
+    "archivo_origen": "chupaca.lis",
+    "raw_length": 1330,
+    "conceptos": [
+      {
+        "tipo": "ingreso",
+        "concepto": "cts",
+        "monto": 2179.06
+      }
+    ],
+    "secuencia": "00000054",
+    "codigo_encabezado": "CL153695",
+    "ruc_bloque": "RUC - 20188468706                                    1019926535-239006-1",
+    "mes": "Diciembre",
+    "anio": "2015",
+    "estado": "Activo",
+    "apellidos": "DIONISIO SEGURA",
+    "nombres": "CORNELIO MAGNO",
+    "fecha_nacimiento": "16/09/1953",
+    "documento_identidad": "19926535",
+    "establecimiento": "CEM. AGROP.-IND.\"HEROES DE LA BREÑ",
+    "cargo": "PROFESOR.",
+    "tipo_servidor": "DOCENTE CONTRATADO",
+    "nivel_mag_horas": "G/00- /26",
+    "tiempo_servicio": "--",
+    "leyenda_permanente": "1103-15",
+    "regimen_pensionario": "Ley 19990",
+    "fecha_ingreso_registro": "16/12/2015",
+    "fecha_termino_registro": "16/12/2015",
+    "cuenta_principal": "CTA- 4381594403",
+    "cuentas_todas": [
+      "CTA- 4381594403",
+      "CTA- 4381594403"
+    ],
+    "total_remuneraciones": 2179.06,
+    "total_descuentos": 0.0,
+    "total_liquido": 2179.06,
+    "monto_imponible": 0.0
+  },
+  {
+    "archivo_origen": "chupaca.lis",
+    "raw_length": 1493,
+    "conceptos": [
+      {
+        "tipo": "ingreso",
+        "concepto": "sepelio",
+        "monto": 3000.0
+      }
+    ],
+    "secuencia": "00000055",
+    "codigo_encabezado": "CL153695",
+    "ruc_bloque": "RUC - 20188468706                                    1019809863-239003-1",
+    "mes": "Diciembre",
+    "anio": "2015",
+    "estado": "Activo",
+    "apellidos": "INGA ORTIZ",
+    "nombres": "MARIA SOLEDAD",
+    "fecha_nacimiento": "22/08/1962",
+    "documento_identidad": "19809863",
+    "establecimiento": "CEM. AGROP.-IND.\"HEROES DE LA BREÑ",
+    "cargo": "PROFESOR",
+    "tipo_servidor": "DOCENTE NOMBRADO",
+    "nivel_mag_horas": "2/00- /26",
+    "tiempo_servicio": "25-00-00",
+    "leyenda_permanente": "1465-15 SUB X LU",
+    "fecha_ingreso_registro": "18/12/2015",
+    "fecha_termino_registro": "18/12/2015",
+    "cuenta_principal": "CTA- 4381468076",
+    "cuentas_todas": [
+      "CTA- 4381468076",
+      "CTA- 4381468076"
+    ],
+    "reg_pensionario_detalle": {
+      "raw": "AFP Integra /228780MIOAI4 CFija      :      0.00 FAfiliacion  : 04/05/1994 CVariable  :      0.00 FDevengue    : 04/05/1994 Seguro     :      0.00",
+      "afiliacion": "04/05/1994"
+    },
+    "total_remuneraciones": 3000.0,
+    "total_descuentos": 0.0,
+    "total_liquido": 3000.0,
+    "monto_imponible": 0.0
+  },
+  {
+    "archivo_origen": "chupaca.lis",
+    "raw_length": 1474,
+    "conceptos": [
+      {
+        "tipo": "ingreso",
+        "concepto": "gratific",
+        "monto": 2736.62
+      }
+    ],
+    "secuencia": "00000056",
+    "codigo_encabezado": "CL153700",
+    "ruc_bloque": "RUC - 20188468706                                    1019807293-239004-1",
+    "mes": "Diciembre",
+    "anio": "2015",
+    "estado": "Activo",
+    "apellidos": "ROSALES VITANZO",
+    "nombres": "ALCIDES INOCENCIO",
+    "fecha_nacimiento": "15/06/1951",
+    "documento_identidad": "19807293",
+    "establecimiento": "CEM. \"INDOAMERICANO\" - JARPA",
+    "cargo": "PROFESOR",
+    "tipo_servidor": "DOCENTE NOMBRADO",
+    "nivel_mag_horas": "2/00- /26",
+    "tiempo_servicio": "--",
+    "leyenda_permanente": "Reg.Pensionario : AFP Integra /198881ARVAA8 CFija      :      0.00",
+    "fecha_ingreso_registro": "22/12/2015",
+    "fecha_termino_registro": "22/12/2015",
+    "cuenta_principal": "CTA- 4381904534",
+    "cuentas_todas": [
+      "CTA- 4381904534",
+      "CTA- 4381904534"
+    ],
+    "reg_pensionario_detalle": {
+      "raw": "AFP Integra /198881ARVAA8 CFija      :      0.00 FAfiliacion  : 23/12/1993 CVariable  :      0.00 FDevengue    : 23/12/1993 Seguro     :      0.00",
+      "afiliacion": "23/12/1993"
+    },
+    "total_remuneraciones": 2736.62,
+    "total_descuentos": 0.0,
+    "total_liquido": 2736.62,
+    "monto_imponible": 0.0
+  },
+  {
+    "archivo_origen": "chupaca.lis",
+    "raw_length": 1496,
+    "conceptos": [
+      {
+        "tipo": "ingreso",
+        "concepto": "cts",
+        "monto": 1955.2
+      }
+    ],
+    "secuencia": "00000057",
+    "codigo_encabezado": "CL153715",
+    "ruc_bloque": "RUC - 20188468706                                    1019906288-239003-1",
+    "mes": "Diciembre",
+    "anio": "2015",
+    "estado": "Activo",
+    "apellidos": "QUISPE BARDALES",
+    "nombres": "JOSES DIONICIO",
+    "fecha_nacimiento": "26/12/1959",
+    "documento_identidad": "19906288",
+    "establecimiento": "CEM. AGROP.IND.\"LA UNION\" - CHAQUI",
+    "cargo": "PROF. POR HORA",
+    "tipo_servidor": "DOCENTE NOMBRADO",
+    "nivel_mag_horas": "A/00- /24",
+    "tiempo_servicio": "05-00-00",
+    "leyenda_permanente": "1095-15",
+    "fecha_ingreso_registro": "16/12/2015",
+    "fecha_termino_registro": "16/12/2015",
+    "cuenta_principal": "CTA- 4381599057",
+    "cuentas_todas": [
+      "CTA- 4381599057",
+      "CTA- 4381599057"
+    ],
+    "reg_pensionario_detalle": {
+      "raw": "AFP Profutur/519081JQBSD0 CFija      :      0.00 FAfiliacion  : 04/09/1996 CVariable  :      0.00 FDevengue    : 04/09/1996 Seguro     :      0.00",
+      "afiliacion": "04/09/1996"
+    },
+    "total_remuneraciones": 1955.2,
+    "total_descuentos": 0.0,
+    "total_liquido": 1955.2,
+    "monto_imponible": 0.0
+  },
+  {
+    "archivo_origen": "chupaca.lis",
+    "raw_length": 1324,
+    "conceptos": [
+      {
+        "tipo": "ingreso",
+        "concepto": "gratific",
+        "monto": 2736.62
+      }
+    ],
+    "secuencia": "00000058",
+    "codigo_encabezado": "CL153725",
+    "ruc_bloque": "RUC - 20188468706                                    1019968474-239007-1",
+    "mes": "Diciembre",
+    "anio": "2015",
+    "estado": "Activo",
+    "apellidos": "LAPA MAYORCA",
+    "nombres": "JUAN",
+    "fecha_nacimiento": "24/11/1951",
+    "documento_identidad": "19968474",
+    "establecimiento": "CEM. \"SAN JUAN DE ISCOS\" - ISCOS",
+    "cargo": "PROFESOR",
+    "tipo_servidor": "DOCENTE NOMBRADO",
+    "nivel_mag_horas": "3/00- /26",
+    "tiempo_servicio": "25-00-00",
+    "leyenda_permanente": "PAGO X 30 AÑOS",
+    "regimen_pensionario": "Ley 19990",
+    "fecha_ingreso_registro": "22/12/2015",
+    "fecha_termino_registro": "22/12/2015",
+    "cuenta_principal": "CTA- 4381595981",
+    "cuentas_todas": [
+      "CTA- 4381595981",
+      "CTA- 4381595981"
+    ],
+    "total_remuneraciones": 2736.62,
+    "total_descuentos": 0.0,
+    "total_liquido": 2736.62,
+    "monto_imponible": 0.0
+  },
+  {
+    "archivo_origen": "chupaca.lis",
+    "raw_length": 1334,
+    "conceptos": [
+      {
+        "tipo": "ingreso",
+        "concepto": "gratific",
+        "monto": 2487.84
+      }
+    ],
+    "secuencia": "00000059",
+    "codigo_encabezado": "CL153725",
+    "ruc_bloque": "RUC - 20188468706                                    1019864972-239006-1",
+    "mes": "Diciembre",
+    "anio": "2015",
+    "estado": "Activo",
+    "apellidos": "LAZO ZARATE",
+    "nombres": "EDGARDO ROBERTO",
+    "fecha_nacimiento": "27/10/1954",
+    "documento_identidad": "19864972",
+    "establecimiento": "CEM. \"SAN JUAN DE ISCOS\" - ISCOS",
+    "cargo": "PROFESOR",
+    "tipo_servidor": "DOCENTE NOMBRADO",
+    "nivel_mag_horas": "2/00- /26",
+    "tiempo_servicio": "20-00-00",
+    "leyenda_permanente": "PAGO X 30 AÑOS",
+    "regimen_pensionario": "Ley 19990",
+    "fecha_ingreso_registro": "22/12/2015",
+    "fecha_termino_registro": "22/12/2015",
+    "cuenta_principal": "CTA- 4381596279",
+    "cuentas_todas": [
+      "CTA- 4381596279",
+      "CTA- 4381596279"
+    ],
+    "total_remuneraciones": 2487.84,
+    "total_descuentos": 0.0,
+    "total_liquido": 2487.84,
+    "monto_imponible": 0.0
+  },
+  {
+    "archivo_origen": "chupaca.lis",
+    "raw_length": 1322,
+    "conceptos": [
+      {
+        "tipo": "ingreso",
+        "concepto": "cts",
+        "monto": 10000.0
+      }
+    ],
+    "secuencia": "00000060",
+    "codigo_encabezado": "CL153730",
+    "ruc_bloque": "RUC - 20188468706                                    1020063285-239005-1",
+    "mes": "Diciembre",
+    "anio": "2015",
+    "estado": "Activo",
+    "apellidos": "INGA INGA",
+    "nombres": "ZENOBIO TEOTIMO",
+    "fecha_nacimiento": "24/12/1955",
+    "documento_identidad": "20063285",
+    "establecimiento": "CEM. \"SAN PEDRO\" - HUARISCA",
+    "cargo": "DIRECTOR IE",
+    "tipo_servidor": "DOCENTE NOMBRADO",
+    "nivel_mag_horas": "3/00- /40",
+    "tiempo_servicio": "30-00-00",
+    "leyenda_permanente": "144-15",
+    "regimen_pensionario": "Ley 20530",
+    "fecha_ingreso_registro": "18/12/2015",
+    "fecha_termino_registro": "18/12/2015",
+    "cuenta_principal": "CTA- 4381595779",
+    "cuentas_todas": [
+      "CTA- 4381595779",
+      "CTA- 4381595779"
+    ],
+    "total_remuneraciones": 10000.0,
+    "total_descuentos": 0.0,
+    "total_liquido": 10000.0,
+    "monto_imponible": 0.0
+  },
+  {
+    "archivo_origen": "chupaca.lis",
+    "raw_length": 1326,
+    "conceptos": [
+      {
+        "tipo": "ingreso",
+        "concepto": "cts",
+        "monto": 884.3
+      }
+    ],
+    "secuencia": "00000061",
+    "codigo_encabezado": "CL153730",
+    "ruc_bloque": "RUC - 20188468706                                    1020063285-239005-2",
+    "mes": "Diciembre",
+    "anio": "2015",
+    "estado": "Activo",
+    "apellidos": "INGA INGA",
+    "nombres": "ZENOBIO TEOTIMO",
+    "fecha_nacimiento": "24/12/1955",
+    "documento_identidad": "20063285",
+    "establecimiento": "CEM. \"SAN PEDRO\" - HUARISCA",
+    "cargo": "DIRECTOR IE",
+    "tipo_servidor": "DOCENTE NOMBRADO",
+    "nivel_mag_horas": "3/00- /40",
+    "tiempo_servicio": "30-00-00",
+    "leyenda_permanente": "144-15 CTS",
+    "regimen_pensionario": "Ley 20530",
+    "fecha_ingreso_registro": "18/12/2015",
+    "fecha_termino_registro": "18/12/2015",
+    "cuenta_principal": "CTA- 4381595779",
+    "cuentas_todas": [
+      "CTA- 4381595779",
+      "CTA- 4381595779"
+    ],
+    "total_remuneraciones": 884.3,
+    "total_descuentos": 0.0,
+    "total_liquido": 884.3,
+    "monto_imponible": 0.0
+  },
+  {
+    "archivo_origen": "chupaca.lis",
+    "raw_length": 1325,
+    "conceptos": [
+      {
+        "tipo": "ingreso",
+        "concepto": "gratific",
+        "monto": 2487.84
+      }
+    ],
+    "secuencia": "00000062",
+    "codigo_encabezado": "CL153730",
+    "ruc_bloque": "RUC - 20188468706                                    1019803988-239004-1",
+    "mes": "Diciembre",
+    "anio": "2015",
+    "estado": "Activo",
+    "apellidos": "SINCHEZ BUCKINGHAM",
+    "nombres": "NORA ZORAIDA",
+    "fecha_nacimiento": "08/12/1955",
+    "documento_identidad": "19803988",
+    "establecimiento": "CEM. \"SAN PEDRO\" - HUARISCA",
+    "cargo": "PROFESOR",
+    "tipo_servidor": "DOCENTE NOMBRADO",
+    "nivel_mag_horas": "2/00- /26",
+    "tiempo_servicio": "15-00-00",
+    "leyenda_permanente": "861-15",
+    "regimen_pensionario": "Ley 19990",
+    "fecha_ingreso_registro": "18/12/2015",
+    "fecha_termino_registro": "18/12/2015",
+    "cuenta_principal": "CTA- 4381600802",
+    "cuentas_todas": [
+      "CTA- 4381600802",
+      "CTA- 4381600802"
+    ],
+    "total_remuneraciones": 2487.84,
+    "total_descuentos": 0.0,
+    "total_liquido": 2487.84,
+    "monto_imponible": 0.0
+  },
+  {
+    "archivo_origen": "chupaca.lis",
+    "raw_length": 1317,
+    "conceptos": [
+      {
+        "tipo": "ingreso",
+        "concepto": "gratific",
+        "monto": 2487.84
+      }
+    ],
+    "secuencia": "00000063",
+    "codigo_encabezado": "CL153735",
+    "ruc_bloque": "RUC - 20188468706                                    1019864677-239004-1",
+    "mes": "Diciembre",
+    "anio": "2015",
+    "estado": "Activo",
+    "apellidos": "QUISPE YAURI",
+    "nombres": "GRUMENCIA MARTHA",
+    "fecha_nacimiento": "27/10/1950",
+    "documento_identidad": "19864677",
+    "establecimiento": "CEM. AGROP.-IND.\"SAN PEDRO\" - SAN",
+    "cargo": "PROFESOR",
+    "tipo_servidor": "DOCENTE NOMBRADO",
+    "nivel_mag_horas": "1/00- /26",
+    "tiempo_servicio": "--",
+    "leyenda_permanente": "Regimen Pensionario          : Ley 19990",
+    "regimen_pensionario": "Ley 19990",
+    "fecha_ingreso_registro": "22/12/2015",
+    "fecha_termino_registro": "22/12/2015",
+    "cuenta_principal": "CTA- 4381599243",
+    "cuentas_todas": [
+      "CTA- 4381599243",
+      "CTA- 4381599243"
+    ],
+    "total_remuneraciones": 2487.84,
+    "total_descuentos": 0.0,
+    "total_liquido": 2487.84,
+    "monto_imponible": 0.0
+  },
+  {
+    "archivo_origen": "chupaca.lis",
+    "raw_length": 1473,
+    "conceptos": [
+      {
+        "tipo": "ingreso",
+        "concepto": "sepelio",
+        "monto": 3000.0
+      }
+    ],
+    "secuencia": "00000064",
+    "codigo_encabezado": "CL153745",
+    "ruc_bloque": "RUC - 20188468706                                    1020059852-239002-1",
+    "mes": "Diciembre",
+    "anio": "2015",
+    "estado": "Activo",
+    "apellidos": "TORRES OLIVERA",
+    "nombres": "ANA MARIA",
+    "fecha_nacimiento": "18/02/1975",
+    "documento_identidad": "20059852",
+    "establecimiento": "SIMON BOLIVAR",
+    "cargo": "PROFESOR",
+    "tipo_servidor": "DOCENTE NOMBRADO",
+    "nivel_mag_horas": "2/00- /26",
+    "tiempo_servicio": "00-00-00",
+    "leyenda_permanente": "1287-15 SUB Y LUT",
+    "fecha_ingreso_registro": "18/12/2015",
+    "fecha_termino_registro": "18/12/2015",
+    "cuenta_principal": "CTA- 4512413132",
+    "cuentas_todas": [
+      "CTA- 4512413132",
+      "CTA- 4512413132"
+    ],
+    "reg_pensionario_detalle": {
+      "raw": "AFP Integra /574410ATORV1 CFija      :      0.00 FAfiliacion  : 13/04/1999 CVariable  :      0.00 FDevengue    : 13/04/1999 Seguro     :      0.00",
+      "afiliacion": "13/04/1999"
+    },
+    "total_remuneraciones": 3000.0,
+    "total_descuentos": 0.0,
+    "total_liquido": 3000.0,
+    "monto_imponible": 0.0
+  },
+  {
+    "archivo_origen": "chupaca.lis",
+    "raw_length": 1339,
+    "conceptos": [
+      {
+        "tipo": "ingreso",
+        "concepto": "sepelio",
+        "monto": 3000.0
+      }
+    ],
+    "secuencia": "00000065",
+    "codigo_encabezado": "CL153746",
+    "ruc_bloque": "RUC - 20188468706                                    1020081618-239006-1",
+    "mes": "Diciembre",
+    "anio": "2015",
+    "estado": "Activo",
+    "apellidos": "QUISPEALAYA VERA",
+    "nombres": "CECIMIA",
+    "fecha_nacimiento": "29/11/1960",
+    "documento_identidad": "19970836",
+    "establecimiento": "CEM. \"ALFONSO UGARTE\" - SANTA ROSA",
+    "cargo": "PROFESOR",
+    "tipo_servidor": "DOCENTE NOMBRADO",
+    "nivel_mag_horas": "2/00- /26",
+    "tiempo_servicio": "25-00-00",
+    "leyenda_permanente": "761-15 PAGO SUB X LU",
+    "regimen_pensionario": "Ley 19990",
+    "fecha_ingreso_registro": "18/12/2015",
+    "fecha_termino_registro": "18/12/2015",
+    "cuenta_principal": "CTA- 4381797088",
+    "cuentas_todas": [
+      "CTA- 4381797088",
+      "CTA- 4381797088"
+    ],
+    "total_remuneraciones": 3000.0,
+    "total_descuentos": 0.0,
+    "total_liquido": 3000.0,
+    "monto_imponible": 0.0
+  },
+  {
+    "archivo_origen": "chupaca.lis",
+    "raw_length": 1479,
+    "conceptos": [
+      {
+        "tipo": "ingreso",
+        "concepto": "gratific",
+        "monto": 3109.8
+      }
+    ],
+    "secuencia": "00000066",
+    "codigo_encabezado": "CL155750",
+    "ruc_bloque": "RUC - 20188468706                                    1004011993-239005-1",
+    "mes": "Diciembre",
+    "anio": "2015",
+    "estado": "Activo",
+    "apellidos": "PALMA TAPIA",
+    "nombres": "ELSA JUANA",
+    "fecha_nacimiento": "13/11/1962",
+    "documento_identidad": "04011993",
+    "establecimiento": "CEO. \"CHUPACA\" - CHUPACA",
+    "cargo": "PROFESOR",
+    "tipo_servidor": "DOCENTE NOMBRADO",
+    "nivel_mag_horas": "2/00- /30",
+    "tiempo_servicio": "20-00-00",
+    "leyenda_permanente": "PAGO X 30 AÑOS",
+    "fecha_ingreso_registro": "22/12/2015",
+    "fecha_termino_registro": "22/12/2015",
+    "cuenta_principal": "CTA- 4381598212",
+    "cuentas_todas": [
+      "CTA- 4381598212",
+      "CTA- 4381598212"
+    ],
+    "reg_pensionario_detalle": {
+      "raw": "AFP Integra /229610EPTMI7 CFija      :      0.00 FAfiliacion  : 24/11/1993 CVariable  :      0.00 FDevengue    : 24/11/1993 Seguro     :      0.00",
+      "afiliacion": "24/11/1993"
+    },
+    "total_remuneraciones": 3109.8,
+    "total_descuentos": 0.0,
+    "total_liquido": 3109.8,
+    "monto_imponible": 0.0
+  },
+  {
+    "archivo_origen": "chupaca.lis",
+    "raw_length": 1493,
+    "conceptos": [
+      {
+        "tipo": "ingreso",
+        "concepto": "cts",
+        "monto": 1691.14
+      }
+    ],
+    "secuencia": "00000067",
+    "codigo_encabezado": "CL155755",
+    "ruc_bloque": "RUC - 20188468706                                    1020083052-239005-1",
+    "mes": "Diciembre",
+    "anio": "2015",
+    "estado": "Activo",
+    "apellidos": "CASTELLANOS SIMON",
+    "nombres": "CRISOSTOMO",
+    "fecha_nacimiento": "24/11/1966",
+    "documento_identidad": "20083052",
+    "establecimiento": "CEO. \"NUESTRA SEÑORA DE GUADALUPE\"",
+    "cargo": "PROF. DE AULA",
+    "tipo_servidor": "DOCENTE NOMBRADO",
+    "nivel_mag_horas": "A/00- /30",
+    "tiempo_servicio": "15-00-00",
+    "leyenda_permanente": "1102-15",
+    "fecha_ingreso_registro": "16/12/2015",
+    "fecha_termino_registro": "16/12/2015",
+    "cuenta_principal": "CTA- 4381466316",
+    "cuentas_todas": [
+      "CTA- 4381466316",
+      "CTA- 4381466316"
+    ],
+    "reg_pensionario_detalle": {
+      "raw": "AFP Integra /244331CCSTO3 CFija      :      0.00 FAfiliacion  : 01/12/1993 CVariable  :      0.00 FDevengue    : 01/12/1993 Seguro     :      0.00",
+      "afiliacion": "01/12/1993"
+    },
+    "total_remuneraciones": 1691.14,
+    "total_descuentos": 0.0,
+    "total_liquido": 1691.14,
+    "monto_imponible": 0.0
+  }
+]

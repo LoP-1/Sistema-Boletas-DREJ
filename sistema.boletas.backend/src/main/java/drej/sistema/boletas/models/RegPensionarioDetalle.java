@@ -11,4 +11,22 @@ public class RegPensionarioDetalle {
 
     private String afiliacion;
 
+    // Getters y setters
+
+
+    public String getAfiliacion() {
+        return afiliacion;
+    }
+
+    public void setAfiliacion(String afiliacion) {
+        this.afiliacion = afiliacion;
+    }
+
+    public String getRaw() {
+        return raw;
+    }
+
+    public void setRaw(String raw) {
+        this.raw = raw;
+    }
 }
