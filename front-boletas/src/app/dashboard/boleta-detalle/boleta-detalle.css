@@ -1,0 +1,104 @@
+.modal-overlay {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(25, 118, 210, 0.18); /* azul difuminado */
+  z-index: 900;
+}
+
+.modal-content {
+  position: fixed;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  background: #fff;
+  border-radius: 18px;
+  box-shadow: 0 8px 40px rgba(25, 118, 210, 0.25);
+  padding: 2.4rem 2.7rem 2.2rem 2.7rem;
+  min-width: 400px;
+  max-width: 90vw;
+  max-height: 88vh;
+  overflow-y: auto;
+  z-index: 1000;
+  animation: modal-in 0.18s ease;
+}
+
+@keyframes modal-in {
+  0% { opacity: 0; transform: translate(-50%, -60%) scale(0.96);}
+  100% { opacity: 1; transform: translate(-50%, -50%) scale(1);}
+}
+
+.modal-close {
+  position: absolute;
+  top: 16px;
+  right: 22px;
+  font-size: 2rem;
+  background: none;
+  border: none;
+  color: #1976d2;
+  cursor: pointer;
+  transition: color 0.2s;
+}
+.modal-close:hover {
+  color: #c62828;
+}
+
+h2 {
+  margin-top: 0.8rem;
+  margin-bottom: 1.2rem;
+  color: #1976d2;
+  text-align: center;
+  font-size: 1.6rem;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 0.8rem;
+  background: #f7faff;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+th, td {
+  border: 1px solid #e3e3e3;
+  padding: 0.5rem 0.7rem;
+  text-align: left;
+}
+
+th {
+  background: #1976d2;
+  color: white;
+  font-weight: 600;
+  font-size: 1.07rem;
+}
+
+tr:nth-child(even) td {
+  background: #e3f2fd;
+}
+
+tr:hover td {
+  background: #bbdefb;
+}
+
+td table {
+  background: #fff;
+  border-radius: 4px;
+  margin-top: 0.4rem;
+}
+
+td th {
+  background: #2196f3;
+  color: #fff;
+  font-size: 1rem;
+}
+
+@media (max-width: 600px) {
+  .modal-content {
+    min-width: 0;
+    padding: 1rem;
+  }
+  table, th, td {
+    font-size: 0.92rem;
+  }
+}

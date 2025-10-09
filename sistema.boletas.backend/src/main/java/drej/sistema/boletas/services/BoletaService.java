@@ -3,7 +3,9 @@ package drej.sistema.boletas.services;
 import drej.sistema.boletas.models.Boleta;
 import drej.sistema.boletas.models.Concepto;
 import drej.sistema.boletas.models.Persona;
-import drej.sistema.boletas.models.dto.BoletaDTO;
+import drej.sistema.boletas.models.record.BoletaDTO;
+import drej.sistema.boletas.models.record.ConceptoDTO;
+import drej.sistema.boletas.models.record.RegPensionarioDetalleDTO;
 import drej.sistema.boletas.repository.BoletaRepository;
 import drej.sistema.boletas.repository.PersonaRepository;
 import jakarta.transaction.Transactional;
@@ -25,6 +27,7 @@ public class BoletaService {
     }
 
     @Transactional
+    //subir varias boletas usando el metodo de abajo
     public void guardarBoletas(List<BoletaDTO> lista) {
         for (BoletaDTO dto : lista) {
             guardarBoleta(dto);
@@ -94,6 +97,68 @@ public class BoletaService {
         return boleta;
     }
 
+    //obtener la lista de boletas para una persona usando el id
+    public List<BoletaDTO> obtenerBoletasID(Long personaId) {
+        return boletaRepository.findByPersonaId(personaId)
+                .stream()
+                .map(this::toBoletaDTO)
+                .toList();
+    }
+
+    //obtener la lista de boletas para una persona usando la persona
+    public List<BoletaDTO> obtenerBoletasPersona(Persona persona){
+        return boletaRepository.findByPersona(persona)
+                .stream()
+                .map(this::toBoletaDTO)
+                .toList();
+    }
+
+    //convertidor boletas
+    private BoletaDTO toBoletaDTO(Boleta boleta) {
+        Persona persona = boleta.getPersona();
+        return new BoletaDTO(
+                boleta.getArchivoOrigen(),
+                boleta.getRawLength(),
+                boleta.getConceptos().stream()
+                        .map(c -> new ConceptoDTO(c.getTipo(), c.getConcepto(), c.getMonto()))
+                        .toList(),
+                boleta.getSecuencia(),
+                boleta.getCodigoEncabezado(),
+                boleta.getRucBloque(),
+                boleta.getMes(),
+                boleta.getAnio(),
+                boleta.getEstado(),
+                persona.getApellidos(),
+                persona.getNombres(),
+                persona.getFechaNacimiento().toString(),
+                persona.getDocumentoIdentidad(),
+                boleta.getEstablecimiento(),
+                boleta.getCargo(),
+                boleta.getTipoServidor(),
+                boleta.getTipoPensionista(),
+                boleta.getTipoPension(),
+                boleta.getNivelMagHoras(),
+                boleta.getTiempoServicio(),
+                boleta.getLeyendaPermanente(),
+                boleta.getLeyendaMensual(),
+                boleta.getFechaIngresoRegistro(),
+                boleta.getFechaTerminoRegistro(),
+                boleta.getCuentaPrincipal(),
+                boleta.getCuentasTodas(),
+                boleta.getRegPensionarioDetalle() == null ? null :
+                        new RegPensionarioDetalleDTO(
+                                boleta.getRegPensionarioDetalle().getRaw(),
+                                boleta.getRegPensionarioDetalle().getAfiliacion()
+                        ),
+                boleta.getRegimenPensionario(),
+                boleta.getTotalRemuneraciones(),
+                boleta.getTotalDescuentos(),
+                boleta.getTotalLiquido(),
+                boleta.getMontoImponible()
+        );
+    }
+
+    //obtener todas las boletas
     public List<Boleta> listarBoletas() {
         return boletaRepository.findAll();
     }

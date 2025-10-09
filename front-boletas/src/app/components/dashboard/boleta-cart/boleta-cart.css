@@ -1,0 +1,11 @@
+.cart-container {
+  width: 260px;
+  min-height: calc(100vh - 56px);
+  background: #fff;
+  box-shadow: 0 4px 16px rgba(25,118,210,.09);
+  border-radius: 12px;
+  padding: 1.2rem 1.2rem;
+  margin-top: 0.5rem;
+  position: relative;
+  flex-shrink: 0;
+}

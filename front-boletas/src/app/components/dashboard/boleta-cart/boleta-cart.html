@@ -1,0 +1,10 @@
+<div class="cart-container">
+  <h3>Carrito de Boletas</h3>
+  <div *ngIf="carrito.length === 0" class="cart-empty">Sin boletas agregadas.</div>
+  <ul>
+    <li *ngFor="let boleta of carrito">
+      <span>{{boleta.mes}}/{{boleta.anio}} - {{boleta.nombres}} {{boleta.apellidos}}</span>
+      <button (click)="abrirModal(boleta)">Abrir</button>
+    </li>
+  </ul>
+</div>

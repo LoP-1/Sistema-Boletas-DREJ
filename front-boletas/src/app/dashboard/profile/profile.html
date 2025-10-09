@@ -1,0 +1,52 @@
+<div class="profile-container" *ngIf="!cargando && usuario; else loading">
+  <div class="profile-card">
+    <div class="profile-avatar">
+      <img src="https://api.dicebear.com/7.x/initials/svg?seed={{usuario.nombres}} {{usuario.apellidos}}" alt="Avatar">
+    </div>
+    <div class="profile-info">
+      <h2>{{usuario.nombres}} {{usuario.apellidos}}</h2>
+      <p><span class="label">DNI:</span> {{usuario.documentoIdentidad}}</p>
+      <p><span class="label">Fecha de nacimiento:</span> {{usuario.fechaNacimiento}}</p>
+    </div>
+  </div>
+
+  <!-- Tarjeta DNI personalizada -->
+  <div class="dni-card">
+    <div class="dni-header">
+      <span class="dni-title">REPÚBLICA DEL PERÚ</span>
+      <span class="dni-subtitle">REGISTRO NACIONAL DE IDENTIFICACIÓN Y ESTADO CIVIL</span>
+      <span class="dni-doc">DOCUMENTO NACIONAL DE IDENTIDAD</span>
+      <span class="dni-cui">CUI</span>
+      <span class="dni-cui-number">{{usuario.id}}</span>
+      <span class="dni-dni">DNI</span>
+      <span class="dni-dni-number">{{usuario.documentoIdentidad}}</span>
+    </div>
+    <div class="dni-body">
+      <div class="dni-photo">
+        <img src="https://api.dicebear.com/7.x/initials/svg?seed={{usuario.nombres}} {{usuario.apellidos}}" alt="Avatar">
+      </div>
+      <div class="dni-details">
+        <div><span>Apellidos:</span> {{usuario.apellidos}}</div>
+        <div><span>Nombres:</span> {{usuario.nombres}}</div>
+        <div><span>Fecha Nac.:</span> {{usuario.fechaNacimiento}}</div>
+      </div>
+      <div class="dni-firma">
+      </div>
+      <div class="dni-mini-photo">
+        <img src="https://api.dicebear.com/7.x/initials/svg?seed={{usuario.nombres}} {{usuario.apellidos}}" alt="avatar mini">
+      </div>
+    </div>
+    <div class="dni-footer">
+      <span class="dni-code">I&lt;PER{{usuario.documentoIdentidad}}&lt;4</span>
+      <span class="dni-code">8007156F2504162PER</span>
+    </div>
+  </div>
+</div>
+
+<ng-template #loading>
+  <div class="profile-loading">
+    <div class="loader"></div>
+    <p>Cargando perfil...</p>
+    <p *ngIf="error" class="error">{{error}}</p>
+  </div>
+</ng-template>

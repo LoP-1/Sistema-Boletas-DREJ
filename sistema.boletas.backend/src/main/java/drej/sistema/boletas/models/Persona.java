@@ -1,5 +1,6 @@
 package drej.sistema.boletas.models;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
@@ -19,6 +20,7 @@ public class Persona {
     private LocalDate fechaNacimiento;
 
     @OneToMany(mappedBy = "persona", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference
     private List<Boleta> boletas;
 
     // Getters y setters

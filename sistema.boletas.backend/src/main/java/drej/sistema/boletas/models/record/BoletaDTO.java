@@ -1,6 +1,4 @@
-package drej.sistema.boletas.models.dto;
-import java.time.LocalDate;
-import java.util.Date;
+package drej.sistema.boletas.models.record;
 import java.util.List;
 
 public record BoletaDTO(
