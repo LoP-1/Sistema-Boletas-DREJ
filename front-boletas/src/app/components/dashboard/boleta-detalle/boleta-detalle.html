@@ -3,13 +3,13 @@
   <button class="modal-close" (click)="onClose()">×</button>
   <h2>Detalle de Boleta</h2>
   <table>
-    <tr><th>Nombre</th><td>{{boleta.nombres}} {{boleta.apellidos}}</td></tr>
-    <tr><th>Documento</th><td>{{boleta.documento_identidad}}</td></tr>
-    <tr><th>Establecimiento</th><td>{{boleta.establecimiento}}</td></tr>
-    <tr><th>Cargo</th><td>{{boleta.cargo}}</td></tr>
-    <tr><th>Total Remuneraciones</th><td>{{boleta.total_remuneraciones}}</td></tr>
-    <tr><th>Total Descuentos</th><td>{{boleta.total_descuentos}}</td></tr>
-    <tr><th>Total Líquido</th><td>{{boleta.total_liquido}}</td></tr>
+    <tr><th>Nombre</th><td>{{boleta?.nombres}} {{boleta?.apellidos}}</td></tr>
+    <tr><th>Documento</th><td>{{boleta?.documento_identidad}}</td></tr>
+    <tr><th>Establecimiento</th><td>{{boleta?.establecimiento}}</td></tr>
+    <tr><th>Cargo</th><td>{{boleta?.cargo}}</td></tr>
+    <tr><th>Total Remuneraciones</th><td>{{boleta?.total_remuneraciones}}</td></tr>
+    <tr><th>Total Descuentos</th><td>{{boleta?.total_descuentos}}</td></tr>
+    <tr><th>Total Líquido</th><td>{{boleta?.total_liquido}}</td></tr>
     <tr><th>Conceptos</th>
       <td>
         <table>
@@ -21,7 +21,7 @@
             </tr>
           </thead>
           <tbody>
-            <tr *ngFor="let concepto of boleta.conceptos">
+            <tr *ngFor="let concepto of boleta?.conceptos">
               <td>{{concepto.tipo}}</td>
               <td>{{concepto.concepto}}</td>
               <td>{{concepto.monto | currency}}</td>

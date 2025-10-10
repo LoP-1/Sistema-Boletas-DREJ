@@ -1,3 +1,17 @@
+.main-layout {
+  display: flex;
+  flex-direction: row;
+  min-height: calc(100vh - 56px);
+}
+
+.main-content {
+  flex: 1;
+  min-width: 0;
+  padding: 2rem;
+  background: #fff;
+  z-index: 1;
+}
+
 .cart-container {
   width: 260px;
   min-height: calc(100vh - 56px);
@@ -8,4 +22,5 @@
   margin-top: 0.5rem;
   position: relative;
   flex-shrink: 0;
+  z-index: 2;
 }

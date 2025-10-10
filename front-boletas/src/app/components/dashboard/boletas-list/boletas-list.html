@@ -1,0 +1,67 @@
+<div class="boletas-container">
+
+  <!-- Tarjetas de Año -->
+  @if (!selectedYear) {
+    <h2>Años disponibles</h2>
+    <div class="cards">
+      @for (anio of getKeys(grouped); track anio) {
+        <div class="card card-year"
+             (click)="selectYear(anio)">
+          <div class="card-title">{{ anio }}</div>
+          <div class="card-count">{{ getKeys(grouped[anio]).length }} meses</div>
+        </div>
+      }
+    </div>
+  }
+
+  <!-- Tarjetas de Mes -->
+  @if (selectedYear && !selectedMonth) {
+    <button (click)="backToYears()">Volver</button>
+    <h2>Meses de {{ selectedYear }}</h2>
+    <div class="cards">
+      @for (mes of getKeys(grouped[selectedYear]); track mes) {
+        <div class="card card-month"
+             (click)="selectMonth(mes)">
+          <div class="card-title">{{ mes }}</div>
+          <div class="card-count">{{ grouped[selectedYear][mes].length }} boletas</div>
+        </div>
+      }
+    </div>
+  }
+
+  <!-- Tabla de boletas del mes -->
+  @if (selectedYear && selectedMonth) {
+    <button (click)="backToMonths()">Volver</button>
+    <h2>Boletas de {{ selectedMonth }} {{ selectedYear }}</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Establecimiento</th>
+          <th>Cargo</th>
+          <th>Estado</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (boleta of grouped[selectedYear][selectedMonth]; track boleta) {
+  <tr>
+    <td>{{ boleta.establecimiento }}</td>
+    <td>{{ boleta.cargo }}</td>
+    <td>{{ boleta.estado }}</td>
+    <td>
+      <button (click)="openModal(boleta)">Ver Detalle</button>
+      <button (click)="addToCart(boleta)">Agregar a la lista</button>
+    </td>
+  </tr>
+}
+      </tbody>
+    </table>
+  }
+
+  <!-- Modal emergente de detalle de boleta -->
+  <app-boleta-detail-modal
+    *ngIf="modalBoleta"
+    [boleta]="modalBoleta"
+    (close)="closeModal()">
+  </app-boleta-detail-modal>
+</div>

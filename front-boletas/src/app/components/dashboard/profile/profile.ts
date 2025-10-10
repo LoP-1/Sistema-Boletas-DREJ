@@ -1,7 +1,7 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { PersonaService } from '../../services/persona';
-import { PersonaDTO } from '../../models/persona.model';
+import { PersonaService } from '../../../services/persona';
+import { PersonaDTO } from '../../../models/persona.model';
 
 @Component({
   selector: 'app-profile',
@@ -11,6 +11,8 @@ import { PersonaDTO } from '../../models/persona.model';
   styleUrls: ['./profile.css']
 })
 export class Profile implements OnInit {
+  
+  private cdr = inject(ChangeDetectorRef);
   private personaService = inject(PersonaService);
 
   usuario: PersonaDTO | null = null;
@@ -23,6 +25,7 @@ export class Profile implements OnInit {
       next: (persona) => {
         this.usuario = persona;
         this.cargando = false;
+        this.cdr.detectChanges();
       },
       error: (e) => {
         this.error = 'No se pudo cargar el perfil.';

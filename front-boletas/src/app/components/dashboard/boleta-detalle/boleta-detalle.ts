@@ -1,6 +1,6 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { BoletaDTO } from '../../models/boleta.model';
+import { BoletaDTO } from '../../../models/boleta.model';
 
 @Component({
   selector: 'app-boleta-detail-modal',
@@ -10,7 +10,7 @@ import { BoletaDTO } from '../../models/boleta.model';
   styleUrls: ['./boleta-detalle.css']
 })
 export class BoletaDetalle {
-  @Input() boleta!: BoletaDTO;
+  @Input() boleta: BoletaDTO | null = null;
   @Output() close = new EventEmitter<void>();
 
   onClose() {

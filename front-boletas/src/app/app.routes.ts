@@ -1,16 +1,27 @@
 import { Routes } from '@angular/router';
-import { Login } from './auth/login/login';
-import { Register } from './auth/register/register';
-import { Dashboard } from './dashboard/dashboard';
-import { BoletasList } from './dashboard/boletas-list/boletas-list';
-import { BoletaDetalle } from './dashboard/boleta-detalle/boleta-detalle';
-import { Profile } from './dashboard/profile/profile';
+import { Dashboard } from './components/dashboard/dashboard';
+import { BoletasList } from './components/dashboard/boletas-list/boletas-list';
+import { Profile } from './components/dashboard/profile/profile';
+import { Inicio } from './components/dashboard/inicio/inicio';
 
 export const routes: Routes = [
-  { path: '', component: Login },
-  { path: 'register', component: Register },
-  { path: 'dashboard', component: Dashboard },
-  { path: 'boletas', component: BoletasList },
-  { path: 'boletas/:id', component: BoletaDetalle },
-  { path: 'profile', component: Profile },
+  {
+    path: '',
+    redirectTo: 'dashboard/boletas',
+    pathMatch: 'full'
+  },
+  {
+    path: 'dashboard',
+    component: Dashboard,
+    children: [
+      { path: '', component: Inicio },
+      { path: 'boletas', component: BoletasList},
+      { path: 'perfil', component: Profile },
+      { path: 'inicio', component: Inicio }
+    ]
+  },
+  {
+    path: 'login',
+    loadComponent: () => import('./components/auth/login/login').then(m => m.Login)
+  }
 ];
