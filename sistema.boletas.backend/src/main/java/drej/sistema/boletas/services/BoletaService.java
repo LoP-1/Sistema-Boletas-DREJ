@@ -45,10 +45,37 @@ public class BoletaService {
                     p.setApellidos(dto.apellidos());
                     p.setDocumentoIdentidad(dto.documento_identidad());
                     DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-                    LocalDate fecha = LocalDate.parse(dto.fecha_nacimiento(), formatter);
+                    LocalDate fecha = null;
+                    String fechaNacimientoStr = dto.fecha_nacimiento();
+                    if (fechaNacimientoStr != null && !fechaNacimientoStr.isBlank()) {
+                        fecha = LocalDate.parse(fechaNacimientoStr, formatter);
+                    }
                     p.setFechaNacimiento(fecha);
                     return personaRepository.save(p);
                 });
+
+        // Si ya existe, actualiza campos si hay datos nuevos (excepto dni)
+        boolean actualizado = false;
+        if (dto.nombres() != null && !dto.nombres().isBlank() && !dto.nombres().equals(persona.getNombres())) {
+            persona.setNombres(dto.nombres());
+            actualizado = true;
+        }
+        if (dto.apellidos() != null && !dto.apellidos().isBlank() && !dto.apellidos().equals(persona.getApellidos())) {
+            persona.setApellidos(dto.apellidos());
+            actualizado = true;
+        }
+        String fechaNacimientoStr = dto.fecha_nacimiento();
+        if (fechaNacimientoStr != null && !fechaNacimientoStr.isBlank()) {
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+            LocalDate fecha = LocalDate.parse(fechaNacimientoStr, formatter);
+            if (persona.getFechaNacimiento() == null || !fecha.equals(persona.getFechaNacimiento())) {
+                persona.setFechaNacimiento(fecha);
+                actualizado = true;
+            }
+        }
+        if (actualizado) {
+            personaRepository.save(persona);
+        }
 
         // 2. Crear Boleta y asociar Persona
         Boleta boleta = new Boleta();

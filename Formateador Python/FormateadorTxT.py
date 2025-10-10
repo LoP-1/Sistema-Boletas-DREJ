@@ -3,9 +3,12 @@
 """
 Parser de boletas .lis (UGEL / DRE) para extraer datos estructurados.
 
+Busca todos los archivos .lis dentro de la carpeta "Listas" y sus subcarpetas
+y junta toda la información en un solo JSON o CSV.
+
 Uso:
-  python parse_boletas.py archivos/*.lis --salida boletas.json --formato json
-  python parse_boletas.py activo-concepcion.lis "Boleta Cesantes.lis" --formato csv --salida boletas.csv
+  python parse_boletas.py --salida boletas.json --formato json
+  python parse_boletas.py --salida boletas.csv --formato csv
 
 Notas:
  - El script intenta ser robusto ante ligeras variaciones de formato.
@@ -246,17 +249,20 @@ def escribir_csv(registros: List[Dict[str, Any]], destino: Path):
 
 def main():
     parser = argparse.ArgumentParser(description="Parser de boletas .lis")
-    parser.add_argument('archivos', nargs='+', help='Rutas de archivos .lis')
     parser.add_argument('--salida', '-o', help='Archivo de salida (json o csv)', required=True)
     parser.add_argument('--formato', '-f', choices=['json', 'csv'], default='json')
+    parser.add_argument('--directorio', '-d', default='Listas', help='Directorio raíz donde buscar boletas')
     args = parser.parse_args()
 
     todas: List[Dict[str, Any]] = []
-    for ruta in args.archivos:
-        p = Path(ruta)
-        if not p.exists():
-            print(f"[ADVERTENCIA] No existe: {p}")
-            continue
+    raiz = Path(args.directorio)
+    archivos = list(raiz.rglob('*.lis'))
+    if not archivos:
+        print(f"No se encontraron archivos .lis en {raiz}")
+        return
+
+    for p in archivos:
+        print(f"Procesando: {p}")
         registros = procesar_archivo(p)
         todas.extend(registros)
 

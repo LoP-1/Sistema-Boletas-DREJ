@@ -21,7 +21,7 @@ export class Profile implements OnInit {
 
   ngOnInit() {
     // Puedes cambiar el DNI por el del usuario autenticado
-    this.personaService.getPersonaPorDni('19823226').subscribe({
+    this.personaService.getPersonaPorDni('42701985').subscribe({
       next: (persona) => {
         this.usuario = persona;
         this.cargando = false;

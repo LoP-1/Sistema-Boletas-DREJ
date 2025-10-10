@@ -36,7 +36,7 @@ export class BoletasList implements OnInit {
   }
 
   loadBoletas() {
-    this.boletaService.getBoletasPorPersonaId(1).subscribe({
+    this.boletaService.getBoletasPorPersonaId(3030).subscribe({
       next: data => {
         this.boletas = data;
         this.groupBoletas();
