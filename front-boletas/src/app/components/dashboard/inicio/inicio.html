@@ -1,1 +1,42 @@
-<p>inicio works!</p>
+<div class="inicio-container">
+  <div class="saludo">
+    <h2>¡Bienvenido/a <span>{{ persona?.nombres }}</span> <span>{{ persona?.apellidos }}</span>!</h2>
+    <p>Documento: <span>{{ persona?.documentoIdentidad }}</span></p>
+  </div>
+
+  <div class="boletas-section">
+    <h3>Tus 3 boletas más recientes:</h3>
+    <div class="boletas-grid">
+      <ng-container *ngIf="boletasRecientes.length > 0; else sinBoletas">
+        <div *ngFor="let boleta of boletasRecientes" class="boleta-card">
+          <div class="clipboard-clip"></div>
+          <div class="boleta-paper">
+            <div class="boleta-header">
+              <div class="boleta-date">
+                {{ boleta.mes }}/{{ boleta.anio }}
+              </div>
+              <div class="boleta-estado" [ngClass]="{
+                'estado-activo': boleta.estado === 'ACTIVO',
+                'estado-inactivo': boleta.estado === 'INACTIVO'
+              }">
+                {{ boleta.estado }}
+              </div>
+            </div>
+            <div class="boleta-body">
+              <div><strong>Establecimiento:</strong> <span>{{ boleta.establecimiento }}</span></div>
+              <div><strong>Cargo:</strong> <span>{{ boleta.cargo }}</span></div>
+              <div><strong>Tipo:</strong> <span>{{ boleta.tipo_servidor || boleta.tipo_pensionista }}</span></div>
+              <div class="boleta-liquido"><strong>Total líquido:</strong> <span>PEN {{ boleta.total_liquido | number:'1.2-2' }}</span></div>
+            </div>
+            <button class="boleta-detalle-btn" type="button">
+              Ver detalles
+            </button>
+          </div>
+        </div>
+      </ng-container>
+      <ng-template #sinBoletas>
+        <p>No se encontraron boletas recientes.</p>
+      </ng-template>
+    </div>
+  </div>
+</div>
