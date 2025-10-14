@@ -24,15 +24,15 @@ public class Boleta {
     private String cargo;
 
     // Puede venir en boletas de cesantes/jubilados
-    private String tipoServidor;      // Ej: "DOCENTE NOMBRADO"
-    private String tipoPensionista;   // Ej: "CESANTE"
-    private String tipoPension;       // Ej: "CESANTE DOC. NIVELABLE"
+    private String tipoServidor;
+    private String tipoPensionista;
+    private String tipoPension;
 
     private String nivelMagHoras;
     private String tiempoServicio;
 
     private String leyendaPermanente;
-    private String leyendaMensual;    // Campo alternativo, puede estar vacío
+    private String leyendaMensual;
 
     private String fechaIngresoRegistro;
     private String fechaTerminoRegistro;

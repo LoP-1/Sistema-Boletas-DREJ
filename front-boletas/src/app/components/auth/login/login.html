@@ -1,1 +1,25 @@
-<p>login works!</p>
+<div class="login-container">
+  <h2 *ngIf="!modoRegistro">Iniciar Sesión</h2>
+  <h2 *ngIf="modoRegistro">Registro</h2>
+
+  <form *ngIf="!modoRegistro" (ngSubmit)="login()">
+    <input type="email" [(ngModel)]="correo" name="correo" placeholder="Correo" required>
+    <input type="password" [(ngModel)]="contrasena" name="contrasena" placeholder="Contraseña" required>
+    <button type="submit" [disabled]="cargando">Ingresar</button>
+    <button type="button" (click)="alternarModo()">¿No tienes cuenta? Regístrate</button>
+  </form>
+
+  <form *ngIf="modoRegistro" (ngSubmit)="registro()">
+    <input type="text" [(ngModel)]="registroData.nombre" name="nombre" placeholder="Nombre" required>
+    <input type="text" [(ngModel)]="registroData.apellido" name="apellido" placeholder="Apellido" required>
+    <input type="email" [(ngModel)]="registroData.correo" name="correo" placeholder="Correo" required>
+    <input type="text" [(ngModel)]="registroData.dni" name="dni" placeholder="DNI" required>
+    <input type="text" [(ngModel)]="registroData.telefono" name="telefono" placeholder="Teléfono" required>
+    <input type="password" [(ngModel)]="registroData.contrasena" name="contrasena" placeholder="Contraseña" required>
+    <button type="submit" [disabled]="cargando">Registrar</button>
+    <button type="button" (click)="alternarModo()">¿Ya tienes cuenta? Inicia sesión</button>
+  </form>
+
+  <div *ngIf="mensaje" class="mensaje">{{ mensaje }}</div>
+  <div *ngIf="cargando">Procesando...</div>
+</div>

@@ -15,7 +15,7 @@ export class Inicio implements OnInit {
   persona: PersonaDTO | null = null;
   boletasRecientes: BoletaDTO[] = [];
   modalBoleta: BoletaDTO | null = null;
-  
+
   constructor(
     private personaService: PersonaService,
     private boletaService: BoletaService
@@ -55,3 +55,4 @@ export class Inicio implements OnInit {
     this.modalBoleta = null;
   }
 }
+
