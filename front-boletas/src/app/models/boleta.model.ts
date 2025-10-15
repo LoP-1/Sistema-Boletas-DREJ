@@ -2,12 +2,13 @@ import { ConceptoDTO } from './concepto.model';
 import { RegPensionarioDetalleDTO } from './reg-pensionario.model';
 
 export interface BoletaDTO {
+  id?: number;
   archivo_origen: string;
   raw_length: number;
   conceptos: ConceptoDTO[];
   secuencia: string;
-  codigo_encabezado: string;
-  ruc_bloque: string;
+  codigo_encabezado?: string;
+  ruc_bloque?: string;
   mes: string;
   anio: string;
   estado: string;
@@ -28,10 +29,10 @@ export interface BoletaDTO {
   fecha_termino_registro: string;
   cuenta_principal: string;
   cuentas_todas: string[];
-  reg_pensionario_detalle: RegPensionarioDetalleDTO;
+  reg_pensionario_detalle?: RegPensionarioDetalleDTO;
   regimen_pensionario: string;
   total_remuneraciones: number;
   total_descuentos: number;
   total_liquido: number;
-  monto_imponible: number;
-}
+  monto_imponible: number
+  }

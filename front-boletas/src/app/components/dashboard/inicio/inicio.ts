@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { PersonaDTO } from '../../../models/persona.model';
 import { BoletaDTO } from '../../../models/boleta.model';
 import { PersonaService } from '../../../services/persona';
@@ -18,31 +18,31 @@ export class Inicio implements OnInit {
 
   constructor(
     private personaService: PersonaService,
-    private boletaService: BoletaService
+    private boletaService: BoletaService,
+    private cd: ChangeDetectorRef
   ) {}
 
   ngOnInit(): void {
-    //const dni = localStorage.getItem('dni');
-    //const idStr = localStorage.getItem('id');
-    //const id = idStr ? Number(idStr) : null;
-    const dni = '20701633';
-    const id = 3030; 
+    const dni = localStorage.getItem('userDni');
 
-   
     if (dni) {
       this.personaService.getPersonaPorDni(dni).subscribe({
-        next: (persona) => { this.persona = persona; }
-      });
-    }
-    if (id !== null) {
-      this.boletaService.getBoletasPorPersonaId(id).subscribe({
-        next: (boletas) => {
-          const ordenadas = boletas.sort((a, b) => {
-            const dateA = Number(a.anio) * 100 + Number(a.mes);
-            const dateB = Number(b.anio) * 100 + Number(b.mes);
-            return dateB - dateA;
-          });
-          this.boletasRecientes = ordenadas.slice(0, 3);
+        next: (persona) => {
+          this.persona = persona;
+          this.cd.detectChanges(); 
+          if (persona && persona.id) {
+            this.boletaService.getBoletasPorPersonaId(persona.id).subscribe({
+              next: (boletas) => {
+                const ordenadas = boletas.sort((a, b) => {
+                  const dateA = Number(a.anio) * 100 + Number(a.mes);
+                  const dateB = Number(b.anio) * 100 + Number(b.mes);
+                  return dateB - dateA;
+                });
+                this.boletasRecientes = ordenadas.slice(0, 3);
+                this.cd.detectChanges();
+              }
+            });
+          }
         }
       });
     }
@@ -50,9 +50,10 @@ export class Inicio implements OnInit {
 
   verDetalle(boleta: BoletaDTO) {
     this.modalBoleta = boleta;
+    this.cd.detectChanges();
   }
   closeModal() {
     this.modalBoleta = null;
+    this.cd.detectChanges();
   }
 }
-

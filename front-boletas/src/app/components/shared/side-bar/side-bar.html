@@ -2,34 +2,30 @@
   <nav>
     <h2 class="sidebar-title">Carrito de boletas</h2>
     <ul class="boletas-list">
-  @if (carrito.length === 0) {
-    <li class="boleta-label">No hay boletas en el carrito.</li>
-  }
-  @for (boleta of carrito; let i = $index; track i) {
-    <li>
-      <span class="boleta-label">{{ boleta.mes }} / {{ boleta.anio }}</span>
-      <button class="details-btn" aria-label="Ver detalles de boleta"
-        (click)="verDetalle(boleta)">Ver detalles</button>
-      <button class="remove-btn" aria-label="Eliminar esta boleta"
-              (click)="removeBoleta(i)">🗑️</button>
-    </li>
-  }
-</ul>
-    <button class="print-all-btn" aria-label="Imprimir todas las boletas">
-      Imprimir todas las boletas del carrito
-    </button>
+      <li class="boleta-label" *ngIf="carrito.length === 0">No hay boletas en el carrito.</li>
+      <ng-container *ngFor="let boleta of carrito; let i = index; trackBy: trackByIndex">
+        <li>
+          <span class="boleta-label">{{ boleta.mes }} / {{ boleta.anio }}</span>
+          <button class="details-btn" aria-label="Ver detalles de boleta"
+                  (click)="verDetalle(boleta)">Ver detalles</button>
+          <button class="remove-btn" aria-label="Eliminar esta boleta"
+                  (click)="removeBoleta(i)">🗑️</button>
+        </li>
+      </ng-container>
+    </ul>
+    <button class="print-all-btn" aria-label="Imprimir todas las boletas"
+            (click)="imprimirTodas()">Imprimir todas las boletas del carrito</button>
     <button class="remove-all-btn" aria-label="Eliminar todas las boletas"
             (click)="removeAllBoletas()">Eliminar todas las boletas</button>
     <ul class="sidebar-actions">
       <li>
-        <a routerLink="/login" routerLinkActive="active" class="sidebar-exit-link">Salir</a>
+        <button class="sidebar-exit-link" (click)="salir()">Salir</button>
       </li>
     </ul>
-
     <app-boleta-detail-modal
-  *ngIf="modalBoleta"
-  [boleta]="modalBoleta"
-  (close)="closeModal()">
-</app-boleta-detail-modal>
+      *ngIf="modalBoleta"
+      [boleta]="modalBoleta"
+      (close)="closeModal()">
+    </app-boleta-detail-modal>
   </nav>
 </div>

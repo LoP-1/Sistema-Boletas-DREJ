@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { RouterModule } from '@angular/router';
+import { Router } from '@angular/router';
 import { BoletaDTO } from '../../../models/boleta.model'; 
 import { Carrito } from '../../../services/carrito';
 import { BoletaDetalle } from '../../dashboard/boleta-detalle/boleta-detalle';
@@ -8,16 +8,15 @@ import { CommonModule } from '@angular/common';
 @Component({
   selector: 'app-side-bar',
   standalone: true,
-  imports: [RouterModule,BoletaDetalle,CommonModule],
+  imports: [BoletaDetalle, CommonModule],
   templateUrl: './side-bar.html',
   styleUrl: './side-bar.css'
 })
 export class SideBar implements OnInit {  
-  
   modalBoleta: BoletaDTO | null = null;
   carrito: BoletaDTO[] = [];
 
-  constructor(private carritoService: Carrito) {}
+  constructor(private carritoService: Carrito, private router: Router) {}
 
   ngOnInit() {
     this.carritoService.carrito$.subscribe(carrito => {
@@ -39,5 +38,19 @@ export class SideBar implements OnInit {
 
   closeModal() {
     this.modalBoleta = null;
+  }
+
+  imprimirTodas() {
+  }
+  
+  trackByIndex(index: number, item: any): number {
+  return index;
+}
+
+  salir() {
+    localStorage.removeItem('jwtToken');
+    localStorage.removeItem('userDni');
+    localStorage.removeItem('userRol');
+    this.router.navigate(['/login']);
   }
 }

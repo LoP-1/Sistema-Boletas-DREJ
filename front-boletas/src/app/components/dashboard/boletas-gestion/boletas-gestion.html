@@ -1,0 +1,94 @@
+<div class="admin-panel">
+    <h2>Gestión de Personas</h2>
+    <div>
+        <input [(ngModel)]="filtro" placeholder="Buscar por nombre, apellido o DNI">
+        <button (click)="agregarPersona()">Agregar persona</button>
+        <div *ngIf="personaLoading">Cargando personas...</div>
+        <table *ngIf="!personaLoading">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>DNI</th>
+                    <th>Nombre</th>
+                    <th>Apellido</th>
+                    <th>Nacimiento</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let p of filtrarPersonas()" [class.selected]="personaSeleccionada?.id === p.id"
+                    (click)="seleccionarPersona(p)">
+                    <ng-container *ngIf="!editandoPersona || editandoPersona.id !== p.id">
+                        <td>{{p.id}}</td>
+                        <td>{{p.documentoIdentidad}}</td>
+                        <td>{{p.nombres}}</td>
+                        <td>{{p.apellidos}}</td>
+                        <td>{{p.fechaNacimiento}}</td>
+                        <td>
+                            <button (click)="mostrarEditarPersona(p); $event.stopPropagation()">Editar</button>
+                            <button (click)="eliminarPersona(p.id ?? 0); $event.stopPropagation()">Eliminar</button>
+                        </td>
+                    </ng-container>
+                    <ng-container *ngIf="editandoPersona && editandoPersona.id === p.id">
+                        <td colspan="6">
+                            <input [(ngModel)]="editandoPersona.nombres" placeholder="Nombre">
+                            <input [(ngModel)]="editandoPersona.apellidos" placeholder="Apellido">
+                            <input [(ngModel)]="editandoPersona.documentoIdentidad" placeholder="DNI">
+                            <input [(ngModel)]="editandoPersona.fechaNacimiento" placeholder="Nacimiento">
+                            <button (click)="guardarPersona(); $event.stopPropagation()">Guardar</button>
+                            <button (click)="cancelarEdicionPersona(); $event.stopPropagation()">Cancelar</button>
+                        </td>
+                    </ng-container>
+                </tr>
+            </tbody>
+        </table>
+        <div class="pagination">
+            <button (click)="cargarPersonas(personaPage-1)" [disabled]="personaPage===0">Anterior</button>
+            <span>Página {{personaPage+1}} / {{totalPersonaPages}}</span>
+            <button (click)="cargarPersonas(personaPage+1)"
+                [disabled]="personaPage>=totalPersonaPages-1">Siguiente</button>
+        </div>
+    </div>
+
+    <div *ngIf="personaSeleccionada">
+        <h3>Boletas de {{personaSeleccionada.nombres}} {{personaSeleccionada.apellidos}}</h3>
+        <button (click)="cancelarSeleccion()">Volver a personas</button>
+        <div *ngIf="boletaLoading">Cargando boletas...</div>
+        <table *ngIf="!boletaLoading">
+            <thead>
+                <tr>
+                    <th>Secuencia</th>
+                    <th>Mes</th>
+                    <th>Año</th>
+                    <th>Estado</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let b of boletas">
+                    <ng-container *ngIf="!editandoBoleta || editandoBoleta.id !== b.id">
+                        <td>{{b.secuencia}}</td>
+                        <td>{{b.mes}}</td>
+                        <td>{{b.anio}}</td>
+                        <td>{{b.estado}}</td>
+                        <td>
+                            <button (click)="mostrarEditarBoleta(b)">Editar</button>
+                            <button (click)="eliminarBoleta(b.id ?? 0)">Eliminar</button>
+                        </td>
+                    </ng-container>
+                    <ng-container *ngIf="editandoBoleta && editandoBoleta.id === b.id">
+                        <td colspan="5">
+                            <input [(ngModel)]="editandoBoleta.secuencia" placeholder="Secuencia">
+                            <input [(ngModel)]="editandoBoleta.mes" placeholder="Mes">
+                            <input [(ngModel)]="editandoBoleta.anio" placeholder="Año">
+                            <input [(ngModel)]="editandoBoleta.estado" placeholder="Estado">
+                            <button (click)="guardarBoleta()">Guardar</button>
+                            <button (click)="cancelarEdicionBoleta()">Cancelar</button>
+                        </td>
+                    </ng-container>
+                </tr>
+            </tbody>
+        </table>
+        <!-- Aquí podrías agregar formulario para agregar boletas si tienes el endpoint -->
+    </div>
+</div>

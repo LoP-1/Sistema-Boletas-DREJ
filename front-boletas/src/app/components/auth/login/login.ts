@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { ChangeDetectorRef, Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { Usuario } from '../../../models/usuario.model';
 import { AuthService } from '../../../services/auth';
@@ -15,7 +15,6 @@ export class Login {
   modoRegistro = false;
   mensaje = '';
   cargando = false;
-
   // Login form
   correo = '';
   contrasena = '';
@@ -31,7 +30,8 @@ export class Login {
     contrasena: ''
   };
 
-  constructor(private auth: AuthService, private router: Router) {}
+  constructor(private auth: AuthService, private router: Router,
+  private cd: ChangeDetectorRef) {}
 
   alternarModo() {
     this.modoRegistro = !this.modoRegistro;
@@ -45,11 +45,13 @@ export class Login {
         this.auth.saveToken(token);
         this.mensaje = '¡Login exitoso!';
         this.cargando = false;
+        this.cd.detectChanges();
         setTimeout(() => this.router.navigate(['/dashboard']), 700);
       },
       error: err => {
         this.mensaje = err.error || 'Login falló';
         this.cargando = false;
+        this.cd.detectChanges(); 
       }
     });
   }
@@ -61,7 +63,6 @@ export class Login {
         this.mensaje = '¡Registro exitoso! Ahora inicia sesión.';
         this.modoRegistro = false;
         this.cargando = false;
-        // Limpia campos
         this.registroData = {
           nombre: '',
           apellido: '',
@@ -71,10 +72,12 @@ export class Login {
           rol: 'USER',
           contrasena: ''
         };
+        this.cd.detectChanges(); // <-- fuerza la actualización
       },
       error: err => {
         this.mensaje = err.error || 'Registro falló';
         this.cargando = false;
+        this.cd.detectChanges(); // <-- fuerza la actualización
       }
     });
   }

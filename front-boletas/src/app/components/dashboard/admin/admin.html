@@ -1,0 +1,51 @@
+<div class="panel-admin">
+  <h2>Usuarios pendientes de aprobación</h2>
+  <div *ngIf="mensaje" class="mensaje">{{ mensaje }}</div>
+  <table>
+    <thead>
+      <tr>
+        <th>Nombre</th><th>Correo</th><th>DNI</th><th>Teléfono</th><th>Rol</th><th>Acciones</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let u of usuarios">
+        <ng-container *ngIf="editarId !== u.id">
+          <td>{{u.nombre}}</td>
+          <td>{{u.correo}}</td>
+          <td>{{u.dni}}</td>
+          <td>{{u.telefono}}</td>
+          <td>{{u.rol}}</td>
+          <td>
+            <button (click)="permitirAcceso(u.id!)" [disabled]="!!u.estadoCuenta">Permitir</button>
+            <button (click)="invalidarAcceso(u.id!)" [disabled]="!u.estadoCuenta">Invalidar</button>
+            <button (click)="mostrarEdicion(u)">Editar</button>
+            <button (click)="mostrarCambiarPass(u.id!)">Cambiar contraseña</button>
+          </td>
+        </ng-container>
+        <ng-container *ngIf="editarId === u.id">
+          <td><input [(ngModel)]="editarData.nombre"></td>
+          <td><input [(ngModel)]="editarData.correo"></td>
+          <td><input [(ngModel)]="editarData.dni"></td>
+          <td><input [(ngModel)]="editarData.telefono"></td>
+          <td>
+            <select [(ngModel)]="editarData.rol">
+              <option value="USER">USER</option>
+              <option value="ADMIN">ADMIN</option>
+            </select>
+          </td>
+          <td>
+            <button (click)="guardarEdicion()">Guardar</button>
+            <button (click)="cancelarEdicion()">Cancelar</button>
+          </td>
+        </ng-container>
+      </tr>
+    </tbody>
+  </table>
+  <!-- Cambiar contraseña -->
+  <div *ngIf="cambiarPassId" class="modal">
+    <h3>Cambiar contraseña</h3>
+    <input [(ngModel)]="nuevaPass" type="password" placeholder="Nueva contraseña">
+    <button (click)="guardarNuevaPass()">Guardar</button>
+    <button (click)="cancelarCambioPass()">Cancelar</button>
+  </div>
+</div>

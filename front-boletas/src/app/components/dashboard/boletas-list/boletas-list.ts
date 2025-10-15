@@ -3,8 +3,9 @@ import { CommonModule } from '@angular/common';
 import { BoletaDetalle } from '../boleta-detalle/boleta-detalle';
 import { BoletaService } from '../../../services/boleta';
 import { BoletaDTO } from '../../../models/boleta.model';
-import { Router, NavigationEnd } from '@angular/router';// Ajusta el path según tu estructura
 import { Carrito } from '../../../services/carrito';
+import { PersonaService } from '../../../services/persona';
+import { AuthService } from '../../../services/auth';
 
 @Component({
   selector: 'app-boletas-list',
@@ -14,8 +15,9 @@ import { Carrito } from '../../../services/carrito';
   styleUrls: ['./boletas-list.css']
 })
 export class BoletasList implements OnInit {
+  private personaService = inject(PersonaService);
   private boletaService = inject(BoletaService);
-  private router = inject(Router);
+  private authService = inject(AuthService);
   private cdr = inject(ChangeDetectorRef);
   private carritoService = inject(Carrito);
 
@@ -27,23 +29,29 @@ export class BoletasList implements OnInit {
   modalBoleta: BoletaDTO | null = null;
 
   ngOnInit(): void {
-    this.loadBoletas();
-    this.router.events.subscribe((event) => {
-      if (event instanceof NavigationEnd) {
-        this.loadBoletas();
-      }
-    });
+    this.loadBoletasForLoggedUser();
   }
 
-  loadBoletas() {
-    this.boletaService.getBoletasPorPersonaId(3030).subscribe({
-      next: data => {
-        this.boletas = data;
-        this.groupBoletas();
-        this.cdr.detectChanges();
+  loadBoletasForLoggedUser() {
+    const dni = this.authService.getDni();
+    if (!dni) return;
+    this.personaService.getPersonaPorDni(dni).subscribe({
+      next: persona => {
+        if (persona && persona.id) {
+          this.boletaService.getBoletasPorPersonaId(persona.id).subscribe({
+            next: data => {
+              this.boletas = data;
+              this.groupBoletas();
+              this.cdr.detectChanges();
+            },
+            error: err => {
+              console.error('Error al cargar boletas:', err);
+            }
+          });
+        }
       },
       error: err => {
-        console.error('Error al cargar boletas:', err);
+        console.error('Error al cargar persona:', err);
       }
     });
   }

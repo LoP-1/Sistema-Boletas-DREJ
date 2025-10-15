@@ -5,6 +5,12 @@
   <ul class="navbar-links">
     <li><a routerLink="/dashboard/inicio" routerLinkActive="active" class="Inicio">Inicio</a></li>
     <li><a routerLink="/dashboard/boletas" routerLinkActive="active">Boletas</a></li>
+    <li *ngIf="rol === 'ADMIN'">
+      <a routerLink="/dashboard/admin" routerLinkActive="active">Usuarios</a>
+    </li>
+    <li *ngIf="rol === 'ADMIN'">
+      <a routerLink="/dashboard/gestion-boletas" routerLinkActive="active">Gestionar Boletas</a>
+    </li>
     <li><a routerLink="/dashboard/perfil" routerLinkActive="active">Perfil</a></li>
   </ul>
 </nav>

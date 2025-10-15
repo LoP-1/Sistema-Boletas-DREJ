@@ -114,4 +114,9 @@ public class JwtUtil {
         }
         return trimmed;
     }
+
+    public boolean isUser(String token, Long userId) {
+        Long idEnToken = extractUserId(token);
+        return idEnToken != null && idEnToken.equals(userId);
+    }
 }

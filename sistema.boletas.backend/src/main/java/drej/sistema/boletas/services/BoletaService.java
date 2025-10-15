@@ -9,11 +9,15 @@ import drej.sistema.boletas.models.record.RegPensionarioDetalleDTO;
 import drej.sistema.boletas.repository.BoletaRepository;
 import drej.sistema.boletas.repository.PersonaRepository;
 import jakarta.transaction.Transactional;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class BoletaService {
@@ -26,18 +30,18 @@ public class BoletaService {
         this.personaRepository = personaRepository;
     }
 
+    // Subir varias boletas
     @Transactional
-    //subir varias boletas usando el metodo de abajo
     public void guardarBoletas(List<BoletaDTO> lista) {
         for (BoletaDTO dto : lista) {
             guardarBoleta(dto);
         }
     }
 
-    //guardar 1 boleta en la base de datos
+    // Guardar 1 boleta
     @Transactional
     public Boleta guardarBoleta(BoletaDTO dto) {
-        // 1. Buscar o crear Persona
+        // Buscar o crear Persona
         Persona persona = personaRepository.findByDocumentoIdentidad(dto.documento_identidad())
                 .orElseGet(() -> {
                     Persona p = new Persona();
@@ -54,7 +58,7 @@ public class BoletaService {
                     return personaRepository.save(p);
                 });
 
-        // Si ya existe, actualiza campos si hay datos nuevos (excepto dni)
+        // Actualiza campos si hay datos nuevos
         boolean actualizado = false;
         if (dto.nombres() != null && !dto.nombres().isBlank() && !dto.nombres().equals(persona.getNombres())) {
             persona.setNombres(dto.nombres());
@@ -77,7 +81,7 @@ public class BoletaService {
             personaRepository.save(persona);
         }
 
-        // 2. Crear Boleta y asociar Persona
+        // Crear boleta y asociar Persona
         Boleta boleta = new Boleta();
         boleta.setArchivoOrigen(dto.archivo_origen());
         boleta.setRawLength(dto.raw_length());
@@ -124,7 +128,59 @@ public class BoletaService {
         return boleta;
     }
 
-    //obtener la lista de boletas para una persona usando el id
+    // Obtener boleta por ID
+    public Optional<Boleta> obtenerBoleta(Long id) {
+        return boletaRepository.findById(id);
+    }
+
+    // Editar boleta
+    @Transactional
+    public Boleta editarBoleta(Long id, BoletaDTO dto) {
+        Boleta boleta = boletaRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Boleta no encontrada"));
+        // Actualiza los campos según tus necesidades
+        boleta.setEstado(dto.estado());
+        boleta.setMes(dto.mes());
+        boleta.setAnio(dto.anio());
+        // ... otros campos
+        // Notas: puedes actualizar más según lo que permita tu lógica
+        return boletaRepository.save(boleta);
+    }
+
+    // Eliminar boleta
+    @Transactional
+    public void eliminarBoleta(Long id) {
+        boletaRepository.deleteById(id);
+    }
+
+    // Exportar boletas (CSV o PDF - implementar según tu caso)
+    public byte[] exportarBoletasCSV(List<BoletaDTO> boletas) {
+        // Implementar exportación a CSV y retornar byte[]
+        return new byte[0];
+    }
+
+    // Listar boletas (global)
+    public List<BoletaDTO> listarBoletasDTO() {
+        return boletaRepository.findAll().stream()
+                .map(this::toBoletaDTO)
+                .toList();
+    }
+
+    // Listar boletas paginado
+    public Page<Boleta> listarBoletasPaginado(int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        return boletaRepository.findAll(pageable);
+    }
+
+    // Buscar boletas por filtros (ejemplo por estado, rango fechas, etc.)
+    public List<BoletaDTO> buscarBoletasPorEstado(String estado) {
+        return boletaRepository.findAll().stream()
+                .filter(b -> estado.equals(b.getEstado()))
+                .map(this::toBoletaDTO)
+                .toList();
+    }
+
+    // Obtener boletas por persona ID
     public List<BoletaDTO> obtenerBoletasID(Long personaId) {
         return boletaRepository.findByPersonaId(personaId)
                 .stream()
@@ -132,7 +188,7 @@ public class BoletaService {
                 .toList();
     }
 
-    //obtener la lista de boletas para una persona usando la persona
+    // Obtener boletas por persona
     public List<BoletaDTO> obtenerBoletasPersona(Persona persona){
         return boletaRepository.findByPersona(persona)
                 .stream()
@@ -140,8 +196,8 @@ public class BoletaService {
                 .toList();
     }
 
-    //convertidor boletas
-    private BoletaDTO toBoletaDTO(Boleta boleta) {
+    // Convertidor boletas
+    public BoletaDTO toBoletaDTO(Boleta boleta) {
         Persona persona = boleta.getPersona();
         return new BoletaDTO(
                 boleta.getArchivoOrigen(),
@@ -157,7 +213,7 @@ public class BoletaService {
                 boleta.getEstado(),
                 persona.getApellidos(),
                 persona.getNombres(),
-                persona.getFechaNacimiento().toString(),
+                persona.getFechaNacimiento() != null ? persona.getFechaNacimiento().toString() : null,
                 persona.getDocumentoIdentidad(),
                 boleta.getEstablecimiento(),
                 boleta.getCargo(),
@@ -185,7 +241,7 @@ public class BoletaService {
         );
     }
 
-    //obtener todas las boletas
+    // Listar todas las boletas (entidad)
     public List<Boleta> listarBoletas() {
         return boletaRepository.findAll();
     }

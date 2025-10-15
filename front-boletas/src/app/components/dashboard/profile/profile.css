@@ -200,3 +200,39 @@
   font-weight: 600;
   margin-top: 1rem;
 }
+
+.change-password-card {
+  background: #fff;
+  padding: 1.2rem 1.8rem;
+  border-radius: 14px;
+  box-shadow: 0 2px 12px rgba(25, 118, 210, 0.13);
+  margin-top: 1rem;
+  width: 400px;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+.change-password-card form label {
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+  color: #1976d2;
+}
+.change-password-card input {
+  margin-left: 0.5rem;
+  padding: 0.3rem;
+  border-radius: 6px;
+  border: 1px solid #90caf9;
+}
+.change-password-card button {
+  background: #1976d2;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  padding: 0.4rem 1.2rem;
+  margin-top: 0.5rem;
+  cursor: pointer;
+}
+.change-password-card .mensaje {
+  color: #2e7d32;
+  font-weight: 500;
+}

@@ -39,6 +39,18 @@
   </div>
 </div>
 
+<div class="change-password-card">
+  <h3>Cambiar contraseña</h3>
+  <form (ngSubmit)="cambiarContrasena()" #form="ngForm">
+    <label>
+      Nueva contraseña:
+      <input type="password" [(ngModel)]="nuevaContrasena" name="nuevaContrasena" required minlength="6">
+    </label>
+    <button type="submit" [disabled]="form.invalid || cargando">Guardar</button>
+  </form>                     
+  <div *ngIf="mensajePass" class="mensaje">{{mensajePass}}</div>
+</div>
+
 <ng-template #loading>
   <div class="profile-loading">
     <div class="loader"></div>

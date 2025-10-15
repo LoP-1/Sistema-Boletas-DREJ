@@ -8,7 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/usuarios")
+@RequestMapping("/usuarios")
 public class UsuarioController {
 
     @Autowired
@@ -54,5 +54,45 @@ public class UsuarioController {
         }
         return ResponseEntity.ok(usuarioService.listarTodos());
     }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<?> actualizarUsuario(
+            @PathVariable Long id,
+            @RequestBody Usuario usuarioActualizado,
+            @RequestHeader("Authorization") String token
+    ) {
+        if (!jwtUtil.isAdmin(token) && !jwtUtil.isUser(token, id)) {
+            return ResponseEntity.status(403).body("No autorizado");
+        }
+        Usuario actualizado = usuarioService.actualizarDatos(id, usuarioActualizado);
+        return ResponseEntity.ok(actualizado);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> eliminarUsuario(
+            @PathVariable Long id,
+            @RequestHeader("Authorization") String token
+    ) {
+        if (!jwtUtil.isAdmin(token)) {
+            return ResponseEntity.status(403).body("No autorizado");
+        }
+        usuarioService.eliminarUsuario(id);
+        return ResponseEntity.ok("Usuario eliminado correctamente");
+    }
+
+    @PutMapping("/{id}/contrasena")
+    public ResponseEntity<?> cambiarContrasena(
+            @PathVariable Long id,
+            @RequestBody String nuevaContrasena,
+            @RequestHeader("Authorization") String token
+    ) {
+        if (!jwtUtil.isUser(token, id) && !jwtUtil.isAdmin(token)) {
+            return ResponseEntity.status(403).body("No autorizado");
+        }
+        usuarioService.cambiarContrasena(id, nuevaContrasena);
+        return ResponseEntity.ok("Contraseña actualizada correctamente");
+    }
+
+
 
 }

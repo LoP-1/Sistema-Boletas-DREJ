@@ -1,5 +1,5 @@
 export interface PersonaDTO {
-  id: number;
+  id?: number;
   apellidos: string;
   nombres: string;
   documentoIdentidad: string;
