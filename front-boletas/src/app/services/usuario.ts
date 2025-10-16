@@ -57,7 +57,7 @@ export class UsuarioService {
     return this.http.put<any>(
       `${this.apiUrl}/${id}/contrasena`,
       nuevaContrasena,
-      { headers: this.getAuthHeaders() }
+      { headers: this.getAuthHeaders(),responseType: 'text' as 'json' }
     );
   }
 }

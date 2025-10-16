@@ -1,34 +1,142 @@
-<div class="modal-overlay" (click)="onClose()"></div>
-<div class="modal-content">
-  <button class="modal-close" (click)="onClose()">×</button>
-  <h2>Detalle de Boleta</h2>
-  <table>
-    <tr><th>Nombre</th><td>{{boleta?.nombres}} {{boleta?.apellidos}}</td></tr>
-    <tr><th>Documento</th><td>{{boleta?.documento_identidad}}</td></tr>
-    <tr><th>Establecimiento</th><td>{{boleta?.establecimiento}}</td></tr>
-    <tr><th>Cargo</th><td>{{boleta?.cargo}}</td></tr>
-    <tr><th>Total Remuneraciones</th><td>{{boleta?.total_remuneraciones}}</td></tr>
-    <tr><th>Total Descuentos</th><td>{{boleta?.total_descuentos}}</td></tr>
-    <tr><th>Total Líquido</th><td>{{boleta?.total_liquido}}</td></tr>
-    <tr><th>Conceptos</th>
-      <td>
-        <table>
+<!-- Modal Overlay (background) -->
+<div class="fixed inset-0 bg-black/40 z-40" (click)="onClose()"></div>
+
+<!-- Modal Content -->
+<div class="fixed inset-0 flex items-center justify-center z-50 print:static print:bg-white">
+  <div class="relative bg-white rounded-xl shadow-2xl w-full max-w-3xl mx-auto overflow-hidden print:shadow-none print:rounded-none print:max-w-none print:w-full" id="boleta-pago-content">
+    <!-- Botón cerrar y botón imprimir -->
+    <div class="absolute top-4 right-4 flex gap-2 print:hidden">
+      <button class="text-2xl text-gray-500 hover:text-red-600 transition font-bold" (click)="onClose()">×</button>
+    </div>
+
+    <!-- CABECERA -->
+    <div class="flex justify-between items-start px-7 pt-7 pb-2 border-b border-gray-300">
+      <div>
+        <div class="text-xs text-gray-700 font-medium mb-1">CÓDIGO MODULAR - SECUENCIA:</div>
+        <div class="text-sm text-gray-700 font-bold">{{boleta?.secuencia}}</div>
+      </div>
+      <div class="text-right">
+        <div class="text-sm font-bold text-gray-700 uppercase">BOLETA DE PAGO</div>
+        <div class="text-xs text-gray-800">
+          {{boleta?.establecimiento}}
+        </div>
+        <div class="text-xs text-gray-600">{{boleta?.cargo}}</div>
+      </div>
+    </div>
+    <!-- DATOS INSTITUCION Y MES -->
+    <div class="flex justify-between items-center px-7 pt-2 pb-2 border-b border-gray-300">
+      <div class="text-xs text-gray-600 font-semibold">
+        <div>{{boleta?.ruc_bloque}}</div>
+        <div>{{boleta?.establecimiento}}</div>
+      </div>
+      <div class="text-right">
+        <div class="text-lg font-bold text-[#E53935] uppercase tracking-widest">{{boleta?.mes}} - {{boleta?.anio}}</div>
+        <div class="text-xs text-gray-600 font-semibold">TIPO DE PLANILLA <span class="text-[#388E3C] font-bold">{{boleta?.estado}}</span></div>
+      </div>
+    </div>
+
+    <!-- DATOS PERSONALES -->
+    <div class="bg-[#e3ecef] px-7 py-2 text-xs font-semibold text-gray-700 border-b border-gray-300">DATOS PERSONALES</div>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 px-7 py-2 text-xs border-b border-gray-300">
+      <div>
+        <div class="font-bold">APELLIDOS</div>
+        <div class="font-normal">{{boleta?.apellidos}}</div>
+      </div>
+      <div>
+        <div class="font-bold">NOMBRES</div>
+        <div class="font-normal">{{boleta?.nombres}}</div>
+      </div>
+      <div>
+        <div class="font-bold">D.N.I</div>
+        <div class="font-normal">{{boleta?.documento_identidad}}</div>
+      </div>
+    </div>
+
+    <!-- DETALLE LABORAL -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 px-7 py-2 text-xs border-b border-gray-300">
+      <div>
+        <div><span class="font-bold">Centro Trabajo:</span> {{boleta?.establecimiento}}</div>
+        <div><span class="font-bold">Cargo:</span> {{boleta?.cargo}}</div>
+        <div><span class="font-bold">Tipo Servidor:</span> {{boleta?.tipo_servidor}}</div>
+        <div><span class="font-bold">Régimen Laboral:</span> {{boleta?.regimen_pensionario}}</div>
+        <div><span class="font-bold">Vínculo Laboral:</span> INGRESO {{boleta?.fecha_ingreso_registro}} TÉRMINO: {{boleta?.fecha_termino_registro}}</div>
+        <div><span class="font-bold">Leyenda Permanente:</span> {{boleta?.leyenda_permanente}}</div>
+        <div><span class="font-bold">Jornada Laboral:</span> {{boleta?.nivel_mag_horas}}</div>
+        <div><span class="font-bold">Situación:</span> {{boleta?.leyenda_mensual}}</div>
+        <div><span class="font-bold">Días de Inasistencia:</span> 0</div>
+        <div><span class="font-bold">Tardanza (hh:mm):</span> 00:00</div>
+        <div><span class="font-bold">Código Modular IE:</span> {{boleta?.codigo_encabezado}}</div>
+      </div>
+      <div>
+        <div><span class="font-bold">Nivel Educativo:</span> {{boleta?.nivel_mag_horas}}</div>
+        <div><span class="font-bold">Nivel Magisterial:</span> {{boleta?.nivel_mag_horas}}</div>
+        <div><span class="font-bold">Tipo Pensionista:</span> {{boleta?.tipo_pensionista}}</div>
+        <div><span class="font-bold">Tipo Pension:</span> {{boleta?.tipo_pension}}</div>
+        <div><span class="font-bold">Cuenta Principal:</span> {{boleta?.cuenta_principal}}</div>
+        <div><span class="font-bold">Afiliación:</span> {{boleta?.reg_pensionario_detalle?.afiliacion}}</div>
+        <div><span class="font-bold">Cód. Planilla Nexus:</span> {{boleta?.cuenta_principal}}</div>
+        <div><span class="font-bold">Días de Licencia:</span> 0</div>
+      </div>
+    </div>
+
+    <!-- INGRESOS Y DESCUENTOS -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 px-7 py-4 border-b border-gray-300 bg-[#e3ecef]">
+      <div>
+        <div class="font-bold text-gray-700 mb-2">INGRESOS</div>
+        <table class="w-full text-xs mb-2">
           <thead>
-            <tr>
-              <th>Tipo</th>
-              <th>Concepto</th>
-              <th>Monto</th>
+            <tr class="bg-[#c7dadf]">
+              <th class="font-semibold text-left px-2 py-1">CONCEPTO</th>
+              <th class="font-semibold text-right px-2 py-1">MONTO</th>
             </tr>
           </thead>
           <tbody>
-            <tr *ngFor="let concepto of boleta?.conceptos">
-              <td>{{concepto.tipo}}</td>
-              <td>{{concepto.concepto}}</td>
-              <td>{{concepto.monto | currency}}</td>
+            <tr *ngFor="let concepto of boleta?.conceptos" [ngIf]="concepto.tipo === 'INGRESO'">
+              <td class="px-2 py-1">{{concepto.concepto}}</td>
+              <td class="px-2 py-1 text-right">{{concepto.monto | currency:'PEN'}}</td>
             </tr>
           </tbody>
         </table>
-      </td>
-    </tr>
-  </table>
+        <div class="font-bold text-right pr-2">TOTAL INGRESOS: <span class="text-gray-700">{{boleta?.total_remuneraciones | currency:'PEN'}}</span></div>
+      </div>
+      <div>
+        <div class="font-bold text-gray-700 mb-2">DESCUENTOS</div>
+        <table class="w-full text-xs mb-2">
+          <thead>
+            <tr class="bg-[#c7dadf]">
+              <th class="font-semibold text-left px-2 py-1">CONCEPTO</th>
+              <th class="font-semibold text-right px-2 py-1">MONTO</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let concepto of boleta?.conceptos" [ngIf]="concepto.tipo === 'DESCUENTO'">
+              <td class="px-2 py-1">{{concepto.concepto}}</td>
+              <td class="px-2 py-1 text-right">{{concepto.monto | currency:'PEN'}}</td>
+            </tr>
+          </tbody>
+        </table>
+        <div class="font-bold text-right pr-2">TOTAL DESCUENTOS: <span class="text-gray-700">{{boleta?.total_descuentos | currency:'PEN'}}</span></div>
+      </div>
+    </div>
+
+    <!-- TOTAL LÍQUIDO Y IMPONIBLE -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 px-7 py-4 border-b border-gray-300">
+      <div class="font-bold text-gray-700">TOTAL LÍQUIDO: <span class="text-[#388E3C]">{{boleta?.total_liquido | currency:'PEN'}}</span></div>
+      <div class="font-bold text-gray-700">AFECTO A CARGAS SOCIALES: <span class="text-[#E53935]">{{boleta?.monto_imponible | currency:'PEN'}}</span></div>
+    </div>
+
+    <!-- MENSAJE Y PIE -->
+    <div class="px-7 py-4 text-xs">
+      <div class="mb-2">
+        <span class="font-bold text-gray-700">MENSAJE:</span>
+        <span>{{boleta?.leyenda_mensual || "Visite la página web del Ministerio de Educación: www.gob.pe/minedu"}}</span>
+      </div>
+      <div class="flex items-center mt-2">
+        <svg class="w-6 h-6 text-green-700 mr-2" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M16 8l-4 4-2-2"/></svg>
+        <span class="text-gray-500">
+          Antes de imprimir esta boleta de pago, piense en su responsabilidad social y compromiso con el medio ambiente.
+        </span>
+      </div>
+    </div>
+  </div>
 </div>

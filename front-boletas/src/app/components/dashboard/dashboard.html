@@ -1,7 +1,10 @@
-<app-navbar></app-navbar>
-<div class="main-layout">
-  <div class="main-content">
-    <router-outlet></router-outlet>
+<div class="flex flex-col min-h-screen">
+  <app-navbar></app-navbar>
+  <div class="flex flex-1 min-h-0">
+    <div class="flex-1 min-w-0 bg-blue-50">
+      <router-outlet></router-outlet>
+    </div>
+    <app-side-bar class="w-[300px] min-h-[calc(100vh-56px)] bg-white shadow-lg rounded-xl p-5"></app-side-bar>
   </div>
-  <app-side-bar></app-side-bar>
+  <app-footer></app-footer>
 </div>

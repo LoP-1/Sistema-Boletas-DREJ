@@ -1,60 +1,117 @@
-<div class="profile-container" *ngIf="!cargando && usuario; else loading">
-  <div class="profile-card">
-    <div class="profile-avatar">
-      <img src="https://api.dicebear.com/7.x/initials/svg?seed={{usuario.nombres}} {{usuario.apellidos}}" alt="Avatar">
+<div *ngIf="!cargando && usuario; else loading"
+  class="w-full flex flex-col md:flex-row gap-10 py-10 px-2 md:px-8 bg-gradient-to-br from-blue-50 to-blue-100 min-h-[calc(100vh-120px)] justify-center">
+
+  <!-- Columna Izquierda: Datos usuario + editar -->
+  <div class="flex flex-col gap-7 w-full max-w-md">
+    <div class="bg-white rounded-3xl shadow-2xl flex flex-col items-center gap-5 p-8 border border-blue-100">
+      <div class="relative">
+        <img [src]="'https://api.dicebear.com/7.x/initials/svg?seed=' + usuario.nombre + ' ' + usuario.apellido"
+          alt="Avatar"
+          class="w-32 h-32 rounded-full border-4 border-blue-200 shadow-lg object-cover bg-blue-50" />
+        <span class="absolute -bottom-2 right-0 text-xs px-2 py-1 bg-blue-100 text-blue-800 rounded-full shadow">Usuario</span>
+      </div>
+      <h2 class="text-2xl font-bold text-blue-800 text-center tracking-tight">{{usuario.nombre}} {{usuario.apellido}}</h2>
+      <form (ngSubmit)="actualizarUsuario()" class="flex flex-col gap-3 w-full">
+        <div class="flex items-center gap-2">
+          <span class="font-semibold text-blue-700 w-20 flex-shrink-0">Correo:</span>
+          <input type="email" [(ngModel)]="usuario.correo" name="correo"
+            class="border border-blue-200 rounded px-3 py-2 text-sm flex-1 focus:ring-2 focus:ring-blue-300 outline-none transition" />
+        </div>
+        <div class="flex items-center gap-2">
+          <span class="font-semibold text-blue-700 w-20 flex-shrink-0">Teléfono:</span>
+          <input type="text" [(ngModel)]="usuario.telefono" name="telefono"
+            class="border border-blue-200 rounded px-3 py-2 text-sm flex-1 focus:ring-2 focus:ring-blue-300 outline-none transition" />
+        </div>
+        <button type="submit"
+          class="bg-blue-600 text-white font-semibold px-4 py-2 rounded-lg mt-2 hover:bg-blue-700 transition-all shadow">
+          <svg class="inline-block w-4 h-4 mr-1 -mt-1" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/>
+          </svg>
+          Actualizar Datos
+        </button>
+      </form>
     </div>
-    <div class="profile-info">
-      <h2>{{usuario.nombres}} {{usuario.apellidos}}</h2>
-      <p><span class="label">DNI:</span> {{usuario.documentoIdentidad}}</p>
-      <p><span class="label">Fecha de nacimiento:</span> {{usuario.fechaNacimiento}}</p>
+
+    <!-- Cambiar contraseña -->
+    <div class="bg-white rounded-2xl shadow-lg p-6 flex flex-col gap-4 border border-blue-100">
+      <h3 class="text-lg font-bold text-blue-700 mb-1 flex items-center gap-2">
+        <svg class="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M12 15v2m-6 4h12a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2z"/>
+        </svg>
+        Cambiar contraseña
+      </h3>
+      <form (ngSubmit)="cambiarContrasena()" #form="ngForm" class="flex flex-col gap-3">
+        <label class="text-xs text-gray-500 mb-1">Mínimo 6 caracteres</label>
+        <div class="relative">
+          <input
+            type="password"
+            [(ngModel)]="nuevaContrasena"
+            name="nuevaContrasenaInput"
+            required minlength="6"
+            autocomplete="new-password"
+            class="w-full px-3 py-2 border border-blue-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 transition placeholder-gray-400"
+            placeholder="Nueva contraseña" />
+          <svg class="absolute right-3 top-3 w-4 h-4 text-blue-400 pointer-events-none" fill="none" stroke="currentColor" stroke-width="2"
+            viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M12 17v.01"/>
+            <path stroke-linecap="round" stroke-linejoin="round" d="M9 10h6"/>
+            <path stroke-linecap="round" stroke-linejoin="round" d="M15 7.5A3 3 0 1 0 9 7.5"/>
+          </svg>
+        </div>
+        <button type="submit" [disabled]="form.invalid || cargando"
+          class="bg-blue-600 text-white font-semibold py-2 rounded-lg hover:bg-blue-700 disabled:bg-blue-300 transition-all shadow">
+          Guardar contraseña
+        </button>
+      </form>
+      <div *ngIf="mensajePass" class="text-center text-green-600 font-medium mt-2">{{mensajePass}}</div>
     </div>
   </div>
 
-  <!-- Tarjeta DNI personalizada -->
-  <div class="dni-card">
-    <div class="dni-header">
-      <span class="dni-title">REPÚBLICA DEL PERÚ</span>
-      <span class="dni-subtitle">REGISTRO NACIONAL DE IDENTIFICACIÓN Y ESTADO CIVIL</span>
-      <span class="dni-doc">DOCUMENTO NACIONAL DE IDENTIDAD</span>
-      <span class="dni-dni">DNI</span>
-      <span class="dni-dni-number">{{usuario.documentoIdentidad}}</span>
-    </div>
-    <div class="dni-body">
-      <div class="dni-photo">
-        <img src="https://api.dicebear.com/7.x/initials/svg?seed={{usuario.nombres}} {{usuario.apellidos}}" alt="Avatar">
+  <!-- Columna Derecha: Tarjeta DNI solo informativa -->
+  <div class="flex flex-col w-full max-w-lg">
+    <div class="bg-gradient-to-br from-blue-100 to-blue-50 rounded-2xl shadow-xl p-8 flex flex-col gap-5 border-2 border-blue-200">
+      <div class="flex flex-col items-center mb-3">
+        <span class="text-xs font-bold uppercase text-blue-900 tracking-wide">REPÚBLICA DEL PERÚ</span>
+        <span class="text-xs text-gray-700 font-semibold">REGISTRO NACIONAL DE IDENTIFICACIÓN Y ESTADO CIVIL</span>
+        <span class="text-sm font-medium text-blue-700 mb-1">DOCUMENTO NACIONAL DE IDENTIDAD</span>
+        <span class="text-base font-bold text-blue-900">DNI</span>
+        <span class="text-xl font-extrabold text-blue-800 tracking-widest">{{usuario.dni}}</span>
       </div>
-      <div class="dni-details">
-        <div><span>Apellidos:</span> {{usuario.apellidos}}</div>
-        <div><span>Nombres:</span> {{usuario.nombres}}</div>
-        <div><span>Fecha Nac.:</span> {{usuario.fechaNacimiento}}</div>
+      <div class="flex gap-5 items-center">
+        <img [src]="'https://api.dicebear.com/7.x/initials/svg?seed=' + usuario.nombre + ' ' + usuario.apellido"
+          alt="Avatar DNI"
+          class="w-24 h-24 rounded shadow-md border-2 border-blue-200 object-cover bg-blue-50" />
+        <div class="flex flex-col gap-1 text-[15px] text-blue-900">
+          <div>
+            <span class="font-semibold">Nombres:</span>
+            {{usuario.nombre}}
+          </div>
+          <div>
+            <span class="font-semibold">Apellidos:</span>
+            {{usuario.apellido}}
+          </div>
+          <div>
+            <span class="font-semibold">Teléfono:</span>
+            {{usuario.telefono}}
+          </div>
+          <div>
+            <span class="font-semibold">Correo:</span>
+            {{usuario.correo}}
+          </div>
+        </div>
       </div>
-      <div class="dni-firma">
+      <div class="flex flex-col gap-1 text-xs font-mono text-gray-700 items-end pt-2">
+        <span>I&lt;PER{{usuario.dni}}&lt;4</span>
+        <span>8007156F2504162PER</span>
       </div>
-
-    </div>
-    <div class="dni-footer">
-      <span class="dni-code">I&lt;PER{{usuario.documentoIdentidad}}&lt;4</span>
-      <span class="dni-code">8007156F2504162PER</span>
     </div>
   </div>
-</div>
-
-<div class="change-password-card">
-  <h3>Cambiar contraseña</h3>
-  <form (ngSubmit)="cambiarContrasena()" #form="ngForm">
-    <label>
-      Nueva contraseña:
-      <input type="password" [(ngModel)]="nuevaContrasena" name="nuevaContrasena" required minlength="6">
-    </label>
-    <button type="submit" [disabled]="form.invalid || cargando">Guardar</button>
-  </form>                     
-  <div *ngIf="mensajePass" class="mensaje">{{mensajePass}}</div>
 </div>
 
 <ng-template #loading>
-  <div class="profile-loading">
-    <div class="loader"></div>
-    <p>Cargando perfil...</p>
-    <p *ngIf="error" class="error">{{error}}</p>
+  <div class="flex flex-col items-center justify-center min-h-[60vh]">
+    <div class="animate-spin rounded-full h-16 w-16 border-t-4 border-blue-500 mb-4"></div>
+    <p class="text-gray-700 text-lg">Cargando perfil...</p>
+    <p *ngIf="error" class="text-red-600 text-center font-bold mt-2">{{error}}</p>
   </div>
 </ng-template>

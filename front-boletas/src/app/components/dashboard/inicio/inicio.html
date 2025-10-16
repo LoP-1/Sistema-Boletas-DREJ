@@ -1,42 +1,66 @@
-<div class="inicio-container">
-  <div class="saludo">
-    <h2>¡Bienvenido/a <span>{{ persona?.nombres }}</span> <span>{{ persona?.apellidos }}</span>!</h2>
-    <p>Documento: <span>{{ persona?.documentoIdentidad }}</span></p>
-  </div>
+<div class="flex flex-col min-h-[calc(100vh-56px)] bg-gradient-to-br from-blue-50 to-blue-100">
+  <!-- Contenido Central centrado -->
+  <div class="flex-1 flex flex-col items-center justify-center">
+    <div class="w-full max-w-2xl bg-white rounded-2xl shadow-xl p-8">
+      <div class="saludo text-center mb-6">
+        <h2 class="text-2xl md:text-3xl font-bold text-blue-800 mb-2">
+          ¡Bienvenido/a
+          <span class="text-blue-500">{{ persona?.nombres }}</span>
+          <span class="text-blue-500">{{ persona?.apellidos }}</span>!
+        </h2>
+        <p class="text-gray-600 text-lg">
+          <span class="font-medium">Documento:</span>
+          <span class="text-blue-700 tracking-wide">{{ persona?.documentoIdentidad }}</span>
+        </p>
+      </div>
 
-  <div class="boletas-section">
-    <h3>Tus 3 boletas más recientes:</h3>
-    <div class="boletas-grid">
-      <ng-container *ngIf="boletasRecientes.length > 0; else sinBoletas">
-        <div *ngFor="let boleta of boletasRecientes" class="boleta-card">
-          <div class="clipboard-clip"></div>
-          <div class="boleta-paper">
-            <div class="boleta-header">
-              <div class="boleta-date">
-                {{ boleta.mes }}/{{ boleta.anio }}
+      <div class="boletas-section">
+        <h3 class="text-lg md:text-xl font-semibold text-gray-700 mb-4">Tus 3 boletas más recientes:</h3>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 boletas-grid">
+          <ng-container *ngIf="boletasRecientes.length > 0; else sinBoletas">
+            <div *ngFor="let boleta of boletasRecientes" class="boleta-card bg-gradient-to-b from-blue-100 to-blue-50 rounded-xl shadow-md px-4 py-5 flex flex-col items-stretch relative">
+              <div class="absolute -top-6 left-1/2 -translate-x-1/2 flex items-center justify-center">
+                <div class="bg-blue-300 rounded-full h-12 w-12 flex items-center justify-center shadow-lg">
+                  <svg class="w-7 h-7 text-blue-700" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                    <rect width="18" height="14" x="3" y="5" rx="2" stroke="currentColor" stroke-width="2" fill="white" />
+                    <path d="M16 3v4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                    <path d="M8 3v4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                  </svg>
+                </div>
               </div>
-              <div class="boleta-estado" [ngClass]="{
-                'estado-activo': boleta.estado === 'ACTIVO',
-                'estado-inactivo': boleta.estado === 'INACTIVO'
-              }">
-                {{ boleta.estado }}
+              <div class="boleta-paper mt-8 flex flex-col gap-2">
+                <div class="boleta-header flex items-center justify-between mb-2">
+                  <div class="boleta-date text-blue-800 font-semibold text-sm">
+                    {{ boleta.mes }}/{{ boleta.anio }}
+                  </div>
+                  <div class="boleta-estado text-xs font-bold px-2 py-1 rounded"
+                    [ngClass]="{
+                      'bg-green-100 text-green-700': boleta.estado === 'ACTIVO',
+                      'bg-red-100 text-red-600': boleta.estado === 'INACTIVO'
+                    }">
+                    {{ boleta.estado }}
+                  </div>
+                </div>
+                <div class="boleta-body text-gray-700 text-sm flex flex-col gap-1">
+                  <div><span class="font-semibold">Establecimiento:</span> <span>{{ boleta.establecimiento }}</span></div>
+                  <div><span class="font-semibold">Cargo:</span> <span>{{ boleta.cargo }}</span></div>
+                  <div><span class="font-semibold">Tipo:</span> <span>{{ boleta.tipo_servidor || boleta.tipo_pensionista }}</span></div>
+                  <div class="boleta-liquido mt-2 text-blue-900 font-bold"><span>Total líquido:</span>
+                    <span>S/. {{ boleta.total_liquido | number:'1.2-2' }}</span>
+                  </div>
+                </div>
+                <button class="boleta-detalle-btn mt-3 py-1.5 px-3 rounded-lg bg-blue-600 text-white text-xs font-medium shadow hover:bg-blue-700 transition"
+                  type="button">
+                  Ver detalles
+                </button>
               </div>
             </div>
-            <div class="boleta-body">
-              <div><strong>Establecimiento:</strong> <span>{{ boleta.establecimiento }}</span></div>
-              <div><strong>Cargo:</strong> <span>{{ boleta.cargo }}</span></div>
-              <div><strong>Tipo:</strong> <span>{{ boleta.tipo_servidor || boleta.tipo_pensionista }}</span></div>
-              <div class="boleta-liquido"><strong>Total líquido:</strong> <span>PEN {{ boleta.total_liquido | number:'1.2-2' }}</span></div>
-            </div>
-            <button class="boleta-detalle-btn" type="button">
-              Ver detalles
-            </button>
-          </div>
+          </ng-container>
+          <ng-template #sinBoletas>
+            <p class="col-span-full text-gray-500 italic text-center my-5">No se encontraron boletas recientes.</p>
+          </ng-template>
         </div>
-      </ng-container>
-      <ng-template #sinBoletas>
-        <p>No se encontraron boletas recientes.</p>
-      </ng-template>
+      </div>
     </div>
   </div>
 </div>

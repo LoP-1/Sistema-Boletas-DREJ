@@ -1,16 +1,30 @@
-<nav class="navbar">
-  <div class="navbar-left">
-    <span class="navbar-title">Sistema de Boletas</span>
+<nav class="bg-white shadow-md px-6 py-3 flex items-center justify-between sticky top-0 z-30">
+  <div class="flex items-center gap-3">
+    <div class="p-2 flex items-center justify-center">
+      <img src="logo-drej.png" alt="Logo" class="h-12 w-auto" />
+    </div>
+    <span class="text-xl font-bold text-blue-700 tracking-wide whitespace-nowrap">Sistema de Boletas</span>
   </div>
-  <ul class="navbar-links">
-    <li><a routerLink="/dashboard/inicio" routerLinkActive="active" class="Inicio">Inicio</a></li>
-    <li><a routerLink="/dashboard/boletas" routerLinkActive="active">Boletas</a></li>
-    <li *ngIf="rol === 'ADMIN'">
-      <a routerLink="/dashboard/admin" routerLinkActive="active">Usuarios</a>
+  <ul class="flex gap-2 md:gap-6 items-center">
+    <li>
+      <a routerLink="/dashboard/inicio" routerLinkActive="font-bold text-blue-700 underline underline-offset-8"
+         class="text-gray-700 hover:text-blue-700 px-3 py-2 rounded transition">Inicio</a>
+    </li>
+    <li>
+      <a routerLink="/dashboard/boletas" routerLinkActive="font-bold text-blue-700 underline underline-offset-8"
+         class="text-gray-700 hover:text-blue-700 px-3 py-2 rounded transition">Boletas</a>
     </li>
     <li *ngIf="rol === 'ADMIN'">
-      <a routerLink="/dashboard/gestion-boletas" routerLinkActive="active">Gestionar Boletas</a>
+      <a routerLink="/dashboard/admin" routerLinkActive="font-bold text-blue-700 underline underline-offset-8"
+         class="text-gray-700 hover:text-blue-700 px-3 py-2 rounded transition">Usuarios</a>
     </li>
-    <li><a routerLink="/dashboard/perfil" routerLinkActive="active">Perfil</a></li>
+    <li *ngIf="rol === 'ADMIN'">
+      <a routerLink="/dashboard/gestion-boletas" routerLinkActive="font-bold text-blue-700 underline underline-offset-8"
+         class="text-gray-700 hover:text-blue-700 px-3 py-2 rounded transition">Gestionar Boletas</a>
+    </li>
+    <li>
+      <a routerLink="/dashboard/perfil" routerLinkActive="font-bold text-blue-700 underline underline-offset-8"
+         class="text-gray-700 hover:text-blue-700 px-3 py-2 rounded transition">Perfil</a>
+    </li>
   </ul>
 </nav>

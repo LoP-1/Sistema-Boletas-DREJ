@@ -1,25 +1,45 @@
-<div class="sidebar-container">
-  <nav>
-    <h2 class="sidebar-title">Carrito de boletas</h2>
-    <ul class="boletas-list">
-      <li class="boleta-label" *ngIf="carrito.length === 0">No hay boletas en el carrito.</li>
+<nav>
+    <h2 class="text-lg font-semibold text-blue-700 mb-3 flex items-center gap-2">
+      <svg class="w-6 h-6 text-blue-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round"
+            d="M12 6v6l4 2" />
+        <circle cx="12" cy="12" r="10" />
+      </svg>
+      Carrito de boletas
+    </h2>
+    <ul class="space-y-2 mb-3">
+      <li class="text-gray-500 italic text-sm" *ngIf="carrito.length === 0">
+        No hay boletas en el carrito.
+      </li>
       <ng-container *ngFor="let boleta of carrito; let i = index; trackBy: trackByIndex">
-        <li>
-          <span class="boleta-label">{{ boleta.mes }} / {{ boleta.anio }}</span>
-          <button class="details-btn" aria-label="Ver detalles de boleta"
-                  (click)="verDetalle(boleta)">Ver detalles</button>
-          <button class="remove-btn" aria-label="Eliminar esta boleta"
-                  (click)="removeBoleta(i)">🗑️</button>
+        <li class="flex items-center justify-between bg-blue-50 rounded-lg px-3 py-2">
+          <span class="text-blue-900 font-medium">{{ boleta.mes }} / {{ boleta.anio }}</span>
+          <div class="flex gap-1">
+            <button class="text-xs text-blue-700 hover:underline" aria-label="Ver detalles de boleta"
+                    (click)="verDetalle(boleta)">Ver detalles</button>
+            <button class="text-red-500 hover:bg-red-100 rounded-full p-1 transition"
+                    aria-label="Eliminar esta boleta"
+                    (click)="removeBoleta(i)">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2"
+                viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round"
+                  d="M6 18L18 6M6 6l12 12"/></svg>
+            </button>
+          </div>
         </li>
       </ng-container>
     </ul>
-    <button class="print-all-btn" aria-label="Imprimir todas las boletas"
-            (click)="imprimirTodas()">Imprimir todas las boletas del carrito</button>
-    <button class="remove-all-btn" aria-label="Eliminar todas las boletas"
-            (click)="removeAllBoletas()">Eliminar todas las boletas</button>
-    <ul class="sidebar-actions">
+    <div class="flex flex-col gap-2 mb-3">
+      <button class="bg-blue-600 text-white font-semibold py-2 rounded-lg hover:bg-blue-700 transition shadow"
+              aria-label="Imprimir todas las boletas"
+              (click)="imprimirTodas()">Imprimir todas las boletas</button>
+      <button class="bg-red-100 text-red-600 font-semibold py-2 rounded-lg hover:bg-red-200 transition shadow"
+              aria-label="Eliminar todas las boletas"
+              (click)="removeAllBoletas()">Eliminar todas</button>
+    </div>
+    <ul class="mt-2 border-t pt-4 flex flex-col gap-2">
       <li>
-        <button class="sidebar-exit-link" (click)="salir()">Salir</button>
+        <button class="w-full bg-gray-100 text-gray-700 py-2 rounded-lg hover:bg-gray-200 transition shadow"
+                (click)="salir()">Salir</button>
       </li>
     </ul>
     <app-boleta-detail-modal
@@ -28,4 +48,3 @@
       (close)="closeModal()">
     </app-boleta-detail-modal>
   </nav>
-</div>

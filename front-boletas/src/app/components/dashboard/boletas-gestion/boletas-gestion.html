@@ -1,94 +1,156 @@
-<div class="admin-panel">
-    <h2>Gestión de Personas</h2>
-    <div>
-        <input [(ngModel)]="filtro" placeholder="Buscar por nombre, apellido o DNI">
-        <button (click)="agregarPersona()">Agregar persona</button>
-        <div *ngIf="personaLoading">Cargando personas...</div>
-        <table *ngIf="!personaLoading">
-            <thead>
-                <tr>
-                    <th>ID</th>
-                    <th>DNI</th>
-                    <th>Nombre</th>
-                    <th>Apellido</th>
-                    <th>Nacimiento</th>
-                    <th>Acciones</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr *ngFor="let p of filtrarPersonas()" [class.selected]="personaSeleccionada?.id === p.id"
-                    (click)="seleccionarPersona(p)">
-                    <ng-container *ngIf="!editandoPersona || editandoPersona.id !== p.id">
-                        <td>{{p.id}}</td>
-                        <td>{{p.documentoIdentidad}}</td>
-                        <td>{{p.nombres}}</td>
-                        <td>{{p.apellidos}}</td>
-                        <td>{{p.fechaNacimiento}}</td>
-                        <td>
-                            <button (click)="mostrarEditarPersona(p); $event.stopPropagation()">Editar</button>
-                            <button (click)="eliminarPersona(p.id ?? 0); $event.stopPropagation()">Eliminar</button>
-                        </td>
-                    </ng-container>
-                    <ng-container *ngIf="editandoPersona && editandoPersona.id === p.id">
-                        <td colspan="6">
-                            <input [(ngModel)]="editandoPersona.nombres" placeholder="Nombre">
-                            <input [(ngModel)]="editandoPersona.apellidos" placeholder="Apellido">
-                            <input [(ngModel)]="editandoPersona.documentoIdentidad" placeholder="DNI">
-                            <input [(ngModel)]="editandoPersona.fechaNacimiento" placeholder="Nacimiento">
-                            <button (click)="guardarPersona(); $event.stopPropagation()">Guardar</button>
-                            <button (click)="cancelarEdicionPersona(); $event.stopPropagation()">Cancelar</button>
-                        </td>
-                    </ng-container>
-                </tr>
-            </tbody>
-        </table>
-        <div class="pagination">
-            <button (click)="cargarPersonas(personaPage-1)" [disabled]="personaPage===0">Anterior</button>
-            <span>Página {{personaPage+1}} / {{totalPersonaPages}}</span>
-            <button (click)="cargarPersonas(personaPage+1)"
-                [disabled]="personaPage>=totalPersonaPages-1">Siguiente</button>
-        </div>
+<div class="admin-panel w-full min-h-screen bg-gradient-to-br from-blue-50 to-blue-100 p-6 flex flex-col items-center">
+  <div class="w-full max-w-6xl">
+
+    <!-- Gestión de Personas -->
+    <h2 class="text-2xl font-bold text-blue-800 mb-4">Gestión de Personas</h2>
+    <div class="mb-6 flex flex-col md:flex-row md:items-center gap-3">
+      <input [(ngModel)]="filtro"
+             placeholder="Buscar por nombre, apellido o DNI"
+             class="border border-blue-200 rounded px-3 py-2 text-sm shadow focus:ring-2 focus:ring-blue-300 outline-none transition w-full md:w-80" />
+      <button (click)="agregarPersona()"
+              class="bg-blue-600 text-white font-semibold px-4 py-2 rounded-lg shadow hover:bg-blue-700 transition-all">
+        Agregar persona
+      </button>
+    </div>
+    <div *ngIf="personaLoading" class="text-blue-700 font-semibold text-center mb-4">Cargando personas...</div>
+    <div class="overflow-x-auto rounded-xl shadow-lg mb-4">
+      <table *ngIf="!personaLoading" class="min-w-full bg-white rounded-xl">
+        <thead class="bg-blue-100 text-blue-800">
+          <tr>
+            <th class="py-3 px-4 text-left font-semibold">ID</th>
+            <th class="py-3 px-4 text-left font-semibold">DNI</th>
+            <th class="py-3 px-4 text-left font-semibold">Nombre</th>
+            <th class="py-3 px-4 text-left font-semibold">Apellido</th>
+            <th class="py-3 px-4 text-left font-semibold">Nacimiento</th>
+            <th class="py-3 px-4 text-left font-semibold">Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          <ng-container *ngFor="let p of filtrarPersonas()">
+            <tr [class.bg-blue-50]="personaSeleccionada?.id === p.id"
+                class="border-b last:border-0 hover:bg-blue-50 transition cursor-pointer"
+                (click)="seleccionarPersona(p)">
+              <ng-container *ngIf="!editandoPersona || editandoPersona.id !== p.id">
+                <td class="py-2 px-4">{{p.id}}</td>
+                <td class="py-2 px-4">{{p.documentoIdentidad}}</td>
+                <td class="py-2 px-4">{{p.nombres}}</td>
+                <td class="py-2 px-4">{{p.apellidos}}</td>
+                <td class="py-2 px-4">{{p.fechaNacimiento}}</td>
+                <td class="py-2 px-4 flex gap-2">
+                  <button (click)="mostrarEditarPersona(p); $event.stopPropagation()"
+                          class="bg-blue-600 text-white px-3 py-1 rounded-lg text-xs font-semibold shadow hover:bg-blue-700 transition">
+                    Editar
+                  </button>
+                  <button (click)="eliminarPersona(p.id ?? 0); $event.stopPropagation()"
+                          class="bg-red-100 text-red-600 px-3 py-1 rounded-lg text-xs font-semibold shadow hover:bg-red-200 transition">
+                    Eliminar
+                  </button>
+                </td>
+              </ng-container>
+            </tr>
+            <!-- Fila expandida de edición -->
+            <tr *ngIf="editandoPersona && editandoPersona.id === p.id" class="bg-blue-50">
+              <td colspan="6" class="p-0 border-t-0">
+                <form (ngSubmit)="guardarPersona()" class="flex flex-col md:flex-row gap-2 items-center px-6 py-4">
+                  <input [(ngModel)]="editandoPersona.nombres" name="nombreEdit" placeholder="Nombre"
+                         class="input-edit" />
+                  <input [(ngModel)]="editandoPersona.apellidos" name="apellidoEdit" placeholder="Apellido"
+                         class="input-edit" />
+                  <input [(ngModel)]="editandoPersona.documentoIdentidad" name="dniEdit" placeholder="DNI"
+                         class="input-edit" />
+                  <input [(ngModel)]="editandoPersona.fechaNacimiento" name="nacEdit" placeholder="Nacimiento"
+                         class="input-edit" />
+                  <button type="submit"
+                          class="bg-green-600 text-white px-4 py-1 rounded-lg shadow hover:bg-green-700 transition">
+                    Guardar
+                  </button>
+                  <button type="button" (click)="cancelarEdicionPersona()"
+                          class="bg-red-100 text-red-600 px-3 py-1 rounded-lg shadow hover:bg-red-200 transition">
+                    Cancelar
+                  </button>
+                </form>
+              </td>
+            </tr>
+          </ng-container>
+        </tbody>
+      </table>
+    </div>
+    <div class="pagination flex gap-2 items-center justify-center mb-8">
+      <button (click)="cargarPersonas(personaPage-1)" [disabled]="personaPage===0"
+              class="px-4 py-2 rounded bg-blue-100 text-blue-700 font-semibold disabled:bg-gray-200 disabled:text-gray-400">
+        Anterior
+      </button>
+      <span class="text-blue-800 font-semibold">Página {{personaPage+1}} / {{totalPersonaPages}}</span>
+      <button (click)="cargarPersonas(personaPage+1)" [disabled]="personaPage>=totalPersonaPages-1"
+              class="px-4 py-2 rounded bg-blue-600 text-white font-semibold disabled:bg-gray-200 disabled:text-gray-400">
+        Siguiente
+      </button>
     </div>
 
-    <div *ngIf="personaSeleccionada">
-        <h3>Boletas de {{personaSeleccionada.nombres}} {{personaSeleccionada.apellidos}}</h3>
-        <button (click)="cancelarSeleccion()">Volver a personas</button>
-        <div *ngIf="boletaLoading">Cargando boletas...</div>
-        <table *ngIf="!boletaLoading">
-            <thead>
-                <tr>
-                    <th>Secuencia</th>
-                    <th>Mes</th>
-                    <th>Año</th>
-                    <th>Estado</th>
-                    <th>Acciones</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr *ngFor="let b of boletas">
-                    <ng-container *ngIf="!editandoBoleta || editandoBoleta.id !== b.id">
-                        <td>{{b.secuencia}}</td>
-                        <td>{{b.mes}}</td>
-                        <td>{{b.anio}}</td>
-                        <td>{{b.estado}}</td>
-                        <td>
-                            <button (click)="mostrarEditarBoleta(b)">Editar</button>
-                            <button (click)="eliminarBoleta(b.id ?? 0)">Eliminar</button>
-                        </td>
-                    </ng-container>
-                    <ng-container *ngIf="editandoBoleta && editandoBoleta.id === b.id">
-                        <td colspan="5">
-                            <input [(ngModel)]="editandoBoleta.secuencia" placeholder="Secuencia">
-                            <input [(ngModel)]="editandoBoleta.mes" placeholder="Mes">
-                            <input [(ngModel)]="editandoBoleta.anio" placeholder="Año">
-                            <input [(ngModel)]="editandoBoleta.estado" placeholder="Estado">
-                            <button (click)="guardarBoleta()">Guardar</button>
-                            <button (click)="cancelarEdicionBoleta()">Cancelar</button>
-                        </td>
-                    </ng-container>
-                </tr>
-            </tbody>
+    <!-- Boletas de la persona seleccionada -->
+    <div *ngIf="personaSeleccionada" class="w-full mt-10">
+      <div class="flex items-center gap-3 mb-4">
+        <h3 class="text-xl font-bold text-blue-700">Boletas de {{personaSeleccionada.nombres}} {{personaSeleccionada.apellidos}}</h3>
+        <button (click)="cancelarSeleccion()"
+                class="bg-gray-200 text-blue-700 font-semibold px-3 py-1 rounded-lg shadow hover:bg-blue-100 transition">
+          Volver a personas
+        </button>
+      </div>
+      <div *ngIf="boletaLoading" class="mb-4 text-blue-600">Cargando boletas...</div>
+      <div class="overflow-x-auto rounded-lg shadow">
+        <table *ngIf="!boletaLoading" class="min-w-full bg-white rounded-xl">
+          <thead class="bg-blue-100 text-blue-800">
+            <tr>
+              <th class="py-3 px-4 text-left font-semibold">Secuencia</th>
+              <th class="py-3 px-4 text-left font-semibold">Mes</th>
+              <th class="py-3 px-4 text-left font-semibold">Año</th>
+              <th class="py-3 px-4 text-left font-semibold">Estado</th>
+              <th class="py-3 px-4 text-left font-semibold">Acciones</th>
+            </tr>
+          </thead>
+          <tbody>
+            <ng-container *ngFor="let b of boletas">
+              <tr class="border-b last:border-0 hover:bg-blue-50 transition">
+                <ng-container *ngIf="!editandoBoleta || editandoBoleta.id !== b.id">
+                  <td class="py-2 px-4">{{b.secuencia}}</td>
+                  <td class="py-2 px-4">{{b.mes}}</td>
+                  <td class="py-2 px-4">{{b.anio}}</td>
+                  <td class="py-2 px-4">{{b.estado}}</td>
+                  <td class="py-2 px-4 flex gap-2">
+                    <button (click)="mostrarEditarBoleta(b); $event.stopPropagation()"
+                            class="bg-blue-600 text-white px-3 py-1 rounded-lg text-xs font-semibold shadow hover:bg-blue-700 transition">
+                      Editar
+                    </button>
+                    <button (click)="eliminarBoleta(b.id ?? 0); $event.stopPropagation()"
+                            class="bg-red-100 text-red-600 px-3 py-1 rounded-lg text-xs font-semibold shadow hover:bg-red-200 transition">
+                      Eliminar
+                    </button>
+                  </td>
+                </ng-container>
+              </tr>
+              <!-- Fila expandida de edición boleta -->
+              <tr *ngIf="editandoBoleta && editandoBoleta.id === b.id" class="bg-blue-50">
+                <td colspan="5" class="p-0 border-t-0">
+                  <form (ngSubmit)="guardarBoleta()" class="flex flex-col md:flex-row gap-2 items-center px-6 py-4">
+                    <input [(ngModel)]="editandoBoleta.secuencia" name="seqEdit" placeholder="Secuencia" class="input-edit" />
+                    <input [(ngModel)]="editandoBoleta.mes" name="mesEdit" placeholder="Mes" class="input-edit" />
+                    <input [(ngModel)]="editandoBoleta.anio" name="anioEdit" placeholder="Año" class="input-edit" />
+                    <input [(ngModel)]="editandoBoleta.estado" name="estadoEdit" placeholder="Estado" class="input-edit" />
+                    <button type="submit"
+                            class="bg-green-600 text-white px-4 py-1 rounded-lg shadow hover:bg-green-700 transition">
+                      Guardar
+                    </button>
+                    <button type="button" (click)="cancelarEdicionBoleta()"
+                            class="bg-red-100 text-red-600 px-3 py-1 rounded-lg shadow hover:bg-red-200 transition">
+                      Cancelar
+                    </button>
+                  </form>
+                </td>
+              </tr>
+            </ng-container>
+          </tbody>
         </table>
-        <!-- Aquí podrías agregar formulario para agregar boletas si tienes el endpoint -->
+      </div>
     </div>
+  </div>
 </div>
