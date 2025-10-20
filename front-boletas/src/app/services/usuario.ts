@@ -1,63 +1,73 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Observable, tap } from 'rxjs';
 import { Usuario } from '../models/usuario.model';
 import { environment } from '../../enviroments/environment';
 
 @Injectable({ providedIn: 'root' })
 export class UsuarioService {
   private apiUrl = `${environment.apiUrl}/usuarios`;
+  private tokenKey = 'jwtToken';
 
   constructor(private http: HttpClient) {}
 
-  // Helper para obtener headers con token JWT
   private getAuthHeaders(): HttpHeaders {
-    const token = localStorage.getItem('jwtToken');
+    const token = localStorage.getItem(this.tokenKey);
     return new HttpHeaders({
       Authorization: token ? `Bearer ${token}` : ''
     });
   }
 
-  // Listar todos los usuarios
-  listarUsuarios(): Observable<Usuario[]> {
-    return this.http.get<Usuario[]>(
-      this.apiUrl,
-      { headers: this.getAuthHeaders() }
+  // Registro
+  registrar(usuario: Usuario): Observable<Usuario> {
+    return this.http.post<Usuario>(`${this.apiUrl}/registro`, usuario);
+  }
+
+  // Login: guarda el token en localStorage
+  login(correo: string, contrasena: string): Observable<string> {
+    const body = { correo, contrasena } as Partial<Usuario>;
+    return this.http.post(`${this.apiUrl}/login`, body, { responseType: 'text' }).pipe(
+      tap((token: string) => {
+        if (token) {
+          localStorage.setItem(this.tokenKey, token);
+        }
+      })
     );
   }
 
-  // Actualizar datos de usuario (admin o usuario propio)
-  actualizarUsuario(id: number, usuario: Usuario): Observable<Usuario> {
+  // Actualizar datos del usuario (propietario o admin)
+  actualizarUsuario(id: number, usuarioActualizado: Usuario): Observable<Usuario> {
     return this.http.put<Usuario>(
       `${this.apiUrl}/${id}`,
-      usuario,
+      usuarioActualizado,
       { headers: this.getAuthHeaders() }
     );
   }
 
-  // Eliminar usuario (solo admin)
-  eliminarUsuario(id: number): Observable<any> {
-    return this.http.delete<any>(
-      `${this.apiUrl}/${id}`,
-      { headers: this.getAuthHeaders() }
-    );
+  // Cambiar contraseña (propietario o admin)
+  cambiarContrasena(id: number, nuevaContrasena: string): Observable<string> {
+    // El backend espera un string plano en el body
+    return this.http.put(`${this.apiUrl}/${id}/contrasena`, nuevaContrasena, {
+      headers: this.getAuthHeaders(),
+      responseType: 'text'
+    });
   }
 
-  // Cambiar estado de usuario (permitir acceso)
-  cambiarEstado(id: number, estado: boolean): Observable<Usuario> {
-    return this.http.put<Usuario>(
-      `${this.apiUrl}/${id}/estado`,
-      estado,
-      { headers: this.getAuthHeaders() }
-    );
+  // Helpers de autenticación
+  getToken(): string | null {
+    return localStorage.getItem(this.tokenKey);
   }
 
-  // Cambiar contraseña (admin o usuario dueño)
-  cambiarContrasena(id: number, nuevaContrasena: string): Observable<any> {
-    return this.http.put<any>(
-      `${this.apiUrl}/${id}/contrasena`,
-      nuevaContrasena,
-      { headers: this.getAuthHeaders(),responseType: 'text' as 'json' }
-    );
+  logout(): void {
+    localStorage.removeItem(this.tokenKey);
   }
+
+  isLoggedIn(): boolean {
+    return !!this.getToken();
+  }
+
+getUsuarioPorId(id: number): Observable<Usuario> {
+  return this.http.get<Usuario>(`${this.apiUrl}/${id}`, { headers: this.getAuthHeaders() });
+}
+
 }

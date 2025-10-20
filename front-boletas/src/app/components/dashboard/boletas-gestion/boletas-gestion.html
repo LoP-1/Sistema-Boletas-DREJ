@@ -1,155 +1,216 @@
-<div class="admin-panel w-full min-h-screen bg-gradient-to-br from-blue-50 to-blue-100 p-6 flex flex-col items-center">
-  <div class="w-full max-w-6xl">
-
-    <!-- Gestión de Personas -->
-    <h2 class="text-2xl font-bold text-blue-800 mb-4">Gestión de Personas</h2>
-    <div class="mb-6 flex flex-col md:flex-row md:items-center gap-3">
-      <input [(ngModel)]="filtro"
-             placeholder="Buscar por nombre, apellido o DNI"
-             class="border border-blue-200 rounded px-3 py-2 text-sm shadow focus:ring-2 focus:ring-blue-300 outline-none transition w-full md:w-80" />
-      <button (click)="agregarPersona()"
-              class="bg-blue-600 text-white font-semibold px-4 py-2 rounded-lg shadow hover:bg-blue-700 transition-all">
-        Agregar persona
-      </button>
+<div class="min-h-screen bg-gradient-to-br from-blue-50 to-blue-100 py-10 px-3 md:px-8">
+  <div class="max-w-6xl mx-auto bg-white rounded-3xl shadow-2xl border border-blue-100 overflow-hidden">
+    <!-- Header -->
+    <div class="p-6 md:p-8 bg-gradient-to-r from-blue-100 to-blue-50 border-b border-blue-100">
+      <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+        <div>
+          <h2 class="text-2xl md:text-3xl font-extrabold text-blue-900 tracking-tight">Gestión de Personas</h2>
+          <p class="text-gray-600">Crea, edita y administra personas y sus boletas</p>
+        </div>
+        <div class="flex items-center gap-2">
+          <button (click)="cargarPersonas(personaPage)"
+            class="px-4 py-2 bg-white border border-blue-300 text-blue-700 rounded-xl shadow hover:bg-blue-50 transition">
+            Recargar
+          </button>
+          <button class="bg-blue-600 text-white font-semibold px-4 py-2 rounded-xl shadow hover:bg-blue-700 transition"
+            disabled>
+            Agregar persona
+          </button>
+        </div>
+      </div>
     </div>
-    <div *ngIf="personaLoading" class="text-blue-700 font-semibold text-center mb-4">Cargando personas...</div>
-    <div class="overflow-x-auto rounded-xl shadow-lg mb-4">
-      <table *ngIf="!personaLoading" class="min-w-full bg-white rounded-xl">
-        <thead class="bg-blue-100 text-blue-800">
-          <tr>
-            <th class="py-3 px-4 text-left font-semibold">ID</th>
-            <th class="py-3 px-4 text-left font-semibold">DNI</th>
-            <th class="py-3 px-4 text-left font-semibold">Nombre</th>
-            <th class="py-3 px-4 text-left font-semibold">Apellido</th>
-            <th class="py-3 px-4 text-left font-semibold">Nacimiento</th>
-            <th class="py-3 px-4 text-left font-semibold">Acciones</th>
-          </tr>
-        </thead>
-        <tbody>
-          <ng-container *ngFor="let p of filtrarPersonas()">
-            <tr [class.bg-blue-50]="personaSeleccionada?.id === p.id"
-                class="border-b last:border-0 hover:bg-blue-50 transition cursor-pointer"
-                (click)="seleccionarPersona(p)">
-              <ng-container *ngIf="!editandoPersona || editandoPersona.id !== p.id">
+
+    <div class="p-6 md:p-8">
+      <!-- Filtro -->
+      <div class="flex flex-col md:flex-row md:items-center gap-3 mb-5">
+        <div class="flex-1 relative">
+          <input [(ngModel)]="filtro" (ngModelChange)="onFiltroChange()"
+            placeholder="Buscar por persona (nombre, apellido, DNI) o boleta (mes, año, establecimiento, cargo, estado)"
+            class="w-full pl-10 pr-4 py-2 border border-blue-200 rounded-xl focus:ring-2 focus:ring-blue-300 outline-none transition" />
+          <svg class="w-5 h-5 text-blue-400 absolute left-3 top-2.5" fill="none" stroke="currentColor" stroke-width="2"
+            viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round"
+              d="m21 21-4.35-4.35M17 10.5A6.5 6.5 0 1 1 4 10.5a6.5 6.5 0 0 1 13 0z" />
+          </svg>
+        </div>
+      </div>
+
+      <!-- Estado -->
+      <div class="min-h-[28px] mb-3">
+        <div *ngIf="personaLoading"
+          class="px-4 py-2 bg-blue-50 text-blue-800 rounded-xl border border-blue-200 shadow-sm">
+          Cargando personas...
+        </div>
+      </div>
+
+      <!-- Tabla única: personas + filas de boletas expandibles -->
+      <div class="overflow-x-auto rounded-xl shadow-lg">
+        <table *ngIf="!personaLoading" class="min-w-full bg-white rounded-xl">
+          <thead class="bg-blue-100 text-blue-800">
+            <tr>
+              <th class="py-3 px-4 text-left font-semibold w-12"></th>
+              <th class="py-3 px-4 text-left font-semibold">ID</th>
+              <th class="py-3 px-4 text-left font-semibold">DNI</th>
+              <th class="py-3 px-4 text-left font-semibold">Nombre</th>
+              <th class="py-3 px-4 text-left font-semibold">Apellido</th>
+              <th class="py-3 px-4 text-left font-semibold">Nacimiento</th>
+              <th class="py-3 px-4 text-left font-semibold">Acciones</th>
+            </tr>
+          </thead>
+          <tbody>
+            <ng-container *ngFor="let p of filtrarPersonas()">
+              <!-- Fila de persona -->
+              <tr class="border-b last:border-0 hover:bg-blue-50 transition">
+                <td class="py-2 px-4">
+                  <button (click)="toggleExpand(p, $event)"
+                    class="w-7 h-7 rounded-full border border-blue-200 flex items-center justify-center bg-white hover:bg-blue-50 transition">
+                    <svg class="w-4 h-4 text-blue-700 transition-transform"
+                      [ngStyle]="{'transform': isExpanded(p.id) ? 'rotate(90deg)' : 'rotate(0deg)'}" fill="none"
+                      stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
+                    </svg>
+                  </button>
+                </td>
                 <td class="py-2 px-4">{{p.id}}</td>
                 <td class="py-2 px-4">{{p.documentoIdentidad}}</td>
                 <td class="py-2 px-4">{{p.nombres}}</td>
                 <td class="py-2 px-4">{{p.apellidos}}</td>
                 <td class="py-2 px-4">{{p.fechaNacimiento}}</td>
-                <td class="py-2 px-4 flex gap-2">
-                  <button (click)="mostrarEditarPersona(p); $event.stopPropagation()"
-                          class="bg-blue-600 text-white px-3 py-1 rounded-lg text-xs font-semibold shadow hover:bg-blue-700 transition">
-                    Editar
-                  </button>
-                  <button (click)="eliminarPersona(p.id ?? 0); $event.stopPropagation()"
-                          class="bg-red-100 text-red-600 px-3 py-1 rounded-lg text-xs font-semibold shadow hover:bg-red-200 transition">
-                    Eliminar
-                  </button>
-                </td>
-              </ng-container>
-            </tr>
-            <!-- Fila expandida de edición -->
-            <tr *ngIf="editandoPersona && editandoPersona.id === p.id" class="bg-blue-50">
-              <td colspan="6" class="p-0 border-t-0">
-                <form (ngSubmit)="guardarPersona()" class="flex flex-col md:flex-row gap-2 items-center px-6 py-4">
-                  <input [(ngModel)]="editandoPersona.nombres" name="nombreEdit" placeholder="Nombre"
-                         class="input-edit" />
-                  <input [(ngModel)]="editandoPersona.apellidos" name="apellidoEdit" placeholder="Apellido"
-                         class="input-edit" />
-                  <input [(ngModel)]="editandoPersona.documentoIdentidad" name="dniEdit" placeholder="DNI"
-                         class="input-edit" />
-                  <input [(ngModel)]="editandoPersona.fechaNacimiento" name="nacEdit" placeholder="Nacimiento"
-                         class="input-edit" />
-                  <button type="submit"
-                          class="bg-green-600 text-white px-4 py-1 rounded-lg shadow hover:bg-green-700 transition">
-                    Guardar
-                  </button>
-                  <button type="button" (click)="cancelarEdicionPersona()"
-                          class="bg-red-100 text-red-600 px-3 py-1 rounded-lg shadow hover:bg-red-200 transition">
-                    Cancelar
-                  </button>
-                </form>
-              </td>
-            </tr>
-          </ng-container>
-        </tbody>
-      </table>
-    </div>
-    <div class="pagination flex gap-2 items-center justify-center mb-8">
-      <button (click)="cargarPersonas(personaPage-1)" [disabled]="personaPage===0"
-              class="px-4 py-2 rounded bg-blue-100 text-blue-700 font-semibold disabled:bg-gray-200 disabled:text-gray-400">
-        Anterior
-      </button>
-      <span class="text-blue-800 font-semibold">Página {{personaPage+1}} / {{totalPersonaPages}}</span>
-      <button (click)="cargarPersonas(personaPage+1)" [disabled]="personaPage>=totalPersonaPages-1"
-              class="px-4 py-2 rounded bg-blue-600 text-white font-semibold disabled:bg-gray-200 disabled:text-gray-400">
-        Siguiente
-      </button>
-    </div>
-
-    <!-- Boletas de la persona seleccionada -->
-    <div *ngIf="personaSeleccionada" class="w-full mt-10">
-      <div class="flex items-center gap-3 mb-4">
-        <h3 class="text-xl font-bold text-blue-700">Boletas de {{personaSeleccionada.nombres}} {{personaSeleccionada.apellidos}}</h3>
-        <button (click)="cancelarSeleccion()"
-                class="bg-gray-200 text-blue-700 font-semibold px-3 py-1 rounded-lg shadow hover:bg-blue-100 transition">
-          Volver a personas
-        </button>
-      </div>
-      <div *ngIf="boletaLoading" class="mb-4 text-blue-600">Cargando boletas...</div>
-      <div class="overflow-x-auto rounded-lg shadow">
-        <table *ngIf="!boletaLoading" class="min-w-full bg-white rounded-xl">
-          <thead class="bg-blue-100 text-blue-800">
-            <tr>
-              <th class="py-3 px-4 text-left font-semibold">Secuencia</th>
-              <th class="py-3 px-4 text-left font-semibold">Mes</th>
-              <th class="py-3 px-4 text-left font-semibold">Año</th>
-              <th class="py-3 px-4 text-left font-semibold">Estado</th>
-              <th class="py-3 px-4 text-left font-semibold">Acciones</th>
-            </tr>
-          </thead>
-          <tbody>
-            <ng-container *ngFor="let b of boletas">
-              <tr class="border-b last:border-0 hover:bg-blue-50 transition">
-                <ng-container *ngIf="!editandoBoleta || editandoBoleta.id !== b.id">
-                  <td class="py-2 px-4">{{b.secuencia}}</td>
-                  <td class="py-2 px-4">{{b.mes}}</td>
-                  <td class="py-2 px-4">{{b.anio}}</td>
-                  <td class="py-2 px-4">{{b.estado}}</td>
-                  <td class="py-2 px-4 flex gap-2">
-                    <button (click)="mostrarEditarBoleta(b); $event.stopPropagation()"
-                            class="bg-blue-600 text-white px-3 py-1 rounded-lg text-xs font-semibold shadow hover:bg-blue-700 transition">
+                <td class="py-2 px-4">
+                  <div class="flex flex-wrap gap-2">
+                    <button (click)="mostrarEditarPersona(p, $event)"
+                      class="bg-blue-600 text-white px-3 py-1.5 rounded-lg text-xs font-semibold shadow hover:bg-blue-700 transition">
                       Editar
                     </button>
-                    <button (click)="eliminarBoleta(b.id ?? 0); $event.stopPropagation()"
-                            class="bg-red-100 text-red-600 px-3 py-1 rounded-lg text-xs font-semibold shadow hover:bg-red-200 transition">
+                    <button (click)="eliminarPersona(p.id ?? 0, $event)"
+                      class="bg-red-100 text-red-600 px-3 py-1.5 rounded-lg text-xs font-semibold shadow hover:bg-red-200 transition">
                       Eliminar
                     </button>
-                  </td>
-                </ng-container>
+                  </div>
+                </td>
               </tr>
-              <!-- Fila expandida de edición boleta -->
-              <tr *ngIf="editandoBoleta && editandoBoleta.id === b.id" class="bg-blue-50">
-                <td colspan="5" class="p-0 border-t-0">
-                  <form (ngSubmit)="guardarBoleta()" class="flex flex-col md:flex-row gap-2 items-center px-6 py-4">
-                    <input [(ngModel)]="editandoBoleta.secuencia" name="seqEdit" placeholder="Secuencia" class="input-edit" />
-                    <input [(ngModel)]="editandoBoleta.mes" name="mesEdit" placeholder="Mes" class="input-edit" />
-                    <input [(ngModel)]="editandoBoleta.anio" name="anioEdit" placeholder="Año" class="input-edit" />
-                    <input [(ngModel)]="editandoBoleta.estado" name="estadoEdit" placeholder="Estado" class="input-edit" />
+
+              <!-- Fila de edición persona (expandida bajo la persona, ocupando columnas) -->
+              <tr *ngIf="editandoPersona && editandoPersona.id === p.id" class="bg-blue-50">
+                <td></td>
+                <td colspan="6" class="p-0 border-t-0">
+                  <form (ngSubmit)="guardarPersona()" class="flex flex-col md:flex-row gap-2 items-center px-6 py-4">
+                    <input [(ngModel)]="editandoPersona.nombres" name="nombreEdit" placeholder="Nombre"
+                      class="w-40 px-3 py-2 border border-blue-200 rounded focus:outline-none focus:ring-2 focus:ring-blue-300 transition text-sm" />
+                    <input [(ngModel)]="editandoPersona.apellidos" name="apellidoEdit" placeholder="Apellido"
+                      class="w-40 px-3 py-2 border border-blue-200 rounded focus:outline-none focus:ring-2 focus:ring-blue-300 transition text-sm" />
+                    <input [(ngModel)]="editandoPersona.documentoIdentidad" name="dniEdit" placeholder="DNI"
+                      class="w-40 px-3 py-2 border border-blue-200 rounded focus:outline-none focus:ring-2 focus:ring-blue-300 transition text-sm" />
+                    <input [(ngModel)]="editandoPersona.fechaNacimiento" name="nacEdit"
+                      placeholder="Nacimiento (YYYY-MM-DD)"
+                      class="w-56 px-3 py-2 border border-blue-200 rounded focus:outline-none focus:ring-2 focus:ring-blue-300 transition text-sm" />
                     <button type="submit"
-                            class="bg-green-600 text-white px-4 py-1 rounded-lg shadow hover:bg-green-700 transition">
+                      class="bg-green-600 text-white px-4 py-1.5 rounded-lg shadow hover:bg-green-700 transition">
                       Guardar
                     </button>
-                    <button type="button" (click)="cancelarEdicionBoleta()"
-                            class="bg-red-100 text-red-600 px-3 py-1 rounded-lg shadow hover:bg-red-200 transition">
+                    <button type="button" (click)="cancelarEdicionPersona()"
+                      class="bg-red-100 text-red-600 px-3 py-1.5 rounded-lg shadow hover:bg-red-200 transition">
                       Cancelar
                     </button>
                   </form>
                 </td>
               </tr>
+
+              <!-- Fila de boletas: loading -->
+              <tr *ngIf="isExpanded(p.id) && loadingPersonaId === p.id" class="bg-white">
+                <td></td>
+                <td colspan="6" class="py-3 px-4 text-blue-700">
+                  Cargando boletas...
+                </td>
+              </tr>
+
+              <!-- Filas de boletas: una por boleta, inline -->
+              <ng-container *ngIf="isExpanded(p.id) && loadingPersonaId !== p.id">
+                <ng-container *ngIf="(boletasFiltradas(p.id!)?.length ?? 0) > 0; else noBoletas">
+                  <tr *ngFor="let b of boletasFiltradas(p.id!)"
+                    class="border-b last:border-0 bg-white hover:bg-blue-50 transition">
+                    <td class="py-2 px-4"></td>
+                    <td class="py-2 px-4">
+                      <span class="text-xs font-semibold text-blue-700 bg-blue-100 px-2 py-0.5 rounded">Boleta</span>
+                    </td>
+                    <td class="py-2 px-4">
+                      <div class="text-sm font-semibold text-blue-900">{{ b.mes }}/{{ b.anio }}</div>
+                      <div class="text-xs text-gray-500">Sec: {{ b.secuencia }}</div>
+                    </td>
+                    <td class="py-2 px-4">
+                      <div class="text-sm">{{ b.establecimiento }}</div>
+                    </td>
+                    <td class="py-2 px-4">
+                      <div class="text-sm">{{ b.cargo }}</div>
+                    </td>
+                    <td class="py-2 px-4">
+                      <span class="px-2 py-1 rounded text-xs font-semibold" [ngClass]="{
+                              'bg-green-100 text-green-700': b.estado === 'ACTIVO',
+                              'bg-red-100 text-red-600': b.estado !== 'ACTIVO'
+                            }">{{ b.estado }}</span>
+                    </td>
+                    <td class="py-2 px-4">
+                      <div class="flex flex-wrap gap-2">
+                        <button (click)="mostrarEditarBoleta(b, $event)"
+                          class="bg-blue-600 text-white px-3 py-1.5 rounded-lg text-xs font-semibold shadow hover:bg-blue-700 transition">
+                          Editar
+                        </button>
+                        <button (click)="eliminarBoleta(b.id ?? 0, p.id!, $event)"
+                          class="bg-red-100 text-red-600 px-3 py-1.5 rounded-lg text-xs font-semibold shadow hover:bg-red-200 transition">
+                          Eliminar
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+
+                  <!-- Fila de edición de boleta (inline bajo la boleta) -->
+                  <tr *ngIf="isEditandoBoletaVisible(p.id ?? -1) && editandoBoleta" class="bg-blue-50">
+                    <td></td>
+                    <td colspan="6" class="p-0 border-t-0">
+                      <form (ngSubmit)="guardarBoleta()" class="flex flex-col md:flex-row gap-2 items-center px-6 py-4">
+                        <input [(ngModel)]="editandoBoleta.secuencia" name="seqEdit" placeholder="Secuencia"
+                          class="w-40 px-3 py-2 border border-blue-200 rounded focus:outline-none focus:ring-2 focus:ring-blue-300 transition text-sm" />
+                        <input [(ngModel)]="editandoBoleta.mes" name="mesEdit" placeholder="Mes"
+                          class="w-28 px-3 py-2 border border-blue-200 rounded focus:outline-none focus:ring-2 focus:ring-blue-300 transition text-sm" />
+                        <input [(ngModel)]="editandoBoleta.anio" name="anioEdit" placeholder="Año"
+                          class="w-28 px-3 py-2 border border-blue-200 rounded focus:outline-none focus:ring-2 focus:ring-blue-300 transition text-sm" />
+                        <input [(ngModel)]="editandoBoleta.estado" name="estadoEdit" placeholder="Estado"
+                          class="w-40 px-3 py-2 border border-blue-200 rounded focus:outline-none focus:ring-2 focus:ring-blue-300 transition text-sm" />
+                        <button type="submit"
+                          class="bg-green-600 text-white px-4 py-1.5 rounded-lg shadow hover:bg-green-700 transition">
+                          Guardar
+                        </button>
+                        <button type="button" (click)="cancelarEdicionBoleta()"
+                          class="bg-red-100 text-red-600 px-3 py-1.5 rounded-lg shadow hover:bg-red-200 transition">
+                          Cancelar
+                        </button>
+                      </form>
+                    </td>
+                  </tr>
+                </ng-container>
+                <ng-template #noBoletas>
+                  <tr class="bg-white">
+                    <td></td>
+                    <td colspan="6" class="py-3 px-4 text-gray-500 italic">No se encontraron boletas.</td>
+                  </tr>
+                </ng-template>
+              </ng-container>
             </ng-container>
           </tbody>
         </table>
+      </div>
+
+      <!-- Paginación -->
+      <div class="pagination flex gap-2 items-center justify-center mt-6">
+        <button (click)="cargarPersonas(personaPage-1)" [disabled]="personaPage===0"
+          class="px-4 py-2 rounded-xl bg-white border border-blue-300 text-blue-700 font-semibold disabled:bg-gray-100 disabled:text-gray-400">
+          Anterior
+        </button>
+        <span class="text-blue-800 font-semibold">Página {{personaPage+1}} / {{totalPersonaPages}}</span>
+        <button (click)="cargarPersonas(personaPage+1)" [disabled]="personaPage>=totalPersonaPages-1"
+          class="px-4 py-2 rounded-xl bg-blue-600 text-white font-semibold disabled:bg-gray-200 disabled:text-gray-400">
+          Siguiente
+        </button>
       </div>
     </div>
   </div>

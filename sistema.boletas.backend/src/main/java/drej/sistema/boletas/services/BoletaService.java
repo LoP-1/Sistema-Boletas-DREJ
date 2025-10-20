@@ -153,32 +153,12 @@ public class BoletaService {
         boletaRepository.deleteById(id);
     }
 
-    // Exportar boletas (CSV o PDF - implementar según tu caso)
-    public byte[] exportarBoletasCSV(List<BoletaDTO> boletas) {
-        // Implementar exportación a CSV y retornar byte[]
-        return new byte[0];
-    }
-
-    // Listar boletas (global)
-    public List<BoletaDTO> listarBoletasDTO() {
-        return boletaRepository.findAll().stream()
-                .map(this::toBoletaDTO)
-                .toList();
-    }
-
     // Listar boletas paginado
     public Page<Boleta> listarBoletasPaginado(int page, int size) {
         Pageable pageable = PageRequest.of(page, size);
         return boletaRepository.findAll(pageable);
     }
 
-    // Buscar boletas por filtros (ejemplo por estado, rango fechas, etc.)
-    public List<BoletaDTO> buscarBoletasPorEstado(String estado) {
-        return boletaRepository.findAll().stream()
-                .filter(b -> estado.equals(b.getEstado()))
-                .map(this::toBoletaDTO)
-                .toList();
-    }
 
     // Obtener boletas por persona ID
     public List<BoletaDTO> obtenerBoletasID(Long personaId) {
@@ -188,18 +168,11 @@ public class BoletaService {
                 .toList();
     }
 
-    // Obtener boletas por persona
-    public List<BoletaDTO> obtenerBoletasPersona(Persona persona){
-        return boletaRepository.findByPersona(persona)
-                .stream()
-                .map(this::toBoletaDTO)
-                .toList();
-    }
-
     // Convertidor boletas
     public BoletaDTO toBoletaDTO(Boleta boleta) {
         Persona persona = boleta.getPersona();
         return new BoletaDTO(
+                boleta.getId(),
                 boleta.getArchivoOrigen(),
                 boleta.getRawLength(),
                 boleta.getConceptos().stream()

@@ -28,9 +28,9 @@ public class BoletaController {
         return boletaService.listarBoletas();
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<List<BoletaDTO>> listarBoletasPersona(@PathVariable Long id){
-        List<BoletaDTO> respuesta = boletaService.obtenerBoletasID(id);
+    @GetMapping("/{personaId}")
+    public ResponseEntity<List<BoletaDTO>> listarBoletasPersona(@PathVariable Long personaId) {
+        List<BoletaDTO> respuesta = boletaService.obtenerBoletasID(personaId);
         return ResponseEntity.ok(respuesta);
     }
 }

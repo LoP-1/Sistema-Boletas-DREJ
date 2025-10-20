@@ -19,17 +19,14 @@ export class SideBar implements OnInit {
   constructor(private carritoService: Carrito, private router: Router) {}
 
   ngOnInit() {
-    this.carritoService.carrito$.subscribe(carrito => {
-      this.carrito = carrito;
-    });
-  }
+  this.carritoService.carrito$.subscribe(carrito => {
+    this.carrito = carrito || [];
+    console.log('Carrito en sidebar:', this.carrito);
+  });
+}
 
   removeBoleta(index: number) {
     this.carritoService.removeBoleta(index);
-  }
-
-  removeAllBoletas() {
-    this.carritoService.removeAllBoletas();
   }
 
   verDetalle(boleta: BoletaDTO) {
@@ -40,12 +37,15 @@ export class SideBar implements OnInit {
     this.modalBoleta = null;
   }
 
-  imprimirTodas() {
+  imprimirBoleta(boleta: BoletaDTO) {
+    if (boleta.id) {
+      window.open(`/boleta/${boleta.id}`, '_blank');
+    }
   }
   
   trackByIndex(index: number, item: any): number {
-  return index;
-}
+    return index;
+  }
 
   salir() {
     localStorage.removeItem('jwtToken');

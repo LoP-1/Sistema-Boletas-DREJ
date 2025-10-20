@@ -4,15 +4,13 @@ import { Observable } from 'rxjs';
 import { PersonaDTO } from '../models/persona.model';
 import { environment } from '../../enviroments/environment';
 
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable({ providedIn: 'root' })
 export class PersonaService {
   private apiUrl = `${environment.apiUrl}/persona`;
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) {}
 
-  getPersonaPorDni(dni: string): Observable<PersonaDTO> {
+  obtenerPersonaPorDni(dni: string): Observable<PersonaDTO> {
     return this.http.get<PersonaDTO>(`${this.apiUrl}/${dni}`);
   }
 }

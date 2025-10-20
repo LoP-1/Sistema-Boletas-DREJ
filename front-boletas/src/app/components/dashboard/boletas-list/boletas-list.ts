@@ -1,16 +1,17 @@
-import { ChangeDetectorRef, Component, inject, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { BoletaDetalle } from '../boleta-detalle/boleta-detalle';
-import { BoletaService } from '../../../services/boleta';
 import { BoletaDTO } from '../../../models/boleta.model';
 import { Carrito } from '../../../services/carrito';
 import { PersonaService } from '../../../services/persona';
+import { BoletaService } from '../../../services/boleta';
 import { AuthService } from '../../../services/auth';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-boletas-list',
   standalone: true,
-  imports: [CommonModule, BoletaDetalle],
+  imports: [CommonModule, BoletaDetalle, FormsModule],
   templateUrl: './boletas-list.html',
   styleUrls: ['./boletas-list.css']
 })
@@ -28,6 +29,8 @@ export class BoletasList implements OnInit {
   selectedMonth: string | null = null;
   modalBoleta: BoletaDTO | null = null;
 
+  filtro = '';
+
   ngOnInit(): void {
     this.loadBoletasForLoggedUser();
   }
@@ -35,12 +38,13 @@ export class BoletasList implements OnInit {
   loadBoletasForLoggedUser() {
     const dni = this.authService.getDni();
     if (!dni) return;
-    this.personaService.getPersonaPorDni(dni).subscribe({
+
+    this.personaService.obtenerPersonaPorDni(dni).subscribe({
       next: persona => {
-        if (persona && persona.id) {
-          this.boletaService.getBoletasPorPersonaId(persona.id).subscribe({
+        if (persona && persona.id != null) {
+          this.boletaService.listarBoletasPersona(persona.id).subscribe({
             next: data => {
-              this.boletas = data;
+              this.boletas = data ?? [];
               this.groupBoletas();
               this.cdr.detectChanges();
             },
@@ -59,6 +63,7 @@ export class BoletasList implements OnInit {
   groupBoletas() {
     this.grouped = {};
     for (const boleta of this.boletas) {
+      if (!boleta.anio || !boleta.mes) continue;
       if (!this.grouped[boleta.anio]) {
         this.grouped[boleta.anio] = {};
       }
@@ -69,8 +74,34 @@ export class BoletasList implements OnInit {
     }
   }
 
+  // Agrupa a partir de boletas filtradas por texto
+  get filteredGrouped(): { [anio: string]: { [mes: string]: BoletaDTO[] } } {
+    const f = this.filtro.trim().toLowerCase();
+    if (!f) return this.grouped;
+
+    const result: { [anio: string]: { [mes: string]: BoletaDTO[] } } = {};
+    for (const [anio, meses] of Object.entries(this.grouped)) {
+      for (const [mes, list] of Object.entries(meses)) {
+        const filtered = list.filter(b =>
+          (b.establecimiento ?? '').toLowerCase().includes(f) ||
+          (b.cargo ?? '').toLowerCase().includes(f) ||
+          (b.estado ?? '').toLowerCase().includes(f) ||
+          (b.mes ?? '').toLowerCase().includes(f) ||
+          (b.anio ?? '').toLowerCase().includes(f) ||
+          (b.secuencia ?? '').toLowerCase().includes(f)
+        );
+        if (filtered.length) {
+          if (!result[anio]) result[anio] = {};
+          if (!result[anio][mes]) result[anio][mes] = [];
+          result[anio][mes].push(...filtered);
+        }
+      }
+    }
+    return result;
+    }
+
   getKeys(obj: any): string[] {
-    return Object.keys(obj);
+    return Object.keys(obj || {});
   }
 
   selectYear(anio: string) {
@@ -104,6 +135,7 @@ export class BoletasList implements OnInit {
   }
 
   addToCart(boleta: BoletaDTO) {
-    this.carritoService.addBoleta(boleta);
-  }
+  console.log('Boleta que se agrega:', boleta); // <-- Asegúrate aquí de ver el campo id
+  this.carritoService.addBoleta(boleta);
+}
 }

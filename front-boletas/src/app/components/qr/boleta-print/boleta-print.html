@@ -1,0 +1,173 @@
+<div>
+  <!-- Estado de carga y errores -->
+  <div *ngIf="cargando" class="text-center text-blue-700 mt-6">Cargando boleta...</div>
+  <div *ngIf="!cargando && error" class="text-center text-red-600 mt-6">{{ error }}</div>
+
+  <!-- Contenido de boleta -->
+  <div *ngIf="!cargando && !error" class="max-w-[900px] mx-auto bg-white rounded-3xl shadow-2xl border border-blue-100 overflow-hidden print:shadow-none print:border-0 print:rounded-none">
+    <!-- Header -->
+    <div class="p-6 bg-gradient-to-r from-blue-100 to-blue-50 border-b border-blue-100 print:bg-white print:border-b print:p-4">
+      <div class="flex items-start justify-between">
+        <div class="flex items-center gap-3">
+          <img src="logo-drej.png" alt="Perú" class="w-9 h-6 print:block">
+          <div class="text-left">
+            <div class="text-[11px] text-gray-500 leading-tight">CÓDIGO MODULAR - SECUENCIA</div>
+            <div class="text-xs text-gray-800 font-semibold">{{ boleta?.codigo_encabezado }}{{ boleta?.codigo_encabezado ? '-' : '' }}{{ boleta?.secuencia }}</div>
+          </div>
+        </div>
+        <div class="text-center">
+          <div class="text-2xl font-extrabold text-blue-900 tracking-wide">BOLETA DE PAGO</div>
+          <div class="text-[11px] text-gray-500 mt-1">TIPO DE PLANILLA</div>
+          <div class="inline-block text-[11px] font-bold px-2 py-0.5 rounded mt-1" [ngClass]="estadoChipClasses">{{ boleta?.estado }}</div>
+        </div>
+        <div class="text-right">
+          <div class="text-[11px] text-gray-600 leading-tight">UGEL / RUC</div>
+          <div class="text-xs font-semibold text-gray-800">—</div>
+          <div class="mt-2 text-sm font-extrabold text-red-500 uppercase">{{ boleta?.mes }} - {{ boleta?.anio }}</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Datos personales -->
+    <div class="px-6 py-4 print:p-4">
+      <div class="text-[12px] font-bold text-blue-900 border-b border-blue-200 pb-1">DATOS PERSONALES</div>
+      <div class="grid grid-cols-12 gap-2 text-[12px] mt-3">
+        <div class="col-span-4">
+          <div class="text-gray-500">APELLIDOS</div>
+          <div class="font-semibold text-gray-900 uppercase">{{ boleta?.apellidos }}</div>
+        </div>
+        <div class="col-span-4">
+          <div class="text-gray-500">NOMBRES</div>
+          <div class="font-semibold text-gray-900 uppercase">{{ boleta?.nombres }}</div>
+        </div>
+        <div class="col-span-4">
+          <div class="text-gray-500">DNI</div>
+          <div class="font-semibold text-gray-900">{{ boleta?.documento_identidad }}</div>
+        </div>
+
+        <div class="col-span-4">
+          <div class="text-gray-500">CENTRO DE TRABAJO</div>
+          <div class="font-semibold text-gray-900">{{ boleta?.establecimiento }}</div>
+        </div>
+        <div class="col-span-4">
+          <div class="text-gray-500">CARGO</div>
+          <div class="font-semibold text-gray-900">{{ boleta?.cargo }}</div>
+        </div>
+        <div class="col-span-4">
+          <div class="text-gray-500">TIPO SERVIDOR</div>
+          <div class="font-semibold text-gray-900">{{ boleta?.tipo_servidor || boleta?.tipo_pensionista }}</div>
+        </div>
+
+        <div class="col-span-4">
+          <div class="text-gray-500">RÉGIMEN LABORAL</div>
+          <div class="font-semibold text-gray-900">{{ boleta?.regimen_pensionario || '—' }}</div>
+        </div>
+        <div class="col-span-4">
+          <div class="text-gray-500">NIVEL MAG./HORAS</div>
+          <div class="font-semibold text-gray-900">{{ boleta?.nivel_mag_horas }}</div>
+        </div>
+        <div class="col-span-4">
+          <div class="text-gray-500">TIEMPO SERVICIO</div>
+          <div class="font-semibold text-gray-900">{{ boleta?.tiempo_servicio }}</div>
+        </div>
+
+        <div class="col-span-4">
+          <div class="text-gray-500">LEYENDA PERMANENTE</div>
+          <div class="font-semibold text-gray-900">{{ boleta?.leyenda_permanente }}</div>
+        </div>
+        <div class="col-span-4">
+          <div class="text-gray-500">LEYENDA MENSUAL</div>
+          <div class="font-semibold text-gray-900">{{ boleta?.leyenda_mensual || '—' }}</div>
+        </div>
+        <div class="col-span-4">
+          <div class="text-gray-500">CUENTA PRINCIPAL</div>
+          <div class="font-semibold text-gray-900">{{ boleta?.cuenta_principal }}</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Ingresos / Descuentos -->
+    <div class="px-6 pb-2 print:px-4">
+      <div class="grid grid-cols-12 gap-4">
+        <!-- Ingresos -->
+        <div class="col-span-7 border border-blue-100 rounded-lg overflow-hidden">
+          <div class="bg-blue-100 text-blue-800 text-[12px] font-semibold px-3 py-2">INGRESOS</div>
+          <table class="w-full text-[12px]">
+            <thead class="text-gray-500 border-b">
+              <tr>
+                <th class="text-left font-normal px-3 py-2">CONCEPTO</th>
+                <th class="text-right font-normal px-3 py-2 w-28">MONTO</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let c of ingresos" class="border-b last:border-0">
+                <td class="px-3 py-2">{{ c.concepto }}</td>
+                <td class="px-3 py-2 text-right">S/ {{ c.monto | number:'1.2-2' }}</td>
+              </tr>
+              <tr *ngIf="ingresos.length === 0">
+                <td class="px-3 py-2 italic text-gray-400" colspan="2">Sin ingresos</td>
+              </tr>
+            </tbody>
+          </table>
+          <div class="flex justify-between items-center px-3 py-2 bg-blue-50 text-[12px] font-semibold">
+            <span>TOTAL INGRESOS</span>
+            <span>S/ {{ boleta?.total_remuneraciones | number:'1.2-2' }}</span>
+          </div>
+        </div>
+
+        <!-- Descuentos -->
+        <div class="col-span-5 border border-blue-100 rounded-lg overflow-hidden">
+          <div class="bg-blue-100 text-blue-800 text-[12px] font-semibold px-3 py-2">DESCUENTOS</div>
+          <table class="w-full text-[12px]">
+            <thead class="text-gray-500 border-b">
+              <tr>
+                <th class="text-left font-normal px-3 py-2">CONCEPTO</th>
+                <th class="text-right font-normal px-3 py-2 w-28">MONTO</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let c of descuentos" class="border-b last:border-0">
+                <td class="px-3 py-2">{{ c.concepto }}</td>
+                <td class="px-3 py-2 text-right">S/ {{ c.monto | number:'1.2-2' }}</td>
+              </tr>
+              <tr *ngIf="descuentos.length === 0">
+                <td class="px-3 py-2 italic text-gray-400" colspan="2">Sin descuentos</td>
+              </tr>
+            </tbody>
+          </table>
+          <div class="flex justify-between items-center px-3 py-2 bg-blue-50 text-[12px] font-semibold">
+            <span>TOTAL DESCUENTOS</span>
+            <span>S/ {{ boleta?.total_descuentos | number:'1.2-2' }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Totales y QR -->
+    <div class="px-6 pb-6 print:px-4">
+      <div class="grid grid-cols-12 gap-4 items-stretch">
+        <div class="col-span-4 border border-blue-100 rounded-lg p-3 flex items-center justify-center">
+          <img *ngIf="qrDataUrl" [src]="qrDataUrl" alt="QR" class="w-36 h-36" />
+        </div>
+        <div class="col-span-8 border border-blue-100 rounded-lg overflow-hidden">
+          <div class="grid grid-cols-12 text-[12px]">
+            <div class="col-span-6 bg-blue-100 text-blue-800 font-semibold px-3 py-2">TOTAL LÍQUIDO</div>
+            <div class="col-span-6 bg-blue-50 text-right font-bold px-3 py-2">S/ {{ boleta?.total_liquido | number:'1.2-2' }}</div>
+            <div class="col-span-6 border-t px-3 py-2 text-gray-600">AFECTO A CARGAS SOCIALES</div>
+            <div class="col-span-6 border-t px-3 py-2 text-right font-semibold">S/ {{ boleta?.monto_imponible | number:'1.2-2' }}</div>
+          </div>
+          <div class="px-3 py-2 text-[11px] text-gray-600 border-t">
+            MENSAJE: Visite la página web del Ministerio de Educación: www.gob.pe/minedu
+          </div>
+        </div>
+      </div>
+
+      <div class="mt-6 flex items-center justify-between print:hidden">
+        <button (click)="imprimir()" class="px-5 py-2 bg-blue-600 text-white rounded-lg shadow hover:bg-blue-700 transition">
+          Imprimir
+        </button>
+        <a [href]="shareUrl" target="_blank" class="text-blue-700 underline text-sm">Abrir enlace de esta boleta</a>
+      </div>
+    </div>
+  </div>
+</div>

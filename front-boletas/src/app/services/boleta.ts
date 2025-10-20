@@ -4,26 +4,23 @@ import { Observable } from 'rxjs';
 import { BoletaDTO } from '../models/boleta.model';
 import { environment } from '../../enviroments/environment';
 
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable({ providedIn: 'root' })
 export class BoletaService {
   private apiUrl = `${environment.apiUrl}/boletas`;
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) {}
 
-  // Todas las boletas de una persona por id
-  getBoletasPorPersonaId(id: number): Observable<BoletaDTO[]> {
-    return this.http.get<BoletaDTO[]>(`${this.apiUrl}/${id}`);
+  // Nota: El endpoint GET /boletas devuelve entidades Boleta (no DTO).
+  // Si necesitas tipado fuerte, crea un modelo BoletaEntity según tu backend.
+  listarBoletas(): Observable<any[]> {
+    return this.http.get<any[]>(this.apiUrl);
   }
 
-  // Todas las boletas (index)
-  getBoletas(): Observable<BoletaDTO[]> {
-    return this.http.get<BoletaDTO[]>(this.apiUrl);
+  listarBoletasPersona(personaId: number): Observable<BoletaDTO[]> {
+    return this.http.get<BoletaDTO[]>(`${this.apiUrl}/${personaId}`);
   }
 
-  // Subir boletas (si es necesario)
-  subirBoletas(boletas: BoletaDTO[]): Observable<string> {
-    return this.http.post<string>(this.apiUrl, boletas);
+  subirBoletas(boletas: BoletaDTO[]): Observable<any> {
+    return this.http.post<any>(this.apiUrl, boletas);
   }
 }

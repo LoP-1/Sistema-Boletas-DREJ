@@ -3,8 +3,8 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { BoletaDTO } from '../models/boleta.model';
 import { PersonaDTO } from '../models/persona.model';
+import { Usuario } from '../models/usuario.model';
 import { environment } from '../../enviroments/environment';
-
 
 export interface PageBoletaDTO {
   totalElements: number;
@@ -28,7 +28,6 @@ export class AdminService {
 
   constructor(private http: HttpClient) {}
 
-  // Helper para JWT
   private getAuthHeaders(): HttpHeaders {
     const token = localStorage.getItem('jwtToken');
     return new HttpHeaders({
@@ -36,17 +35,25 @@ export class AdminService {
     });
   }
 
-  // -- BOLETAS --
-  listarBoletas(page: number = 0, size: number = 10): Observable<PageBoletaDTO> {
+  // ---- BOLETAS (ADMIN) ----
+  listarBoletas(page: number = 0, size: number = 30): Observable<PageBoletaDTO> {
     return this.http.get<PageBoletaDTO>(
       `${this.apiUrl}/boletas?page=${page}&size=${size}`,
       { headers: this.getAuthHeaders() }
     );
   }
 
-  getBoleta(id: number): Observable<BoletaDTO> {
-    return this.http.get<BoletaDTO>(
-      `${this.apiUrl}/boletas/${id}`,
+  listarBoletasPorPersona(personaId: number): Observable<BoletaDTO[]> {
+    return this.http.get<BoletaDTO[]>(
+      `${this.apiUrl}/boletas/persona/${personaId}`,
+      { headers: this.getAuthHeaders() }
+    );
+  }
+
+  subirBoletas(boletas: BoletaDTO[]): Observable<any> {
+    return this.http.post<any>(
+      `${this.apiUrl}/boletas`,
+      boletas,
       { headers: this.getAuthHeaders() }
     );
   }
@@ -66,32 +73,10 @@ export class AdminService {
     );
   }
 
-  subirBoletas(boletas: BoletaDTO[]): Observable<any> {
-    return this.http.post<any>(
-      `${this.apiUrl}/boletas`,
-      boletas,
-      { headers: this.getAuthHeaders() }
-    );
-  }
-
-  // -- PERSONAS --
-  listarPersonas(page: number = 0, size: number = 10): Observable<PagePersonaDTO> {
+  // ---- PERSONAS (ADMIN) ----
+  listarPersonas(page: number = 0, size: number = 30): Observable<PagePersonaDTO> {
     return this.http.get<PagePersonaDTO>(
       `${this.apiUrl}/personas?page=${page}&size=${size}`,
-      { headers: this.getAuthHeaders() }
-    );
-  }
-
-  getPersonaPorDni(dni: string): Observable<PersonaDTO> {
-    return this.http.get<PersonaDTO>(
-      `${this.apiUrl}/personas/${dni}`,
-      { headers: this.getAuthHeaders() }
-    );
-  }
-
-  getPersonaPorId(id: number): Observable<PersonaDTO> {
-    return this.http.get<PersonaDTO>(
-      `${this.apiUrl}/personas/id/${id}`,
       { headers: this.getAuthHeaders() }
     );
   }
@@ -119,26 +104,19 @@ export class AdminService {
     );
   }
 
-  // -- EXPORTAR --
-  exportarBoletasCSV(): Observable<Blob> {
-    return this.http.get(
-      `${this.apiUrl}/export/boletas`,
-      { headers: this.getAuthHeaders(), responseType: 'blob' }
-    );
-  }
-
-  // -- ESTADÍSTICAS --
-  getEstadisticas(): Observable<any> {
-    return this.http.get<any>(
-      `${this.apiUrl}/estadisticas`,
+  // ---- USUARIOS (ADMIN) ----
+  listarUsuarios(): Observable<Usuario[]> {
+    return this.http.get<Usuario[]>(
+      `${this.apiUrl}/usuarios`,
       { headers: this.getAuthHeaders() }
     );
   }
 
-  listarBoletasPorPersona(personaId: number): Observable<BoletaDTO[]> {
-  return this.http.get<BoletaDTO[]>(
-    `${this.apiUrl}/boletas/persona/${personaId}`,
-    { headers: this.getAuthHeaders() }
-  );
-}
+  cambiarEstadoUsuario(id: number, nuevoEstado: boolean): Observable<Usuario> {
+    return this.http.put<Usuario>(
+      `${this.apiUrl}/usuarios/${id}/estado`,
+      nuevoEstado,
+      { headers: this.getAuthHeaders() }
+    );
+  }
 }

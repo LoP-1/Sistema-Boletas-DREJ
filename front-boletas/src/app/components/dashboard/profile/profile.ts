@@ -1,7 +1,9 @@
-import { ChangeDetectorRef, Component, NgModule, OnInit, inject } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { UsuarioService } from '../../../services/usuario';
 import { FormsModule } from '@angular/forms';
+import { Usuario } from '../../../models/usuario.model';
+import { AdminService } from '../../../services/admin';
+import { UsuarioService } from '../../../services/usuario';
 import { AuthService } from '../../../services/auth';
 
 @Component({
@@ -13,40 +15,67 @@ import { AuthService } from '../../../services/auth';
 })
 export class Profile implements OnInit {
   private cdr = inject(ChangeDetectorRef);
+  private adminService = inject(AdminService);
   private usuarioService = inject(UsuarioService);
   private auth = inject(AuthService);
 
-  usuario: any = null;
+  usuario: Usuario | null = null;
   cargando = true;
   error = '';
   nuevaContrasena = '';
   mensajePass = '';
 
   ngOnInit() {
-    const dni = this.auth.getDni();
-    if (!dni) {
-      this.error = 'No se encontró el usuario autenticado.';
-      this.cargando = false;
-      this.cdr.detectChanges();
-      return;
-    }
+  const dni = this.auth.getDni();
+  const id = this.auth.getUserId();
 
-    this.usuarioService.listarUsuarios().subscribe({
+  if (!dni || !id) {
+    this.error = 'No se encontró el usuario autenticado.';
+    this.cargando = false;
+    this.cdr.detectChanges();
+    return;
+  }
+
+  const rol = this.auth.getRol();
+
+  if (rol === 'ADMIN') {
+    // ... tu lógica de admin igual que antes ...
+    this.adminService.listarUsuarios().subscribe({
       next: (usuarios) => {
-        this.usuario = usuarios.find(u => u.dni === dni);
-        if (!this.usuario) {
-          this.error = 'No se encontró el usuario en la base de datos.';
-        }
+        const encontrado = usuarios.find(u => u.dni === dni);
+        if (encontrado) this.usuario = encontrado;
         this.cargando = false;
         this.cdr.detectChanges();
       },
       error: () => {
-        this.error = 'No se pudo cargar el perfil.';
+        this.cargando = false;
+        this.cdr.detectChanges();
+      }
+    });
+  } else {
+    this.usuarioService.getUsuarioPorId(id).subscribe({
+      next: (usuario) => {
+        this.usuario = usuario;
+        this.cargando = false;
+        this.cdr.detectChanges();
+      },
+      error: () => {
+        this.usuario = {
+          id,
+          nombre: this.auth.getNombre() ?? '',
+          apellido: this.auth.getApellido() ?? '',
+          correo: this.auth.getCorreo() ?? '',
+          dni: dni,
+          telefono: this.auth.getTelefono() ?? '',
+          rol: rol ?? 'USER',
+          estadoCuenta: true
+        };
         this.cargando = false;
         this.cdr.detectChanges();
       }
     });
   }
+}
 
   actualizarUsuario() {
     if (!this.usuario || !this.usuario.id) return;
@@ -54,6 +83,9 @@ export class Profile implements OnInit {
     this.usuarioService.actualizarUsuario(this.usuario.id, this.usuario).subscribe({
       next: (res) => {
         this.usuario = res;
+        // Actualiza localStorage con cambios de correo/telefono si aplica
+        if (res.correo) localStorage.setItem('userCorreo', res.correo);
+        if (res.telefono) localStorage.setItem('userTelefono', res.telefono);
         this.mensajePass = '¡Datos actualizados!';
         this.cargando = false;
         this.cdr.detectChanges();
@@ -83,5 +115,4 @@ export class Profile implements OnInit {
       }
     });
   }
-  
 }

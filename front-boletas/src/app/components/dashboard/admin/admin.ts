@@ -1,25 +1,37 @@
-import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
-import { Usuario } from '../../../models/usuario.model';
-import { UsuarioService } from '../../../services/usuario';
-import { FormsModule } from '@angular/forms';
+import { ChangeDetectorRef, Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+import { Usuario } from '../../../models/usuario.model';
+import { AdminService } from '../../../services/admin';
+import { UsuarioService } from '../../../services/usuario';
 
 @Component({
   selector: 'app-admin',
+  standalone: true,
   imports: [CommonModule, FormsModule],
   templateUrl: './admin.html',
-  styleUrl: './admin.css'
+  styleUrls: ['./admin.css']
 })
 export class Admin implements OnInit {
+  private adminService = inject(AdminService);
+  private usuarioService = inject(UsuarioService);
+  private cd = inject(ChangeDetectorRef);
+
   usuarios: Usuario[] = [];
   mensaje = '';
   cargando = false;
+
+  // Edición
   editarId: number | null = null;
   editarData: Usuario = {} as Usuario;
+
+  // Cambio de contraseña
   cambiarPassId: number | null = null;
   nuevaPass = '';
 
-  constructor(private usuarioService: UsuarioService, private cd: ChangeDetectorRef) {}
+  // Filtros
+  filtroTexto = '';
+  soloPendientes = false;
 
   ngOnInit() {
     this.cargarUsuarios();
@@ -27,9 +39,10 @@ export class Admin implements OnInit {
 
   cargarUsuarios() {
     this.cargando = true;
-    this.usuarioService.listarUsuarios().subscribe({
+    this.adminService.listarUsuarios().subscribe({
       next: lista => {
-        this.usuarios = lista.sort((a, b) => {
+        // Ordena: pendientes primero
+        this.usuarios = (lista || []).sort((a, b) => {
           if (!a.estadoCuenta && b.estadoCuenta) return -1;
           if (a.estadoCuenta && !b.estadoCuenta) return 1;
           return 0;
@@ -37,7 +50,7 @@ export class Admin implements OnInit {
         this.cargando = false;
         this.cd.detectChanges();
       },
-      error: err => {
+      error: () => {
         this.mensaje = 'Error cargando usuarios';
         this.cargando = false;
         this.cd.detectChanges();
@@ -45,8 +58,21 @@ export class Admin implements OnInit {
     });
   }
 
+  get usuariosFiltrados(): Usuario[] {
+    const texto = this.filtroTexto.trim().toLowerCase();
+    return this.usuarios.filter(u => {
+      const coincideTexto =
+        !texto ||
+        [u.nombre, u.apellido, u.correo, u.dni, u.telefono]
+          .filter(Boolean)
+          .some(v => String(v).toLowerCase().includes(texto));
+      const coincidePendiente = !this.soloPendientes || !u.estadoCuenta;
+      return coincideTexto && coincidePendiente;
+    });
+  }
+
   permitirAcceso(id: number) {
-    this.usuarioService.cambiarEstado(id, true).subscribe({
+    this.adminService.cambiarEstadoUsuario(id, true).subscribe({
       next: () => {
         this.mensaje = 'Acceso permitido';
         this.cargarUsuarios();
@@ -60,7 +86,7 @@ export class Admin implements OnInit {
   }
 
   invalidarAcceso(id: number) {
-    this.usuarioService.cambiarEstado(id, false).subscribe({
+    this.adminService.cambiarEstadoUsuario(id, false).subscribe({
       next: () => {
         this.mensaje = 'Cuenta invalidada';
         this.cargarUsuarios();
@@ -112,6 +138,7 @@ export class Admin implements OnInit {
       next: () => {
         this.mensaje = 'Contraseña cambiada';
         this.cambiarPassId = null;
+        this.nuevaPass = '';
         this.cd.detectChanges();
       },
       error: () => {
@@ -124,5 +151,9 @@ export class Admin implements OnInit {
   cancelarCambioPass() {
     this.cambiarPassId = null;
     this.cd.detectChanges();
+  }
+
+  limpiarMensaje() {
+    this.mensaje = '';
   }
 }

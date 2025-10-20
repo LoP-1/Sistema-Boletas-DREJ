@@ -1,14 +1,15 @@
 package drej.sistema.boletas.controller;
 
+import drej.sistema.boletas.config.JwtUtil;
 import drej.sistema.boletas.models.Boleta;
+import drej.sistema.boletas.models.Usuario;
 import drej.sistema.boletas.models.record.BoletaDTO;
 import drej.sistema.boletas.models.record.PersonaDTO;
 import drej.sistema.boletas.services.BoletaService;
 import drej.sistema.boletas.services.PersonaService;
+import drej.sistema.boletas.services.UsuarioService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -24,24 +25,23 @@ public class AdminController {
     @Autowired
     private PersonaService personaService;
 
+    @Autowired
+    private UsuarioService usuarioService;
+
+    @Autowired
+    private JwtUtil jwtUtil;
+
+    // ----------------------- BOLETAS (ADMIN) -----------------------
 
     // Listar todas las boletas paginadas
     @GetMapping("/boletas")
     public ResponseEntity<Page<BoletaDTO>> listarBoletas(
             @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "30") int size) {
+            @RequestParam(defaultValue = "30") int size
+    ) {
         Page<Boleta> boletas = boletaService.listarBoletasPaginado(page, size);
         Page<BoletaDTO> dtos = boletas.map(boletaService::toBoletaDTO);
         return ResponseEntity.ok(dtos);
-    }
-
-    // Ver detalle de boleta
-    @GetMapping("/boletas/{id}")
-    public ResponseEntity<BoletaDTO> getBoleta(@PathVariable Long id) {
-        return boletaService.obtenerBoleta(id)
-                .map(boletaService::toBoletaDTO)
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
     }
 
     // Listar boletas de una persona por id
@@ -51,7 +51,7 @@ public class AdminController {
         return ResponseEntity.ok(boletas);
     }
 
-    // Subir/crear boletas
+    // Subir/crear varias boletas
     @PostMapping("/boletas")
     public ResponseEntity<?> subirBoletas(@RequestBody List<BoletaDTO> lista) {
         boletaService.guardarBoletas(lista);
@@ -72,32 +72,17 @@ public class AdminController {
         return ResponseEntity.ok().build();
     }
 
-    // --- PERSONAS ---
+    // ----------------------- PERSONAS (ADMIN) -----------------------
 
-    // Listar todas las personas paginadas
+    // Listar todas las personas paginadas (DTO)
     @GetMapping("/personas")
     public ResponseEntity<Page<PersonaDTO>> listarPersonas(
             @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "30") int size) {
-        Pageable pageable = PageRequest.of(page, size);
-        Page<PersonaDTO> personas = personaService.listarPersonasPaginado(pageable);
+            @RequestParam(defaultValue = "30") int size
+    ) {
+        var pageable = org.springframework.data.domain.PageRequest.of(page, size);
+        var personas = personaService.listarPersonasPaginado(pageable);
         return ResponseEntity.ok(personas);
-    }
-
-    // Buscar persona por DNI
-    @GetMapping("/personas/{dni}")
-    public ResponseEntity<PersonaDTO> buscarPersonaPorDni(@PathVariable String dni) {
-        return personaService.buscarPersonaDni(dni)
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
-    }
-
-    // Buscar persona por ID
-    @GetMapping("/personas/id/{id}")
-    public ResponseEntity<PersonaDTO> buscarPersonaPorId(@PathVariable Long id) {
-        return personaService.buscarPersonaId(id)
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
     }
 
     // Crear persona
@@ -121,29 +106,28 @@ public class AdminController {
         return ResponseEntity.ok().build();
     }
 
-    // --- EXPORTAR, ESTADÍSTICAS, LOGS ---
+    // ----------------------- USUARIOS (ADMIN) -----------------------
 
-    // Exportar boletas (ejemplo, CSV)
-    @GetMapping("/export/boletas")
-    public ResponseEntity<byte[]> exportarBoletasCSV() {
-        List<BoletaDTO> boletas = boletaService.listarBoletasDTO();
-        byte[] archivo = boletaService.exportarBoletasCSV(boletas);
-        return ResponseEntity
-                .ok()
-                .header("Content-Disposition", "attachment; filename=boletas.csv")
-                .body(archivo);
+    // Listar todos los usuarios (solo admin)
+    @GetMapping("/usuarios")
+    public ResponseEntity<?> listarUsuarios(@RequestHeader("Authorization") String token) {
+        if (!jwtUtil.isAdmin(token)) {
+            return ResponseEntity.status(403).body("No autorizado");
+        }
+        return ResponseEntity.ok(usuarioService.listarTodos());
     }
 
-    // Estadísticas básicas (ejemplo)
-    @GetMapping("/estadisticas")
-    public ResponseEntity<?> estadisticas() {
-        long totalPersonas = personaService.listarPersonas().size();
-        long totalBoletas = boletaService.listarBoletas().size();
-        return ResponseEntity.ok(
-                new Object() {
-                    public long personas = totalPersonas;
-                    public long boletas = totalBoletas;
-                }
-        );
+    // Cambiar estado de usuario (solo admin)
+    @PutMapping("/usuarios/{id}/estado")
+    public ResponseEntity<?> cambiarEstado(
+            @PathVariable Long id,
+            @RequestBody boolean nuevoEstado,
+            @RequestHeader("Authorization") String token
+    ) {
+        if (!jwtUtil.isAdmin(token)) {
+            return ResponseEntity.status(403).body("No autorizado");
+        }
+        Usuario actualizado = usuarioService.actualizarEstado(id, nuevoEstado);
+        return ResponseEntity.ok(actualizado);
     }
 }

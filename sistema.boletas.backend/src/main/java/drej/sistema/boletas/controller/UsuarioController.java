@@ -37,24 +37,7 @@ public class UsuarioController {
         return ResponseEntity.ok(token);
     }
 
-    // Cambiar estado (solo admin)
-    @PutMapping("/{id}/estado")
-    public ResponseEntity<?> cambiarEstado(@PathVariable Long id, @RequestBody boolean nuevoEstado, @RequestHeader("Authorization") String token) {
-        // Validar que el usuario tiene rol admin usando JWT
-        if (!jwtUtil.isAdmin(token)) return ResponseEntity.status(403).body("No autorizado");
-        Usuario actualizado = usuarioService.actualizarEstado(id, nuevoEstado);
-        return ResponseEntity.ok(actualizado);
-    }
-
-    // Listar todos los usuarios (solo admin)
-    @GetMapping
-    public ResponseEntity<?> listarUsuarios(@RequestHeader("Authorization") String token) {
-        if (!jwtUtil.isAdmin(token)) {
-            return ResponseEntity.status(403).body("No autorizado");
-        }
-        return ResponseEntity.ok(usuarioService.listarTodos());
-    }
-
+    // Actualizar datos del usuario (propietario o admin)
     @PutMapping("/{id}")
     public ResponseEntity<?> actualizarUsuario(
             @PathVariable Long id,
@@ -68,18 +51,7 @@ public class UsuarioController {
         return ResponseEntity.ok(actualizado);
     }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<?> eliminarUsuario(
-            @PathVariable Long id,
-            @RequestHeader("Authorization") String token
-    ) {
-        if (!jwtUtil.isAdmin(token)) {
-            return ResponseEntity.status(403).body("No autorizado");
-        }
-        usuarioService.eliminarUsuario(id);
-        return ResponseEntity.ok("Usuario eliminado correctamente");
-    }
-
+    // Cambiar contraseña (propietario o admin)
     @PutMapping("/{id}/contrasena")
     public ResponseEntity<?> cambiarContrasena(
             @PathVariable Long id,
@@ -93,6 +65,10 @@ public class UsuarioController {
         return ResponseEntity.ok("Contraseña actualizada correctamente");
     }
 
-
-
+    @GetMapping("/{id}")
+    public ResponseEntity<Usuario> obtenerUsuario(@PathVariable Long id) {
+        return usuarioService.buscarPorId(id)
+                .map(ResponseEntity::ok)
+                .orElseGet(() -> ResponseEntity.notFound().build());
+    }
 }

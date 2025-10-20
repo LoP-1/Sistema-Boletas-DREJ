@@ -12,7 +12,6 @@ import { BoletaDTO } from '../../../models/boleta.model';
 export class BoletaDetalle {
   @Input() boleta: BoletaDTO | null = null;
   @Output() close = new EventEmitter<void>();
-
   onClose() {
     this.close.emit();
   }

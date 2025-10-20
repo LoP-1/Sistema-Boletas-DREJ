@@ -2,6 +2,7 @@ package drej.sistema.boletas.models.record;
 import java.util.List;
 
 public record BoletaDTO(
+        Long id,
         String archivo_origen,
         int raw_length,
         List<ConceptoDTO> conceptos,

@@ -6,10 +6,17 @@ import { Inicio } from './components/dashboard/inicio/inicio';
 import { Admin } from './components/dashboard/admin/admin';
 import { authGuard } from './guards/auth-guard';
 import { adminGuard } from './guards/admin-guard';
-import { BoletasGestion } from './components/dashboard/boletas-gestion/boletas-gestion';
 
 export const routes: Routes = [
   { path: '', redirectTo: 'login', pathMatch: 'full' },
+
+  // Ruta pública para QR
+  {
+    path: 'boleta/:id',
+    loadComponent: () => import('./components/qr/boleta-print/boleta-print').then(m => m.BoletaPrint),
+    data: { ngSkipHydration: true }
+  },
+
   {
     path: 'dashboard',
     component: Dashboard,
@@ -20,9 +27,10 @@ export const routes: Routes = [
       { path: 'perfil', component: Profile },
       { path: 'inicio', component: Inicio },
       { path: 'admin', component: Admin, canActivate: [adminGuard] },
-      { path: 'gestion-boletas', component: BoletasGestion, canActivate: [adminGuard] },
+      { path: 'gestion-boletas', loadComponent: () => import('./components/dashboard/boletas-gestion/boletas-gestion').then(m => m.BoletasGestion), canActivate: [adminGuard] },
     ]
   },
+
   {
     path: 'login',
     loadComponent: () => import('./components/auth/login/login').then(m => m.Login)

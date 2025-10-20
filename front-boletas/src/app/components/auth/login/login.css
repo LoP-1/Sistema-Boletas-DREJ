@@ -1,0 +1,9 @@
+input::placeholder {
+  color: #94a3b8;         /* Tailwind slate-400 */
+  opacity: 0.6;           /* Más transparente */
+  transition: color 0.2s;
+}
+
+input:focus::placeholder {
+  opacity: 0.3;           /* Aún más transparente al enfocar */
+}

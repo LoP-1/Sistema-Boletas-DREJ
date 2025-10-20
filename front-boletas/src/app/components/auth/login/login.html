@@ -1,80 +1,200 @@
 <div class="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 to-blue-100">
   <div class="w-full max-w-md bg-white rounded-2xl shadow-2xl p-8">
-    <div class="flex flex-col items-center mb-6">
-      <div class="bg-blue-100 rounded-full p-4 mb-2">
-        <svg class="w-10 h-10 text-blue-500" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round"
-            d="M12 11c2.21 0 4-1.79 4-4S14.21 3 12 3s-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2a1 1 0 001 1h14a1 1 0 001-1v-2c0-2.66-5.33-4-8-4z" />
-        </svg>
-      </div>
+     <div class="flex flex-col items-center mb-6">
+      <img
+        src="logo-drej.png"
+        alt="Logo DREJ"
+        class="w-28 h-28 object-contain mb-4"
+        style="background: none; box-shadow: none;"
+      />
       <h2 class="text-3xl font-extrabold text-gray-800 tracking-tight mb-1" *ngIf="!modoRegistro">Bienvenido</h2>
       <h2 class="text-3xl font-extrabold text-gray-800 tracking-tight mb-1" *ngIf="modoRegistro">Crea tu cuenta</h2>
       <p class="text-gray-500 text-sm" *ngIf="!modoRegistro">Inicia sesión con tus credenciales</p>
       <p class="text-gray-500 text-sm" *ngIf="modoRegistro">Regístrate para acceder</p>
     </div>
 
-    <form *ngIf="!modoRegistro" (ngSubmit)="login()" class="flex flex-col gap-4">
+    <!-- LOGIN FORM -->
+    <form *ngIf="!modoRegistro" (ngSubmit)="login()" class="flex flex-col gap-4" #loginForm="ngForm" novalidate>
       <div>
         <label class="block text-gray-700 text-sm font-semibold mb-1" for="correo">Correo</label>
-        <input type="email" id="correo" [(ngModel)]="correo" name="correo" placeholder="correo@ejemplo.com"
-          class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-400 focus:outline-none transition" required>
+        <input
+          type="email"
+          id="correo"
+          [(ngModel)]="correo"
+          name="correo"
+          placeholder="correo@ejemplo.com"
+          required
+          email
+          #correoInput="ngModel"
+          class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-400 focus:outline-none transition"
+        >
+        <div *ngIf="correoInput.invalid && correoInput.touched" class="text-xs text-red-500 mt-1">
+          <span *ngIf="correoInput.errors?.['required']">El correo es obligatorio.</span>
+          <span *ngIf="correoInput.errors?.['email']">Ingrese un correo válido.</span>
+        </div>
       </div>
       <div>
         <label class="block text-gray-700 text-sm font-semibold mb-1" for="contrasena">Contraseña</label>
-        <input type="password" id="contrasena" [(ngModel)]="contrasena" name="contrasena" placeholder="********"
-          class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-400 focus:outline-none transition" required>
+        <input
+          type="password"
+          id="contrasena"
+          [(ngModel)]="contrasena"
+          name="contrasena"
+          placeholder="********"
+          required
+          minlength="6"
+          #pwdInput="ngModel"
+          class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-400 focus:outline-none transition"
+        >
+        <div *ngIf="pwdInput.invalid && pwdInput.touched" class="text-xs text-red-500 mt-1">
+          <span *ngIf="pwdInput.errors?.['required']">La contraseña es obligatoria.</span>
+          <span *ngIf="pwdInput.errors?.['minlength']">Mínimo 6 caracteres.</span>
+        </div>
       </div>
-      <button type="submit" [disabled]="cargando"
-        class="w-full bg-blue-600 text-white font-bold py-2 rounded-lg shadow hover:bg-blue-700 transition-colors disabled:bg-blue-300">
+      <button
+        type="submit"
+        [disabled]="cargando || loginForm.invalid"
+        class="w-full bg-blue-600 text-white font-bold py-2 rounded-lg shadow hover:bg-blue-700 transition-colors disabled:bg-blue-300"
+      >
         Ingresar
       </button>
-      <button type="button" (click)="alternarModo()"
-        class="w-full mt-1 bg-white border border-blue-600 text-blue-600 font-semibold py-2 rounded-lg hover:bg-blue-50 transition">
+      <button
+        type="button"
+        (click)="alternarModo()"
+        class="w-full mt-1 bg-white border border-blue-600 text-blue-600 font-semibold py-2 rounded-lg hover:bg-blue-50 transition"
+      >
         ¿No tienes cuenta? <span class="underline">Regístrate</span>
       </button>
     </form>
 
-    <form *ngIf="modoRegistro" (ngSubmit)="registro()" class="flex flex-col gap-4">
+    <!-- REGISTRO FORM -->
+    <form *ngIf="modoRegistro" (ngSubmit)="registro()" class="flex flex-col gap-4" #registroForm="ngForm" novalidate>
       <div class="flex gap-2">
         <div class="w-1/2">
           <label class="block text-gray-700 text-sm font-semibold mb-1" for="nombre">Nombre</label>
-          <input type="text" id="nombre" [(ngModel)]="registroData.nombre" name="nombre" placeholder="Nombre"
-            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-400 focus:outline-none transition" required>
+          <input
+            type="text"
+            id="nombre"
+            [(ngModel)]="registroData.nombre"
+            name="nombre"
+            required
+            minlength="2"
+            #nombreInput="ngModel"
+            placeholder="Nombre"
+            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-400 focus:outline-none transition"
+          >
+          <div *ngIf="nombreInput.invalid && nombreInput.touched" class="text-xs text-red-500 mt-1">
+            <span *ngIf="nombreInput.errors?.['required']">El nombre es obligatorio.</span>
+            <span *ngIf="nombreInput.errors?.['minlength']">Mínimo 2 caracteres.</span>
+          </div>
         </div>
         <div class="w-1/2">
           <label class="block text-gray-700 text-sm font-semibold mb-1" for="apellido">Apellido</label>
-          <input type="text" id="apellido" [(ngModel)]="registroData.apellido" name="apellido" placeholder="Apellido"
-            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-400 focus:outline-none transition" required>
+          <input
+            type="text"
+            id="apellido"
+            [(ngModel)]="registroData.apellido"
+            name="apellido"
+            required
+            minlength="2"
+            #apellidoInput="ngModel"
+            placeholder="Apellido"
+            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-400 focus:outline-none transition"
+          >
+          <div *ngIf="apellidoInput.invalid && apellidoInput.touched" class="text-xs text-red-500 mt-1">
+            <span *ngIf="apellidoInput.errors?.['required']">El apellido es obligatorio.</span>
+            <span *ngIf="apellidoInput.errors?.['minlength']">Mínimo 2 caracteres.</span>
+          </div>
         </div>
       </div>
       <div>
         <label class="block text-gray-700 text-sm font-semibold mb-1" for="correoRegistro">Correo</label>
-        <input type="email" id="correoRegistro" [(ngModel)]="registroData.correo" name="correo" placeholder="correo@ejemplo.com"
-          class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-400 focus:outline-none transition" required>
+        <input
+          type="email"
+          id="correoRegistro"
+          [(ngModel)]="registroData.correo"
+          name="correoRegistro"
+          required
+          email
+          #correoRegistroInput="ngModel"
+          placeholder="correo@ejemplo.com"
+          class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-400 focus:outline-none transition"
+        >
+        <div *ngIf="correoRegistroInput.invalid && correoRegistroInput.touched" class="text-xs text-red-500 mt-1">
+          <span *ngIf="correoRegistroInput.errors?.['required']">El correo es obligatorio.</span>
+          <span *ngIf="correoRegistroInput.errors?.['email']">Ingrese un correo válido.</span>
+        </div>
       </div>
       <div class="flex gap-2">
         <div class="w-1/2">
           <label class="block text-gray-700 text-sm font-semibold mb-1" for="dni">DNI</label>
-          <input type="text" id="dni" [(ngModel)]="registroData.dni" name="dni" placeholder="DNI"
-            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-400 focus:outline-none transition" required>
+          <input
+            type="text"
+            id="dni"
+            [(ngModel)]="registroData.dni"
+            name="dni"
+            required
+            pattern="[0-9]{8}"
+            #dniInput="ngModel"
+            maxlength="8"
+            placeholder="DNI"
+            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-400 focus:outline-none transition"
+          >
+          <div *ngIf="dniInput.invalid && dniInput.touched" class="text-xs text-red-500 mt-1">
+            <span *ngIf="dniInput.errors?.['required']">El DNI es obligatorio.</span>
+            <span *ngIf="dniInput.errors?.['pattern'] || dniInput.errors?.['maxlength']">DNI inválido (8 dígitos).</span>
+          </div>
         </div>
         <div class="w-1/2">
           <label class="block text-gray-700 text-sm font-semibold mb-1" for="telefono">Teléfono</label>
-          <input type="text" id="telefono" [(ngModel)]="registroData.telefono" name="telefono" placeholder="Teléfono"
-            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-400 focus:outline-none transition" required>
+          <input
+            type="text"
+            id="telefono"
+            [(ngModel)]="registroData.telefono"
+            name="telefono"
+            required
+            pattern="^[0-9]{9}$"
+            #telefonoInput="ngModel"
+            maxlength="9"
+            placeholder="Teléfono"
+            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-400 focus:outline-none transition"
+          >
+          <div *ngIf="telefonoInput.invalid && telefonoInput.touched" class="text-xs text-red-500 mt-1">
+            <span *ngIf="telefonoInput.errors?.['required']">El teléfono es obligatorio.</span>
+            <span *ngIf="telefonoInput.errors?.['pattern'] || telefonoInput.errors?.['maxlength']">Teléfono inválido (9 dígitos).</span>
+          </div>
         </div>
       </div>
       <div>
         <label class="block text-gray-700 text-sm font-semibold mb-1" for="contrasenaRegistro">Contraseña</label>
-        <input type="password" id="contrasenaRegistro" [(ngModel)]="registroData.contrasena" name="contrasena" placeholder="********"
-          class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-400 focus:outline-none transition" required>
+        <input
+          type="password"
+          id="contrasenaRegistro"
+          [(ngModel)]="registroData.contrasena"
+          name="contrasenaRegistro"
+          required
+          minlength="6"
+          #pwdRegistroInput="ngModel"
+          placeholder="********"
+          class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-400 focus:outline-none transition"
+        >
+        <div *ngIf="pwdRegistroInput.invalid && pwdRegistroInput.touched" class="text-xs text-red-500 mt-1">
+          <span *ngIf="pwdRegistroInput.errors?.['required']">La contraseña es obligatoria.</span>
+          <span *ngIf="pwdRegistroInput.errors?.['minlength']">Mínimo 6 caracteres.</span>
+        </div>
       </div>
-      <button type="submit" [disabled]="cargando"
-        class="w-full bg-blue-600 text-white font-bold py-2 rounded-lg shadow hover:bg-blue-700 transition-colors disabled:bg-blue-300">
+      <button
+        type="submit"
+        [disabled]="cargando || registroForm.invalid"
+        class="w-full bg-blue-600 text-white font-bold py-2 rounded-lg shadow hover:bg-blue-700 transition-colors disabled:bg-blue-300"
+      >
         Registrar
       </button>
-      <button type="button" (click)="alternarModo()"
-        class="w-full mt-1 bg-white border border-blue-600 text-blue-600 font-semibold py-2 rounded-lg hover:bg-blue-50 transition">
+      <button
+        type="button"
+        (click)="alternarModo()"
+        class="w-full mt-1 bg-white border border-blue-600 text-blue-600 font-semibold py-2 rounded-lg hover:bg-blue-50 transition"
+      >
         ¿Ya tienes cuenta? <span class="underline">Inicia sesión</span>
       </button>
     </form>

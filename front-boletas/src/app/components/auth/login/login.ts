@@ -72,12 +72,12 @@ export class Login {
           rol: 'USER',
           contrasena: ''
         };
-        this.cd.detectChanges(); // <-- fuerza la actualización
+        this.cd.detectChanges();
       },
       error: err => {
         this.mensaje = err.error || 'Registro falló';
         this.cargando = false;
-        this.cd.detectChanges(); // <-- fuerza la actualización
+        this.cd.detectChanges();
       }
     });
   }
