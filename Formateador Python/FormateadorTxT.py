@@ -3,20 +3,15 @@
 
 import re
 import json
-import argparse
 from pathlib import Path
-from typing import List, Dict, Any, Optional, Generator
-from datetime import datetime
+from typing import List, Dict, Any, Generator, Optional
 import sys
-import gzip
 
-# =========================
-# Regex de detección
-# =========================
+# ========== Expresiones regulares y helpers (idéntico a tu lógica) ==========
+
 RE_HEADER = re.compile(r'^DRE JUNIN[^\n]*$', re.MULTILINE)
-RE_SEQ_SAME_LINE = re.compile(r'^\.\s*(?P<seq>0{4,}\d+)\s*$', re.MULTILINE)  # ". 00001290"
-RE_SEQ_OLD = re.compile(r'\n\s{0,100}(?P<seq>0{4,}\d+)\n\.\s*\n?', re.MULTILINE)  # variante antigua
-
+RE_SEQ_SAME_LINE = re.compile(r'^\.\s*(?P<seq>0{4,}\d+)\s*$', re.MULTILINE)
+RE_SEQ_OLD = re.compile(r'\n\s{0,100}(?P<seq>0{4,}\d+)\n\.\s*\n?', re.MULTILINE)
 RE_APELLIDOS = re.compile(r'Apellidos\s*:\s*(.*)', re.IGNORECASE)
 RE_NOMBRES = re.compile(r'Nombres\s*:\s*(.*)', re.IGNORECASE)
 RE_FECHA_NAC = re.compile(r'Fecha de Nacimiento\s*:\s*([0-9]{2}/[0-9]{2}/[0-9]{4})')
@@ -48,10 +43,8 @@ def limpiar_monto(txt: str) -> float:
         return 0.0
 
 def partir_boletas(contenido: str) -> List[str]:
-    # Encuentra cada cabecera "DRE JUNIN" y corta hasta la siguiente o EOF
     starts = [m.start() for m in RE_HEADER.finditer(contenido)]
     if not starts:
-        # Si no encuentra cabeceras, intenta con el patrón antiguo (no recomendado)
         return [contenido.strip()] if contenido.strip() else []
     starts.append(len(contenido))
     partes = []
@@ -63,7 +56,6 @@ def partir_boletas(contenido: str) -> List[str]:
 
 def extraer_conceptos(bloque: str) -> List[Dict[str, Any]]:
     conceptos = []
-    # Entre la primera y la última línea de "===="
     secciones = [m.start() for m in re.finditer(r'^=+\s*$', bloque, re.MULTILINE)]
     sub = bloque
     if len(secciones) >= 2:
@@ -96,19 +88,16 @@ def parse_boleta(bloque: str, origen: str) -> Dict[str, Any]:
         "conceptos": []
     }
 
-    # Secuencia final: soporta ". 00001290" y variante antigua en líneas separadas
     ms = RE_SEQ_SAME_LINE.search(bloque) or RE_SEQ_OLD.search(bloque)
     if ms:
         d["secuencia"] = ms.group('seq')
 
-    # Encabezado CF/CL/CG en primeras líneas
     primeras = bloque.splitlines()[:3]
     header_text = "\n".join(primeras)
     code_match = re.search(r'(CF|CL|CG)\d+[A-Z0-9]*', header_text)
     if code_match:
         d["codigo_encabezado"] = code_match.group(0)
 
-    # Periodo "MES - YYYY"
     MESES = "ENERO|FEBRERO|MARZO|ABRIL|MAYO|JUNIO|JULIO|AGOSTO|SETIEMBRE|SEPTIEMBRE|OCTUBRE|NOVIEMBRE|DICIEMBRE"
     RE_PERIODO = re.compile(rf'({MESES})\s*-+\s*(\d{{4}})', re.IGNORECASE)
     periodo = RE_PERIODO.search(bloque)
@@ -116,7 +105,6 @@ def parse_boleta(bloque: str, origen: str) -> Dict[str, Any]:
         d["mes"] = periodo.group(1).capitalize()
         d["anio"] = periodo.group(2)
 
-    # Estado después del código de situación (si existiera)
     estado = re.search(r'\(\d+\)\s+([A-Za-zÁÉÍÓÚÑ]+)', bloque)
     if estado:
         d["estado"] = estado.group(1)
@@ -191,135 +179,147 @@ def procesar_archivo(ruta: Path) -> List[Dict[str, Any]]:
 def iter_registros(directorio: Path) -> Generator[Dict[str, Any], None, None]:
     archivos = sorted(directorio.rglob('*.lis'))
     if not archivos:
-        print(f"No se encontraron archivos .lis en {directorio}", file=sys.stderr)
+        print(f"[!] No se encontraron archivos .lis en {directorio}", file=sys.stderr)
         return
     for p in archivos:
         print(f"Procesando: {p}")
         for r in procesar_archivo(p):
             yield r
 
-# =========================
-# Writers simples
-# =========================
+def pedir_opcion() -> int:
+    print("\n¿Qué deseas hacer?")
+    print("  1) Subir JSON a una URL")
+    print("  2) Crear un JSON para usar en el backend (archivo .json)")
+    while True:
+        op = input("Elige 1 o 2: ").strip()
+        if op in ("1", "2"):
+            return int(op)
+        print("Opción inválida. Intenta de nuevo.")
 
-def escribir_ndjson_gz(registros: Generator[Dict[str, Any], None, None], destino: Path, skip_errors: bool = True) -> int:
-    total = 0
-    with gzip.open(destino, "wt", encoding="utf-8") as f:
-        for r in registros:
-            if skip_errors and "error" in r:
-                continue
-            f.write(json.dumps(r, ensure_ascii=False, separators=(",", ":")) + "\n")
-            total += 1
-    return total
+def pedir_directorio() -> Path:
+    while True:
+        d = input("Directorio raíz con .lis [Listas]: ").strip() or "Listas"
+        p = Path(d)
+        if p.exists() and p.is_dir():
+            return p
+        print("Directorio no válido. Intenta de nuevo.")
 
-def escribir_json_array_gz(registros: Generator[Dict[str, Any], None, None], destino: Path, skip_errors: bool = True) -> int:
-    total = 0
-    first = True
-    with gzip.open(destino, "wt", encoding="utf-8") as f:
-        f.write("[")
-        for r in registros:
-            if skip_errors and "error" in r:
-                continue
-            if not first:
-                f.write(",")
-            else:
-                first = False
-            f.write(json.dumps(r, ensure_ascii=False, separators=(",", ":")))
-            total += 1
-        f.write("]")
-    return total
+def pedir_headers() -> Dict[str, str]:
+    print("\nPuedes añadir headers HTTP (por ejemplo Authorization: Bearer ...).")
+    print("Deja vacío para continuar.")
+    headers: Dict[str, str] = {}
+    while True:
+        linea = input("Header (Clave:Valor) o Enter para terminar: ").strip()
+        if not linea:
+            break
+        if ":" not in linea:
+            print("Formato inválido. Usa Clave:Valor")
+            continue
+        k, v = linea.split(":", 1)
+        headers[k.strip()] = v.strip()
+    return headers
 
-# =========================
-# Uploader HTTP simple
-# =========================
+def pedir_endpoint() -> str:
+    while True:
+        url = input("URL del endpoint (ej. https://api.tuapp.com/boletas): ").strip()
+        if url.startswith("http://") or url.startswith("https://"):
+            return url
+        print("URL inválida. Debe comenzar con http:// o https://")
 
-class HttpUploader:
-    def __init__(self, endpoint: str, batch_size: int = 500, timeout: int = 60, headers: Optional[Dict[str, str]] = None):
+def pedir_batch_size() -> int:
+    while True:
+        txt = input("Tamaño de lote [500]: ").strip()
+        if not txt:
+            return 500
         try:
-            import requests  # noqa
-        except ImportError:
-            print("Instala requests: pip install requests", file=sys.stderr)
-            raise
-        import requests
-        self.requests = requests
-        self.endpoint = endpoint
-        self.batch_size = batch_size
-        self.timeout = timeout
-        self.headers = headers or {"Content-Type": "application/json"}
-        self.buffer: List[Dict[str, Any]] = []
-        self.total = 0
+            v = int(txt)
+            if v > 0:
+                return v
+        except ValueError:
+            pass
+        print("Valor inválido. Debe ser un entero > 0.")
 
-    def flush(self):
-        if not self.buffer:
+def pedir_salida() -> Path:
+    por_defecto = "boletas.json"
+    txt = input(f"Ruta de salida [{por_defecto}]: ").strip() or por_defecto
+    out = Path(txt)
+    if not str(out).endswith(".json"):
+        out = Path(str(out) + ".json")
+    return out
+
+def guardar_json_simple(registros: Generator[Dict[str, Any], None, None], destino: Path, skip_errors: bool = True) -> int:
+    total = 0
+    arr = []
+    for r in registros:
+        if skip_errors and "error" in r:
+            continue
+        arr.append(r)
+        total += 1
+    with open(destino, "w", encoding="utf-8") as f:
+        json.dump(arr, f, ensure_ascii=False, separators=(",", ":"), indent=2)
+    return total
+
+def subir_por_lotes(endpoint: str, registros: Generator[Dict[str, Any], None, None],
+                    headers: Optional[Dict[str, str]] = None, batch_size: int = 500,
+                    skip_errors: bool = True) -> int:
+    try:
+        import requests
+    except ImportError:
+        print("Instala requests: pip install requests", file=sys.stderr)
+        raise
+    headers = dict(headers or {})
+    headers.setdefault("Content-Type", "application/json")
+    buffer: List[Dict[str, Any]] = []
+    total = 0
+
+    def flush():
+        nonlocal buffer, total
+        if not buffer:
             return
-        payload = json.dumps(self.buffer, ensure_ascii=False, separators=(",", ":")).encode("utf-8")
-        resp = self.requests.post(self.endpoint, data=payload, headers=self.headers, timeout=self.timeout)
+        payload = json.dumps(buffer, ensure_ascii=False, separators=(",", ":")).encode("utf-8")
+        resp = requests.post(endpoint, data=payload, headers=headers, timeout=60)
         if not (200 <= resp.status_code < 300):
             raise RuntimeError(f"HTTP {resp.status_code}: {resp.text[:500]}")
-        self.total += len(self.buffer)
-        self.buffer.clear()
+        total += len(buffer)
+        print(f"  -> Enviadas {len(buffer)} (acumulado {total})")
+        buffer.clear()
 
-    def write(self, r: Dict[str, Any]):
-        self.buffer.append(r)
-        if len(self.buffer) >= self.batch_size:
-            self.flush()
+    for r in registros:
+        if skip_errors and "error" in r:
+            continue
+        buffer.append(r)
+        if len(buffer) >= batch_size:
+            flush()
+    flush()
+    return total
 
 def main():
-    ap = argparse.ArgumentParser(description="Parser de boletas .lis con exportación y subida simples")
-    ap.add_argument("--directorio", "-d", default="Listas", help="Directorio raíz donde buscar .lis")
-    ap.add_argument("--modo", choices=["json", "ndjson", "upload-http"], default="ndjson",
-                    help="json: JSON array .gz; ndjson: 1 objeto/linea .gz; upload-http: enviar a endpoint")
-    ap.add_argument("--salida", "-o", help="Ruta de salida (se recomienda .gz) para json/ndjson")
-    ap.add_argument("--skip-errors", action="store_true", default=True, help="Omitir registros con 'error'")
-    # HTTP
-    ap.add_argument("--http-endpoint", help="URL del endpoint para upload-http")
-    ap.add_argument("--batch-size", type=int, default=500, help="Tamaño del lote HTTP")
-    ap.add_argument("--timeout", type=int, default=60, help="Timeout HTTP en segundos")
-    ap.add_argument("--header", action="append", default=[], help='Headers extra "Clave:Valor" (puede repetirse)')
+    print("=== Boletas CLI ===")
+    raiz = pedir_directorio()
+    opcion = pedir_opcion()
 
-    args = ap.parse_args()
-    raiz = Path(args.directorio)
-
-    # Construir headers si se pasan
-    headers = None
-    if args.header:
-        headers = {}
-        for h in args.header:
-            if ":" not in h:
-                print(f"Ignorando header inválido: {h}", file=sys.stderr)
-                continue
-            k, v = h.split(":", 1)
-            headers[k.strip()] = v.strip()
-
-    registros = iter_registros(raiz)
-
-    if args.modo in ("json", "ndjson"):
-        if not args.salida:
-            print("--salida es requerido para modo json/ndjson", file=sys.stderr)
-            sys.exit(2)
-        out = Path(args.salida)
-        if not str(out).endswith(".gz"):
-            out = Path(str(out) + ".gz")
-        if args.modo == "ndjson":
-            total = escribir_ndjson_gz(registros, out, skip_errors=args.skip_errors)
-        else:
-            total = escribir_json_array_gz(registros, out, skip_errors=args.skip_errors)
-        print(f"Procesadas {total} boletas. Salida: {out}")
+    if opcion == 1:
+        endpoint = pedir_endpoint()
+        headers = pedir_headers()
+        batch = pedir_batch_size()
+        print("\nIniciando subida...")
+        try:
+            total = subir_por_lotes(endpoint, iter_registros(raiz), headers=headers, batch_size=batch, skip_errors=True)
+        except Exception as e:
+            print(f"[ERROR] Falló la subida: {e}", file=sys.stderr)
+            sys.exit(1)
+        print(f"\nListo. Enviadas {total} boletas a {endpoint}")
         return
 
-    if args.modo == "upload-http":
-        if not args.http_endpoint:
-            print("--http-endpoint es requerido para upload-http", file=sys.stderr)
-            sys.exit(2)
-        up = HttpUploader(args.http_endpoint, batch_size=args.batch_size, timeout=args.timeout, headers=headers)
-        total = 0
-        for r in registros:
-            if args.skip_errors and "error" in r:
-                continue
-            up.write(r)
-        up.flush()
-        print(f"Enviadas {up.total} boletas a {args.http_endpoint}")
-        return
+    if opcion == 2:
+        salida = pedir_salida()
+        print("\nGenerando archivo JSON (array)...")
+        try:
+            total = guardar_json_simple(iter_registros(raiz), salida, skip_errors=True)
+        except Exception as e:
+            print(f"[ERROR] Falló la generación: {e}", file=sys.stderr)
+            sys.exit(1)
+        print(f"\nListo. Procesadas {total} boletas. Archivo: {salida}")
 
 if __name__ == "__main__":
     main()

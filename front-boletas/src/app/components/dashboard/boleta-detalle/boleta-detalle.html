@@ -139,4 +139,13 @@
       </div>
     </div>
   </div>
+  <a
+  *ngIf="boleta?.id !== undefined && boleta?.id !== null"
+  [href]="'/boleta/' + boleta?.id"
+  target="_blank"
+  rel="noopener"
+  class="mt-1 text-center text-blue-600 font-semibold px-3 py-1 rounded hover:bg-blue-100 transition block w-full"
+>
+  Imprimir
+</a>
 </div>

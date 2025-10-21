@@ -6,6 +6,7 @@ import { Inicio } from './components/dashboard/inicio/inicio';
 import { Admin } from './components/dashboard/admin/admin';
 import { authGuard } from './guards/auth-guard';
 import { adminGuard } from './guards/admin-guard';
+import { SubirBoletas } from './components/dashboard/subir-boletas/subir-boletas';
 
 export const routes: Routes = [
   { path: '', redirectTo: 'login', pathMatch: 'full' },
@@ -27,7 +28,18 @@ export const routes: Routes = [
       { path: 'perfil', component: Profile },
       { path: 'inicio', component: Inicio },
       { path: 'admin', component: Admin, canActivate: [adminGuard] },
-      { path: 'gestion-boletas', loadComponent: () => import('./components/dashboard/boletas-gestion/boletas-gestion').then(m => m.BoletasGestion), canActivate: [adminGuard] },
+      { 
+        path: 'gestion-boletas', 
+        loadComponent: () => import('./components/dashboard/boletas-gestion/boletas-gestion').then(m => m.BoletasGestion), 
+        canActivate: [adminGuard],
+        data: { ngSkipHydration: true } 
+      },
+      { 
+        path: 'subir-boleta', 
+        component: SubirBoletas, 
+        canActivate: [adminGuard],
+        data: { ngSkipHydration: true } 
+      },
     ]
   },
 

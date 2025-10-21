@@ -1,0 +1,422 @@
+<div class="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 py-8 px-4 sm:px-6 lg:px-8">
+  <div class="max-w-7xl mx-auto">
+    <!-- Header -->
+    <div class="text-center mb-8">
+      <h1 class="text-4xl font-bold text-gray-900 mb-2">Gestión de Boletas de Pago</h1>
+      <p class="text-gray-600">Carga boletas mediante JSON o formulario individual</p>
+    </div>
+
+    <!-- Mensajes -->
+    <div class="mb-6">
+      <div *ngIf="successMessage" class="bg-green-50 border-l-4 border-green-400 p-4 mb-4 rounded-r-lg shadow-sm animate-fadeIn">
+        <div class="flex">
+          <div class="flex-shrink-0">
+            <i class="material-icons" style="color:#388e3c;">check_circle</i>
+          </div>
+          <div class="ml-3">
+            <p class="text-sm text-green-700 font-medium">{{ successMessage }}</p>
+          </div>
+        </div>
+      </div>
+
+      <div *ngIf="errorMessage" class="bg-red-50 border-l-4 border-red-400 p-4 mb-4 rounded-r-lg shadow-sm animate-fadeIn">
+        <div class="flex">
+          <div class="flex-shrink-0">
+            <i class="material-icons" style="color:#d32f2f;">error</i>
+          </div>
+          <div class="ml-3">
+            <p class="text-sm text-red-700 font-medium">{{ errorMessage }}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Opciones de Carga -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+      <!-- Cargar JSON -->
+      <div class="bg-white rounded-xl shadow-lg p-6 hover:shadow-xl transition-shadow duration-300">
+        <div class="flex items-center mb-4">
+          <i class="material-icons text-indigo-600 mr-3">cloud_upload</i>
+          <h2 class="text-2xl font-semibold text-gray-800">Cargar JSON</h2>
+        </div>
+        <p class="text-gray-600 mb-4 text-sm">Sube un archivo JSON con boletas</p>
+        <div class="mb-4">
+          <label class="flex flex-col items-center px-4 py-6 bg-indigo-50 text-indigo-600 rounded-lg border-2 border-dashed border-indigo-300 cursor-pointer hover:bg-indigo-100 transition-colors duration-300">
+            <i class="material-icons mb-2">attach_file</i>
+            <span class="text-sm font-medium">{{ selectedFile ? selectedFile.name : 'Seleccionar archivo JSON' }}</span>
+            <input type="file" class="hidden" accept=".json" (change)="onFileSelected($event)">
+          </label>
+        </div>
+        <div class="flex gap-3">
+          <button 
+            (click)="cargarJson()"
+            [disabled]="!selectedFile"
+            class="flex-1 bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700 disabled:bg-gray-300 disabled:cursor-not-allowed transition-colors duration-300 font-medium shadow-md hover:shadow-lg">
+            <i class="material-icons mr-2">cloud_upload</i>
+            Cargar JSON
+          </button>
+          <button 
+            (click)="descargarPlantilla()"
+            class="flex-1 bg-gray-200 text-gray-700 px-4 py-2 rounded-lg hover:bg-gray-300 transition-colors duration-300 font-medium shadow-md hover:shadow-lg">
+            <i class="material-icons mr-2">description</i>
+            Plantilla
+          </button>
+        </div>
+      </div>
+
+      <!-- Formulario Individual -->
+      <div class="bg-white rounded-xl shadow-lg p-6 hover:shadow-xl transition-shadow duration-300">
+        <div class="flex items-center mb-4">
+          <i class="material-icons text-green-600 mr-3">edit</i>
+          <h2 class="text-2xl font-semibold text-gray-800">Formulario Manual</h2>
+        </div>
+        <p class="text-gray-600 mb-4 text-sm">Completa el formulario para agregar una boleta individual</p>
+        <button 
+          (click)="toggleForm()"
+          class="w-full bg-green-600 text-white px-4 py-3 rounded-lg hover:bg-green-700 transition-colors duration-300 font-medium flex items-center justify-center shadow-md hover:shadow-lg">
+          <i class="material-icons mr-2">{{ showForm ? 'close' : 'edit' }}</i>
+          {{ showForm ? 'Ocultar Formulario' : 'Mostrar Formulario' }}
+        </button>
+      </div>
+    </div>
+
+    <!-- Formulario Expandible -->
+    <div *ngIf="showForm" class="bg-white rounded-xl shadow-lg p-6 mb-8 animate-fadeIn">
+      <h3 class="text-2xl font-semibold text-gray-800 mb-6 border-b pb-3 flex items-center">
+        <i class="material-icons mr-2">note_add</i>
+        Crear Boleta Individual
+      </h3>
+      <form [formGroup]="boletaForm" class="space-y-6">
+        <!-- Información de Archivo -->
+        <div class="bg-gray-50 p-4 rounded-lg border-l-4 border-gray-400">
+          <h4 class="font-semibold text-lg text-gray-700 mb-4 flex items-center">
+            <i class="material-icons mr-2">folder</i>
+            Información de Archivo
+          </h4>
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1">Archivo Origen *</label>
+              <input formControlName="archivo_origen" type="text" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent">
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1">Secuencia *</label>
+              <input formControlName="secuencia" type="text" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent">
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1">Raw Length *</label>
+              <input formControlName="raw_length" type="number" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent">
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1">Código Encabezado</label>
+              <input formControlName="codigo_encabezado" type="text" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent">
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1">RUC Bloque</label>
+              <input formControlName="ruc_bloque" type="text" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent">
+            </div>
+          </div>
+        </div>
+        <!-- Período y Estado -->
+        <div class="bg-blue-50 p-4 rounded-lg border-l-4 border-blue-400">
+          <h4 class="font-semibold text-lg text-gray-700 mb-4 flex items-center">
+            <i class="material-icons mr-2">calendar_today</i>
+            Período y Estado
+          </h4>
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1">Mes *</label>
+              <select formControlName="mes" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                <option *ngFor="let mes of meses" [value]="mes">{{ mes }}</option>
+              </select>
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1">Año *</label>
+              <input formControlName="anio" type="text" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1">Estado *</label>
+              <select formControlName="estado" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                <option value="Activo">Activo</option>
+                <option value="Inactivo">Inactivo</option>
+                <option value="Pendiente">Pendiente</option>
+              </select>
+            </div>
+          </div>
+        </div>
+        <!-- Datos Personales -->
+        <div class="bg-purple-50 p-4 rounded-lg border-l-4 border-purple-400">
+          <h4 class="font-semibold text-lg text-gray-700 mb-4 flex items-center">
+            <i class="material-icons mr-2">person</i>
+            Datos Personales
+          </h4>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1">Apellidos *</label>
+              <input formControlName="apellidos" type="text" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent">
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1">Nombres *</label>
+              <input formControlName="nombres" type="text" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent">
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1">Fecha Nacimiento *</label>
+              <input formControlName="fecha_nacimiento" type="text" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent">
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1">Documento Identidad *</label>
+              <input formControlName="documento_identidad" type="text" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent">
+            </div>
+          </div>
+        </div>
+        <!-- Datos Laborales -->
+        <div class="bg-green-50 p-4 rounded-lg border-l-4 border-green-400">
+          <h4 class="font-semibold text-lg text-gray-700 mb-4 flex items-center">
+            <i class="material-icons mr-2">work</i>
+            Datos Laborales
+          </h4>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div class="md:col-span-2">
+              <label class="block text-sm font-medium text-gray-700 mb-1">Establecimiento *</label>
+              <input formControlName="establecimiento" type="text" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent">
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1">Cargo *</label>
+              <input formControlName="cargo" type="text" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent">
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1">Tipo Servidor *</label>
+              <input formControlName="tipo_servidor" type="text" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent">
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1">Nivel Mag/Horas</label>
+              <input formControlName="nivel_mag_horas" type="text" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent">
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1">Tiempo Servicio</label>
+              <input formControlName="tiempo_servicio" type="text" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent">
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1">Fecha Ingreso *</label>
+              <input formControlName="fecha_ingreso_registro" type="text" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent">
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1">Fecha Término</label>
+              <input formControlName="fecha_termino_registro" type="text" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent">
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1">Régimen Pensionario</label>
+              <input formControlName="regimen_pensionario" type="text" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent">
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1">Leyenda Permanente</label>
+              <input formControlName="leyenda_permanente" type="text" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent">
+            </div>
+          </div>
+        </div>
+        <!-- Cuentas Bancarias -->
+        <div class="bg-indigo-50 p-4 rounded-lg border-l-4 border-indigo-400">
+          <h4 class="font-semibold text-lg text-gray-700 mb-4 flex items-center">
+            <i class="material-icons mr-2">account_balance</i>
+            Cuentas Bancarias
+          </h4>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1">Cuenta Principal *</label>
+              <input formControlName="cuenta_principal" type="text" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent">
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1">Cuentas Adicionales</label>
+              <input formControlName="cuentas_todas" type="text" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent">
+              <p class="text-xs text-gray-500 mt-1">Si no se especifica, se usará la cuenta principal</p>
+            </div>
+          </div>
+        </div>
+        <!-- Régimen Pensionario Detalle -->
+        <div class="bg-orange-50 p-4 rounded-lg border-l-4 border-orange-400">
+          <h4 class="font-semibold text-lg text-gray-700 mb-4 flex items-center">
+            <i class="material-icons mr-2">assessment</i>
+            Detalle Régimen Pensionario (Opcional)
+          </h4>
+          <div class="grid grid-cols-1 gap-4">
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1">Raw Régimen</label>
+              <textarea formControlName="reg_pensionario_raw" rows="3" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent"></textarea>
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1">Fecha Afiliación</label>
+              <input formControlName="reg_pensionario_afiliacion" type="text" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent">
+            </div>
+          </div>
+        </div>
+        <!-- Montos -->
+        <div class="bg-yellow-50 p-4 rounded-lg border-l-4 border-yellow-400">
+          <h4 class="font-semibold text-lg text-gray-700 mb-4 flex items-center">
+            <i class="material-icons mr-2">payments</i>
+            Montos
+          </h4>
+          <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1">Total Remuneraciones *</label>
+              <input formControlName="total_remuneraciones" type="number" step="0.01" (change)="calcularTotalLiquido()" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-yellow-500 focus:border-transparent">
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1">Total Descuentos *</label>
+              <input formControlName="total_descuentos" type="number" step="0.01" (change)="calcularTotalLiquido()" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-yellow-500 focus:border-transparent">
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1">Total Líquido *</label>
+              <input formControlName="total_liquido" type="number" step="0.01" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-yellow-500 focus:border-transparent bg-yellow-100">
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1">Monto Imponible *</label>
+              <input formControlName="monto_imponible" type="number" step="0.01" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-yellow-500 focus:border-transparent">
+            </div>
+          </div>
+        </div>
+        <!-- Conceptos -->
+        <div class="bg-red-50 p-4 rounded-lg border-l-4 border-red-400">
+          <div class="flex justify-between items-center mb-4">
+            <h4 class="font-semibold text-lg text-gray-700 flex items-center">
+              <i class="material-icons mr-2">list_alt</i>
+              Conceptos
+            </h4>
+            <button type="button" (click)="agregarConcepto()" class="bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700 transition-colors duration-300 text-sm font-medium flex items-center shadow-md hover:shadow-lg">
+              <i class="material-icons mr-1">add</i>
+              Agregar Concepto
+            </button>
+          </div>
+          <div formArrayName="conceptos" class="space-y-3">
+            <div *ngFor="let concepto of conceptos.controls; let i = index" [formGroupName]="i" class="bg-white p-4 rounded-lg border border-red-200 shadow-sm">
+              <div class="grid grid-cols-1 md:grid-cols-4 gap-3 items-end">
+                <div>
+                  <label class="block text-sm font-medium text-gray-700 mb-1">Tipo *</label>
+                  <select formControlName="tipo" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent">
+                    <option value="ingreso">Ingreso</option>
+                    <option value="egreso">Egreso</option>
+                  </select>
+                </div>
+                <div>
+                  <label class="block text-sm font-medium text-gray-700 mb-1">Concepto *</label>
+                  <input formControlName="concepto" type="text" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent">
+                </div>
+                <div>
+                  <label class="block text-sm font-medium text-gray-700 mb-1">Monto *</label>
+                  <input formControlName="monto" type="number" step="0.01" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent">
+                </div>
+                <div>
+                  <button type="button" (click)="eliminarConcepto(i)" class="w-full bg-red-500 text-white px-3 py-2 rounded-lg hover:bg-red-600 transition-colors duration-300 flex items-center justify-center">
+                    <i class="material-icons mr-1">delete</i>
+                    Eliminar
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <p *ngIf="conceptos.length === 0" class="text-gray-500 text-center py-8 text-sm border-2 border-dashed border-gray-300 rounded-lg">
+            No hay conceptos agregados. Haz clic en "Agregar Concepto" para comenzar.
+          </p>
+        </div>
+        <!-- Botones del formulario -->
+        <div class="flex gap-4 pt-4 border-t">
+          <button type="button" (click)="agregarBoletaFormulario()" class="flex-1 bg-green-600 text-white px-6 py-3 rounded-lg hover:bg-green-700 transition-colors duration-300 font-medium shadow-md hover:shadow-lg flex items-center justify-center">
+            <i class="material-icons mr-2">playlist_add</i>
+            Agregar a la Lista
+          </button>
+          <button type="button" (click)="toggleForm()" class="flex-1 bg-gray-200 text-gray-700 px-6 py-3 rounded-lg hover:bg-gray-300 transition-colors duration-300 font-medium shadow-md hover:shadow-lg flex items-center justify-center">
+            <i class="material-icons mr-2">cancel</i>
+            Cancelar
+          </button>
+        </div>
+      </form>
+    </div>
+    <!-- Lista de Boletas Cargadas -->
+    <div *ngIf="boletasArray.length > 0" class="bg-white rounded-xl shadow-lg p-6 mb-8">
+      <div class="flex justify-between items-center mb-6">
+        <h3 class="text-2xl font-semibold text-gray-800 flex items-center">
+          <i class="material-icons mr-2">inventory_2</i>
+          Boletas Cargadas ({{ boletasArray.length }})
+        </h3>
+        <button (click)="limpiarTodo()" class="bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600 transition-colors duration-300 font-medium shadow-md hover:shadow-lg flex items-center">
+          <i class="material-icons mr-2">delete</i>
+          Limpiar Todo
+        </button>
+      </div>
+      <div class="overflow-x-auto rounded-lg border border-gray-200">
+        <div class="max-h-96 overflow-y-auto">
+          <table class="min-w-full divide-y divide-gray-200">
+            <thead class="bg-gray-100 sticky top-0">
+              <tr>
+                <th class="px-6 py-3 text-left text-xs font-medium text-gray-600 uppercase tracking-wider">#</th>
+                <th class="px-6 py-3 text-left text-xs font-medium text-gray-600 uppercase tracking-wider">Apellidos y Nombres</th>
+                <th class="px-6 py-3 text-left text-xs font-medium text-gray-600 uppercase tracking-wider">DNI</th>
+                <th class="px-6 py-3 text-left text-xs font-medium text-gray-600 uppercase tracking-wider">Período</th>
+                <th class="px-6 py-3 text-left text-xs font-medium text-gray-600 uppercase tracking-wider">Estado</th>
+                <th class="px-6 py-3 text-left text-xs font-medium text-gray-600 uppercase tracking-wider">Líquido</th>
+                <th class="px-6 py-3 text-left text-xs font-medium text-gray-600 uppercase tracking-wider">Conceptos</th>
+                <th class="px-6 py-3 text-left text-xs font-medium text-gray-600 uppercase tracking-wider">Acciones</th>
+              </tr>
+            </thead>
+            <tbody class="bg-white divide-y divide-gray-200">
+              <tr *ngFor="let boleta of boletasArray; let i = index" class="hover:bg-blue-50 transition-colors duration-200">
+                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{{ i + 1 }}</td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ boleta.apellidos }} {{ boleta.nombres }}</td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ boleta.documento_identidad }}</td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ boleta.mes }}/{{ boleta.anio }}</td>
+                <td class="px-6 py-4 whitespace-nowrap">
+                  <span class="px-2 py-1 text-xs font-semibold rounded-full" 
+                        [ngClass]="{
+                          'bg-green-100 text-green-800': boleta.estado === 'Activo',
+                          'bg-red-100 text-red-800': boleta.estado === 'Inactivo',
+                          'bg-yellow-100 text-yellow-800': boleta.estado === 'Pendiente'
+                        }">
+                    {{ boleta.estado }}
+                  </span>
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm font-bold text-green-600">S/ {{ boleta.total_liquido | number:'1.2-2' }}</td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                  <span class="bg-blue-100 text-blue-800 px-2 py-1 rounded-full text-xs font-semibold">
+                    {{ boleta.conceptos.length }}
+                  </span>
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm">
+                  <button (click)="eliminarBoletaArray(i)" class="text-red-600 hover:text-red-800 font-medium hover:underline flex items-center">
+                    <i class="material-icons mr-1">delete</i>
+                    Eliminar
+                  </button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- Botón Enviar -->
+    <div *ngIf="boletasArray.length > 0" class="text-center">
+      <button 
+        (click)="enviarBoletas()"
+        [disabled]="loading"
+        class="bg-gradient-to-r from-indigo-600 to-purple-600 text-white px-12 py-4 rounded-xl hover:from-indigo-700 hover:to-purple-700 disabled:from-gray-400 disabled:to-gray-500 disabled:cursor-not-allowed transition-all duration-300 font-bold text-lg shadow-xl hover:shadow-2xl transform hover:-translate-y-1 disabled:transform-none">
+        <span *ngIf="!loading" class="flex items-center justify-center">
+          <i class="material-icons mr-2">send</i>
+          Enviar {{ boletasArray.length }} Boleta{{ boletasArray.length > 1 ? 's' : '' }} al Servidor
+        </span>
+        <span *ngIf="loading" class="flex items-center justify-center">
+          <i class="material-icons autorenew-spin mr-3">autorenew</i>
+          Enviando...
+        </span>
+      </button>
+    </div>
+  </div>
+</div>
+
+<style>
+.autorenew-spin {
+  animation: spin 1s linear infinite;
+  display: inline-block;
+  vertical-align: middle;
+}
+@keyframes spin {
+  100% { transform: rotate(360deg); }
+}
+</style>

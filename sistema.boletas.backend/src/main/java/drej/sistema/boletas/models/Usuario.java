@@ -1,9 +1,6 @@
 package drej.sistema.boletas.models;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 
 @Entity
 public class Usuario {
@@ -13,6 +10,8 @@ public class Usuario {
 
     private String nombre;
     private String apellido;
+
+    @Column(unique = true)
     private String correo;
     private String dni;
     private String telefono;

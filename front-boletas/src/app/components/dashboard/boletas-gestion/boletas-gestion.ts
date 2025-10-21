@@ -1,15 +1,17 @@
-import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef, ChangeDetectionStrategy } from '@angular/core';
 import { BoletaDTO } from '../../../models/boleta.model';
 import { PersonaDTO } from '../../../models/persona.model';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { AdminService } from '../../../services/admin';
+import { BoletaService } from '../../../services/boleta';
 
 @Component({
   selector: 'app-boletas-gestion',
   templateUrl: './boletas-gestion.html',
   styleUrls: ['./boletas-gestion.css'],
   standalone: true,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [CommonModule, FormsModule]
 })
 export class BoletasGestion implements OnInit {
@@ -18,23 +20,23 @@ export class BoletasGestion implements OnInit {
   personaPage = 0;
   totalPersonaPages = 0;
 
-  // Buscador
   filtro = '';
-  prefetchLimit = 10; // cuántas personas intentar precargar boletas cuando el filtro tiene 2+ caracteres
+  prefetchLimit = 10;
 
-  // Expansión y boletas
   expanded: Set<number> = new Set<number>();
   boletasByPersona: Record<number, BoletaDTO[]> = {};
   loadingPersonaId: number | null = null;
 
-  // CRUD Persona
   nuevaPersona: PersonaDTO = { id: undefined, nombres: '', apellidos: '', documentoIdentidad: '', fechaNacimiento: '' };
   editandoPersona: PersonaDTO | null = null;
 
-  // CRUD Boleta
   editandoBoleta: BoletaDTO | null = null;
 
-  constructor(private adminService: AdminService, private cd: ChangeDetectorRef) {}
+  constructor(
+    private adminService: AdminService,
+    private boletaService: BoletaService,
+    private cd: ChangeDetectorRef
+  ) {}
 
   ngOnInit() {
     this.cargarPersonas();
@@ -48,18 +50,17 @@ export class BoletasGestion implements OnInit {
         this.totalPersonaPages = result.totalPages;
         this.personaPage = result.number;
         this.personaLoading = false;
-        this.cd.detectChanges();
+        this.cd.markForCheck();
 
         if (this.filtro.trim().length >= 2) {
           this.prefetchBoletasForPage();
         }
       },
-      error: () => { this.personaLoading = false; this.cd.detectChanges(); }
+      error: () => { this.personaLoading = false; this.cd.markForCheck(); }
     });
   }
 
   onFiltroChange() {
-    // Precarga boletas de las primeras N personas para permitir match por boletas cuando hay filtro
     const term = this.filtro.trim();
     if (term.length >= 2) {
       this.prefetchBoletasForPage();
@@ -102,16 +103,15 @@ export class BoletasGestion implements OnInit {
       next: (boletas) => {
         this.boletasByPersona[personaId] = boletas;
         if (!silent) this.loadingPersonaId = null;
-        this.cd.detectChanges();
+        this.cd.markForCheck();
       },
       error: () => {
         if (!silent) this.loadingPersonaId = null;
-        this.cd.detectChanges();
+        this.cd.markForCheck();
       }
     });
   }
 
-  // Filtro: incluye persona si coincide persona o alguna boleta (si están cargadas o precargadas)
   filtrarPersonas(): PersonaDTO[] {
     const f = this.filtro.trim().toLowerCase();
     if (!f) return this.personas;
@@ -138,7 +138,6 @@ export class BoletasGestion implements OnInit {
     });
   }
 
-  // Para mostrar solo boletas que coinciden con el filtro cuando hay filtro activo
   boletasFiltradas(personaId: number): BoletaDTO[] {
     const all = this.boletasByPersona[personaId] ?? [];
     const f = this.filtro.trim().toLowerCase();
@@ -153,7 +152,6 @@ export class BoletasGestion implements OnInit {
     );
   }
 
-  // CRUD Personas
   mostrarEditarPersona(persona: PersonaDTO, event?: MouseEvent) {
     if (event) event.stopPropagation();
     this.editandoPersona = { ...persona };
@@ -180,7 +178,6 @@ export class BoletasGestion implements OnInit {
     if (event) event.stopPropagation();
     if (!confirm('¿Eliminar esta persona?')) return;
     this.adminService.eliminarPersona(id).subscribe(() => {
-      // Limpiar caché y expansión
       this.expanded.delete(id);
       delete this.boletasByPersona[id];
       this.cargarPersonas(this.personaPage);
@@ -189,10 +186,9 @@ export class BoletasGestion implements OnInit {
 
   cancelarEdicionPersona() {
     this.editandoPersona = null;
-    this.cd.detectChanges();
+    this.cd.markForCheck();
   }
 
-  // CRUD Boletas en línea (editar/eliminar)
   mostrarEditarBoleta(boleta: BoletaDTO, event?: MouseEvent) {
     if (event) event.stopPropagation();
     this.editandoBoleta = { ...boleta };
@@ -203,14 +199,12 @@ export class BoletasGestion implements OnInit {
     if (!b.id) return;
     this.adminService.editarBoleta(b.id, b).subscribe({
       next: () => {
-        // Actualizar en caché
         const personaId = this.findPersonaIdByBoleta(b.id!);
         if (personaId != null) {
-          // Reemplaza boleta en caché
           this.boletasByPersona[personaId] = (this.boletasByPersona[personaId] ?? []).map(x => x.id === b.id ? b : x);
         }
         this.editandoBoleta = null;
-        this.cd.detectChanges();
+        this.cd.markForCheck();
       },
       error: () => console.error('Error actualizando boleta')
     });
@@ -220,15 +214,9 @@ export class BoletasGestion implements OnInit {
     if (event) event.stopPropagation();
     if (!confirm('¿Eliminar esta boleta?')) return;
     this.adminService.eliminarBoleta(id).subscribe(() => {
-      // Quitar de caché
       this.boletasByPersona[personaId] = (this.boletasByPersona[personaId] ?? []).filter(b => b.id !== id);
-      this.cd.detectChanges();
+      this.cd.markForCheck();
     });
-  }
-
-  cancelarEdicionBoleta() {
-    this.editandoBoleta = null;
-    this.cd.detectChanges();
   }
 
   private findPersonaIdByBoleta(boletaId: number): number | null {
@@ -237,4 +225,8 @@ export class BoletasGestion implements OnInit {
     }
     return null;
   }
+
+  // trackBy para rendimiento
+  trackByPersona = (_: number, p: PersonaDTO) => p.id ?? -1;
+  trackByBoleta = (_: number, b: BoletaDTO) => b.id ?? -1;
 }

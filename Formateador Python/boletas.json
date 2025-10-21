@@ -1,0 +1,31 @@
+[
+  {
+    "archivo_origen":"20193_ben001_CL.lis",
+    "raw_length":1269,
+    "conceptos":[],
+    "codigo_encabezado":"CL157710",
+    "mes":"Enero",
+    "anio":"2008",
+    "estado":"Activo",
+    "apellidos":"ACOSTA RAMOS",
+    "nombres":"FLOR CLELIA",
+    "fecha_nacimiento":"29/01/1970",
+    "documento_identidad":"20091425",
+    "establecimiento":"CEA. \"JORGE BASADRE\" - LA LIBERTAD",
+    "cargo":"AUX. EDUCAC.",
+    "tipo_servidor":"AUXILIAR EDUCACION NOMBRADO",
+    "nivel_mag_horas":"E/00- /30",
+    "tiempo_servicio":"10-00-00",
+    "leyenda_permanente":".",
+    "fecha_ingreso_registro":"15/09/2007",
+    "fecha_termino_registro":"15/09/2007",
+    "cuenta_principal":"CTA- 4381221402",
+    "cuentas_todas":[
+      "CTA- 4381221402"
+    ],
+    "reg_pensionario_detalle":{
+      "raw":"AFP Horizont/521111SOCOT6 CFija      :      0.00 FAfiliacion  : 15/09/2000 CVariable  :      0.00 FDevengue    : 15/09/2000 Seguro     :      0.00 ======================================================================== ----------------------------------------",
+      "afiliacion":"15/09/2000"
+    }
+  }
+]

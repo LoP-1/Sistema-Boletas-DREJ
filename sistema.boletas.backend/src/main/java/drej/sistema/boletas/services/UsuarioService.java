@@ -25,6 +25,10 @@ public class UsuarioService {
     public Usuario registrarUsuario(Usuario usuario) {
         Optional<Persona> personaOpt = personaRepository.findByDocumentoIdentidad(usuario.getDni());
 
+        Optional<Usuario> usuarioExistente = usuarioRepository.findByCorreo(usuario.getCorreo());
+        if (usuarioExistente.isPresent()) {
+            throw new IllegalArgumentException("El correo ya está registrado.");
+        }
         if (personaOpt.isEmpty()) {
             Persona nuevaPersona = new Persona();
             nuevaPersona.setNombres(usuario.getNombre());
@@ -53,6 +57,11 @@ public class UsuarioService {
     }
 
     public Usuario actualizarDatos(Long id, Usuario datosActualizados) {
+
+        Optional<Usuario> usuarioExistente = usuarioRepository.findByCorreo(datosActualizados.getCorreo());
+        if (usuarioExistente.isPresent() && !usuarioExistente.get().getId().equals(id)) {
+            throw new IllegalArgumentException("El correo ya está registrado por otro usuario.");
+        }
         Usuario usuario = usuarioRepository.findById(id).orElseThrow();
         usuario.setNombre(datosActualizados.getNombre());
         usuario.setApellido(datosActualizados.getApellido());
