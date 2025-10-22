@@ -2,16 +2,21 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Boleta;
+use App\Services\BoletaService;
 use Illuminate\Http\Request;
 
 class BoletaQrController extends Controller
 {
-    // Obtener boleta por id (QR)
+    private BoletaService $boletaService;
+
+    public function __construct(BoletaService $boletaService)
+    {
+        $this->boletaService = $boletaService;
+    }
     public function show($id)
     {
-        $boleta = Boleta::find($id);
-        if (!$boleta) return response()->json(null, 404);
-        return response()->json($boleta);
+        $dto = $this->boletaService->obtenerBoleta($id);
+        if (!$dto) return response()->json(null, 404);
+        return response()->json($dto);
     }
 }

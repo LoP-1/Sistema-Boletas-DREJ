@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { Router } from '@angular/router';
 import { BoletaDTO } from '../../../models/boleta.model'; 
 import { Carrito } from '../../../services/carrito';
@@ -13,17 +13,19 @@ import { CommonModule } from '@angular/common';
   styleUrl: './side-bar.css'
 })
 export class SideBar implements OnInit {  
+  @Output() closeSidebar = new EventEmitter<void>();
+  
   modalBoleta: BoletaDTO | null = null;
   carrito: BoletaDTO[] = [];
 
   constructor(private carritoService: Carrito, private router: Router) {}
 
   ngOnInit() {
-  this.carritoService.carrito$.subscribe(carrito => {
-    this.carrito = carrito || [];
-    console.log('Carrito en sidebar:', this.carrito);
-  });
-}
+    this.carritoService.carrito$.subscribe(carrito => {
+      this.carrito = carrito || [];
+      console.log('Carrito en sidebar:', this.carrito);
+    });
+  }
 
   removeBoleta(index: number) {
     this.carritoService.removeBoleta(index);
@@ -45,6 +47,10 @@ export class SideBar implements OnInit {
   
   trackByIndex(index: number, item: any): number {
     return index;
+  }
+
+  close() {
+    this.closeSidebar.emit();
   }
 
   salir() {

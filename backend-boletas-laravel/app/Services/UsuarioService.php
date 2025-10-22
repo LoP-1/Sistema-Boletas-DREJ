@@ -5,20 +5,24 @@ namespace App\Services;
 use App\Models\Usuario;
 use App\Models\Persona;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Http\Request;
 
 class UsuarioService
 {
-    // Registrar usuario
-    public function registrarUsuario(array $data)
-    {
-        $persona = Persona::firstOrCreate(
-            ['documento_identidad' => $data['dni']],
-            [
-                'nombres' => $data['nombre'],
-                'apellidos' => $data['apellido'],
-                'documento_identidad' => $data['dni'],
-            ]
-        );
+    // Registrar usuario (DTO in, entidad out)
+   public function registrarUsuario(array $data)
+{
+    \Log::info('Intentando crear persona', ['dni' => $data['dni'], 'nombre' => $data['nombre'], 'apellido' => $data['apellido']]);
+    $persona = Persona::firstOrCreate(
+        ['documento_identidad' => $data['dni']],
+        [
+            'nombres' => $data['nombre'],
+            'apellidos' => $data['apellido'],
+            'documento_identidad' => $data['dni'],
+        ]
+    );
+    \Log::info('Persona creada o encontrada', ['persona_id' => $persona->id, 'documento_identidad' => $persona->documento_identidad]);
+    
 
         if (Usuario::where('correo', $data['correo'])->exists()) {
             throw new \Exception('El correo ya está registrado.');
@@ -59,7 +63,7 @@ class UsuarioService
         return Usuario::all();
     }
 
-    // Actualizar datos
+    // Actualizar datos (DTO in, entidad out)
     public function actualizarDatos($id, array $data)
     {
         $usuario = Usuario::findOrFail($id);
@@ -80,13 +84,21 @@ class UsuarioService
     }
 
     // Cambiar contraseña
-    public function cambiarContrasena($id, $nuevaContrasena)
-    {
-        $usuario = Usuario::findOrFail($id);
-        $usuario->contrasena = Hash::make($nuevaContrasena);
-        $usuario->save();
+    public function cambiarContrasena($id, Request $request)
+{
+    $nueva = $request->input('nuevaContrasena');
+    if (!$nueva) {
+        $nueva = $request->getContent();
+        $nueva = trim($nueva, "\"");
     }
-
+    if (!$nueva) {
+        return response()->json('Debe enviar la nueva contraseña en el body', 422);
+    }
+    $usuario = \App\Models\Usuario::findOrFail($id);
+    $usuario->contrasena = Hash::make($nueva);
+    $usuario->save();
+    return response()->json('Contraseña actualizada correctamente');
+}
     // Buscar usuario por ID
     public function buscarPorId($id)
     {

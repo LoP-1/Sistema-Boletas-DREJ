@@ -1,6 +1,6 @@
-import { Component, ChangeDetectorRef, ChangeDetectionStrategy, inject, NgZone } from '@angular/core';
+import { Component, ChangeDetectorRef, inject, NgZone } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormBuilder, FormGroup, FormArray, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, FormArray, ReactiveFormsModule, Validators, AbstractControl, ValidationErrors } from '@angular/forms';
 import { BoletaDTO } from '../../../models/boleta.model';
 import { BoletaService } from '../../../services/boleta';
 
@@ -35,6 +35,80 @@ export class SubirBoletas {
     this.boletaForm = this.createBoletaForm();
   }
 
+  // ==================== VALIDADORES PERSONALIZADOS ====================
+
+  // Validador personalizado para fechas en formato DD/MM/YYYY
+  dateFormatValidator(control: AbstractControl): ValidationErrors | null {
+    if (!control.value) {
+      return null; // Si está vacío, dejar que 'required' lo maneje
+    }
+
+    const datePattern = /^(\d{2})\/(\d{2})\/(\d{4})$/;
+    const match = control.value.match(datePattern);
+
+    if (!match) {
+      return { invalidFormat: true };
+    }
+
+    const day = parseInt(match[1], 10);
+    const month = parseInt(match[2], 10);
+    const year = parseInt(match[3], 10);
+
+    // Validar rangos básicos
+    if (month < 1 || month > 12) {
+      return { invalidMonth: true };
+    }
+
+    if (day < 1 || day > 31) {
+      return { invalidDay: true };
+    }
+
+    // Validar año (entre 1900 y 2100)
+    if (year < 1900 || year > 2100) {
+      return { invalidYear: true };
+    }
+
+    // Validar días según el mes
+    const daysInMonth = new Date(year, month, 0).getDate();
+    if (day > daysInMonth) {
+      return { invalidDate: true };
+    }
+
+    return null;
+  }
+
+  // Validador para DNI peruano (8 dígitos)
+  dniValidator(control: AbstractControl): ValidationErrors | null {
+    if (!control.value) {
+      return null;
+    }
+
+    const dniPattern = /^\d{8}$/;
+    if (!dniPattern.test(control.value)) {
+      return { invalidDni: true };
+    }
+
+    return null;
+  }
+
+  // Validador para año (4 dígitos)
+  yearValidator(control: AbstractControl): ValidationErrors | null {
+    if (!control.value) {
+      return null;
+    }
+
+    const year = parseInt(control.value, 10);
+    const currentYear = new Date().getFullYear();
+
+    if (year < 1900 || year > currentYear + 10) {
+      return { invalidYearRange: true };
+    }
+
+    return null;
+  }
+
+  // ==================== CREACIÓN DEL FORMULARIO ====================
+
   createBoletaForm(): FormGroup {
     return this.fb.group({
       archivo_origen: ['', Validators.required],
@@ -43,12 +117,12 @@ export class SubirBoletas {
       codigo_encabezado: [''],
       ruc_bloque: [''],
       mes: ['Enero', Validators.required],
-      anio: ['', [Validators.required, Validators.pattern(/^\d{4}$/)]],
+      anio: ['', [Validators.required, Validators.pattern(/^\d{4}$/), this.yearValidator.bind(this)]],
       estado: ['Activo', Validators.required],
       apellidos: ['', Validators.required],
       nombres: ['', Validators.required],
-      fecha_nacimiento: ['', Validators.required],
-      documento_identidad: ['', Validators.required],
+      fecha_nacimiento: ['', [Validators.required, this.dateFormatValidator.bind(this)]],
+      documento_identidad: ['', [Validators.required, this.dniValidator.bind(this)]],
       establecimiento: ['', Validators.required],
       cargo: ['', Validators.required],
       tipo_servidor: ['', Validators.required],
@@ -58,8 +132,8 @@ export class SubirBoletas {
       tiempo_servicio: [''],
       leyenda_permanente: [''],
       leyenda_mensual: [''],
-      fecha_ingreso_registro: ['', Validators.required],
-      fecha_termino_registro: [''],
+      fecha_ingreso_registro: ['', [Validators.required, this.dateFormatValidator.bind(this)]],
+      fecha_termino_registro: ['', this.dateFormatValidator.bind(this)],
       cuenta_principal: ['', Validators.required],
       cuentas_todas: [''],
       regimen_pensionario: [''],
@@ -69,11 +143,64 @@ export class SubirBoletas {
       monto_imponible: [0, [Validators.required, Validators.min(0)]],
       conceptos: this.fb.array([]),
       reg_pensionario_raw: [''],
-      reg_pensionario_afiliacion: ['']
+      reg_pensionario_afiliacion: ['', this.dateFormatValidator.bind(this)]
     });
   }
 
-  // Helper para forzar actualización
+  // ==================== MENSAJES DE ERROR ====================
+
+  getErrorMessage(fieldName: string): string {
+    const control = this.boletaForm.get(fieldName);
+    
+    if (!control || !control.errors) {
+      return '';
+    }
+
+    if (control.errors['required']) {
+      return 'Este campo es requerido';
+    }
+
+    if (control.errors['invalidFormat']) {
+      return 'Formato inválido. Use DD/MM/YYYY';
+    }
+
+    if (control.errors['invalidMonth']) {
+      return 'Mes inválido (01-12)';
+    }
+
+    if (control.errors['invalidDay']) {
+      return 'Día inválido (01-31)';
+    }
+
+    if (control.errors['invalidYear']) {
+      return 'Año inválido (1900-2100)';
+    }
+
+    if (control.errors['invalidDate']) {
+      return 'Fecha inválida para el mes especificado';
+    }
+
+    if (control.errors['invalidDni']) {
+      return 'DNI debe tener 8 dígitos';
+    }
+
+    if (control.errors['pattern']) {
+      return 'Formato inválido';
+    }
+
+    if (control.errors['invalidYearRange']) {
+      return 'Año fuera del rango permitido';
+    }
+
+    if (control.errors['min']) {
+      return 'El valor debe ser mayor o igual a ' + control.errors['min'].min;
+    }
+
+    return 'Campo inválido';
+  }
+
+  // ==================== HELPERS ====================
+
   private forceUpdate(): void {
     this.ngZone.run(() => {
       this.cdr.markForCheck();
@@ -85,11 +212,32 @@ export class SubirBoletas {
     return this.boletaForm.get('conceptos') as FormArray;
   }
 
+  marcarCamposComoTocados(): void {
+    Object.keys(this.boletaForm.controls).forEach(key => {
+      const control = this.boletaForm.get(key);
+      control?.markAsTouched();
+      
+      // Si es un FormArray, marcar sus controles también
+      if (control instanceof FormArray) {
+        control.controls.forEach(c => {
+          if (c instanceof FormGroup) {
+            Object.keys(c.controls).forEach(subKey => {
+              c.get(subKey)?.markAsTouched();
+            });
+          }
+        });
+      }
+    });
+    this.forceUpdate();
+  }
+
+  // ==================== MANEJO DE CONCEPTOS ====================
+
   agregarConcepto(): void {
     const conceptoGroup = this.fb.group({
       tipo: ['ingreso', Validators.required],
       concepto: ['', Validators.required],
-      monto: [0, [Validators.required]]
+      monto: [0, [Validators.required, Validators.min(0)]]
     });
     this.conceptos.push(conceptoGroup);
     this.forceUpdate();
@@ -99,6 +247,8 @@ export class SubirBoletas {
     this.conceptos.removeAt(index);
     this.forceUpdate();
   }
+
+  // ==================== CARGA DE ARCHIVOS ====================
 
   onFileSelected(event: Event): void {
     const input = event.target as HTMLInputElement;
@@ -144,11 +294,24 @@ export class SubirBoletas {
     reader.readAsText(this.selectedFile);
   }
 
+  // ==================== AGREGAR BOLETA DESDE FORMULARIO ====================
+
   agregarBoletaFormulario(): void {
+    // Marcar todos los campos como tocados para mostrar errores
+    this.marcarCamposComoTocados();
+
     if (this.boletaForm.invalid) {
-      this.errorMessage = '⚠️ Por favor completa todos los campos requeridos';
-      this.marcarCamposComoTocados();
+      this.errorMessage = '⚠️ Por favor completa todos los campos requeridos correctamente';
       this.forceUpdate();
+      
+      // Scroll al primer error
+      setTimeout(() => {
+        const firstError = document.querySelector('.border-red-500');
+        if (firstError) {
+          firstError.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+      }, 100);
+      
       return;
     }
 
@@ -221,12 +384,7 @@ export class SubirBoletas {
     });
   }
 
-  marcarCamposComoTocados(): void {
-    Object.keys(this.boletaForm.controls).forEach(key => {
-      const control = this.boletaForm.get(key);
-      control?.markAsTouched();
-    });
-  }
+  // ==================== ELIMINAR BOLETA ====================
 
   eliminarBoletaArray(index: number): void {
     this.ngZone.run(() => {
@@ -236,6 +394,8 @@ export class SubirBoletas {
       this.forceUpdate();
     });
   }
+
+  // ==================== ENVIAR BOLETAS ====================
 
   enviarBoletas(): void {
     if (this.boletasArray.length === 0) {
@@ -295,6 +455,8 @@ export class SubirBoletas {
     });
   }
 
+  // ==================== LIMPIAR TODO ====================
+
   limpiarTodo(): void {
     this.ngZone.run(() => {
       this.boletasArray = [];
@@ -317,6 +479,8 @@ export class SubirBoletas {
     });
   }
 
+  // ==================== TOGGLE FORMULARIO ====================
+
   toggleForm(): void {
     this.ngZone.run(() => {
       this.showForm = !this.showForm;
@@ -338,6 +502,8 @@ export class SubirBoletas {
       this.forceUpdate();
     });
   }
+
+  // ==================== DESCARGAR PLANTILLA ====================
 
   descargarPlantilla(): void {
     const plantilla: BoletaDTO[] = [{
@@ -408,6 +574,8 @@ export class SubirBoletas {
     });
   }
 
+  // ==================== CALCULAR TOTAL LÍQUIDO ====================
+
   calcularTotalLiquido(): void {
     this.ngZone.run(() => {
       const remuneraciones = this.boletaForm.get('total_remuneraciones')?.value || 0;
@@ -417,6 +585,8 @@ export class SubirBoletas {
       this.forceUpdate();
     });
   }
+
+  // ==================== FORMATEAR FECHA ====================
 
   formatearFecha(fecha: string): string {
     if (!fecha) return '';

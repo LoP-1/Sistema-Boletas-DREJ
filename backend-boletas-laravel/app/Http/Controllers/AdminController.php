@@ -5,58 +5,66 @@ namespace App\Http\Controllers;
 use App\Models\Boleta;
 use App\Models\Persona;
 use App\Models\Usuario;
+use App\Services\BoletaService;
 use Illuminate\Http\Request;
 
 class AdminController extends Controller
 {
+    public function __construct(private BoletaService $boletaService) {}
+
     // --- BOLETAS (ADMIN) ---
 
-    // Listar todas las boletas paginadas
+    // Listar todas las boletas paginadas (si tu front espera Page<BoletaDTO>, mapea como en el service)
     public function listarBoletas(Request $request)
     {
-        $size = $request->get('size', 30);
-        $boletas = Boleta::paginate($size);
-        return response()->json($boletas);
+        $page = (int) $request->get('page', 0);
+        $size = (int) $request->get('size', 30);
+        $pageData = $this->boletaService->listarBoletasPaginado($page, $size);
+        return response()->json($pageData);
     }
 
     // Listar boletas de una persona por id
     public function listarBoletasPorPersona($personaId)
     {
-        $boletas = Boleta::where('persona_id', $personaId)->get();
+        $boletas = $this->boletaService->obtenerBoletasPorPersona($personaId);
         return response()->json($boletas);
     }
 
-    // Subir/crear varias boletas
+    // Subir/crear varias boletas -> usa Service (crea Persona y Conceptos)
     public function subirBoletas(Request $request)
     {
         $boletas = $request->all();
-        foreach ($boletas as $boletaData) {
-            Boleta::create($boletaData);
-        }
+        $this->boletaService->guardarBoletas($boletas);
         return response()->json(true);
     }
 
     // Editar boleta
     public function editarBoleta($id, Request $request)
     {
-        $boleta = Boleta::findOrFail($id);
-        $boleta->update($request->all());
+        $boleta = $this->boletaService->editarBoleta($id, $request->all());
         return response()->json($boleta);
     }
 
     // Eliminar boleta
     public function eliminarBoleta($id)
     {
-        Boleta::destroy($id);
+        $this->boletaService->eliminarBoleta($id);
         return response()->json(true);
     }
 
     // --- PERSONAS (ADMIN) ---
     public function listarPersonas(Request $request)
     {
-        $size = $request->get('size', 30);
+        $size = (int) $request->get('size', 30);
         $personas = Persona::paginate($size);
-        return response()->json($personas);
+        // Si tu front espera formato Page de Spring, mapea igual que en PersonaService->listarPersonasPaginado
+        return response()->json([
+            'content' => $personas->items(),
+            'totalElements' => $personas->total(),
+            'totalPages' => $personas->lastPage(),
+            'size' => $personas->perPage(),
+            'number' => $personas->currentPage() - 1,
+        ]);
     }
 
     public function crearPersona(Request $request)
@@ -81,15 +89,41 @@ class AdminController extends Controller
     // --- USUARIOS (ADMIN) ---
 
     public function listarUsuarios()
-    {
-        return response()->json(Usuario::all());
-    }
+{
+    $usuarios = \App\Models\Usuario::all()->map(function ($u) {
+        return [
+            'id' => $u->id,
+            'nombre' => $u->nombre,
+            'apellido' => $u->apellido,
+            'correo' => $u->correo,
+            'dni' => $u->dni,
+            'telefono' => $u->telefono,
+            'rol' => $u->rol,
+            'estadoCuenta' => (bool)$u->estado_cuenta,
+            'created_at' => $u->created_at,
+            'updated_at' => $u->updated_at,
+        ];
+    });
+    return response()->json($usuarios);
+}
 
     public function cambiarEstado($id, Request $request)
-    {
-        $usuario = Usuario::findOrFail($id);
-        $usuario->estado_cuenta = $request->input('nuevoEstado');
-        $usuario->save();
-        return response()->json($usuario);
+{
+    $nuevoEstado = $request->json()->all();
+    if (is_array($nuevoEstado) && count($nuevoEstado) === 1 && array_key_exists(0, $nuevoEstado)) {
+        $nuevoEstado = $nuevoEstado[0];
+    } elseif (is_array($nuevoEstado) && isset($nuevoEstado['nuevo_estado'])) {
+        $nuevoEstado = $nuevoEstado['nuevo_estado'];
+    } elseif (is_array($nuevoEstado) && isset($nuevoEstado['nuevoEstado'])) {
+        $nuevoEstado = $nuevoEstado['nuevoEstado'];
     }
+    if (!in_array($nuevoEstado, [0, 1, true, false, '0', '1'], true)) {
+        return response()->json(['error' => 'Debe enviar un estado booleano'], 422);
+    }
+
+    $usuario = Usuario::findOrFail($id);
+    $usuario->estado_cuenta = (bool)$nuevoEstado;
+    $usuario->save();
+    return response()->json($usuario);
+}
 }

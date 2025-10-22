@@ -21,10 +21,6 @@ Route::get('/qr/{id}', [BoletaQrController::class, 'show']);
 Route::post('/boletas', [BoletaController::class, 'subirBoletas']);
 Route::get('/boletas', [BoletaController::class, 'listarBoletas']);
 Route::get('/boletas/{personaId}', [BoletaController::class, 'listarBoletasPersona']);
-
-// ----------- Personas (usuario) ----------
-Route::get('/persona/{dni}', [PersonaController::class, 'obtenerPersonaDni']);
-
 // ----------- ADMIN ----------
 Route::prefix('admin')->group(function () {
     // BOLETAS
@@ -44,3 +40,5 @@ Route::prefix('admin')->group(function () {
     Route::get('/usuarios', [AdminController::class, 'listarUsuarios']);
     Route::put('/usuarios/{id}/estado', [AdminController::class, 'cambiarEstado']);
 });
+
+Route::get('/personas/{dni}', [PersonaController::class, 'obtenerPersonaDni']);

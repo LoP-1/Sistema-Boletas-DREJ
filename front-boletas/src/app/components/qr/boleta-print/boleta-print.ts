@@ -16,7 +16,6 @@ interface RegPensionarioDetalleDTO {
   afiliacion: string;
 }
 interface BoletaDTO {
-  // ... igual que antes ...
   id?: number;
   archivo_origen: string;
   raw_length: number;

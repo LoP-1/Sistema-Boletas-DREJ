@@ -1,29 +1,48 @@
-<footer role="contentinfo" class="w-full mt-auto bg-white border-t border-blue-200 py-4 px-4 flex flex-col md:flex-row items-center justify-between text-gray-700">
-  <div class="flex items-center gap-2 mb-2 md:mb-0">
-    <img src="logo-region.png" alt="Logo de la región" class="h-6 w-6" />
-    <span class="sr-only">Dirección Regional de Educación Junín</span>
-  </div>
-  <div class="flex items-center gap-6">
-    <a href="mailto:soporte@drej.edu.pe" class="flex items-center gap-2 hover:text-blue-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 rounded px-1">
-      <svg class="w-4 h-4 text-blue-600" aria-hidden="true" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path d="M2.003 5.884L12 12.882l9.997-6.998A2 2 0 0 0 20 4H4a2 2 0 0 0-1.997 1.884z" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-        <path d="M22 8.118V20a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V8.118" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-      </svg>
-      <span class="text-sm">soporte@drej.edu.pe</span>
-    </a>
-    <a href="tel:+51999888777" class="flex items-center gap-2 hover:text-blue-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 rounded px-1">
-      <svg class="w-4 h-4 text-blue-600" aria-hidden="true" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path d="M3 5a2 2 0 0 1 2-2h1.28a1 1 0 0 1 .95.684l.516 1.548a1 1 0 0 0 .95.684h6.598a1 1 0 0 0 .95-.684l.516-1.548A1 1 0 0 1 17.72 3H19a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5z" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-        <path d="M8 10h.01M16 10h.01M12 10h.01M8 14h.01M16 14h.01M12 14h.01" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-      </svg>
-      <span class="text-sm">+51 999 888 777</span>
-    </a>
-    <span class="flex items-center gap-2">
-      <svg class="w-4 h-4 text-blue-600" aria-hidden="true" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path d="M16 8a6 6 0 0 1-12 0C4 4.686 7.134 2 12 2s8 2.686 8 6a6 6 0 0 1-4 6z" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-        <circle cx="12" cy="10" r="3" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-      </svg>
-      <span class="text-sm">DREJ Junín</span>
-    </span>
+<footer role="contentinfo" class="w-full mt-auto bg-white border-t border-blue-200 py-4 px-4">
+  <div class="max-w-7xl mx-auto">
+    <!-- Mobile: Stack vertical, Desktop: Horizontal -->
+    <div class="flex flex-col md:flex-row items-center justify-between gap-4">
+      
+      <!-- Logo y nombre -->
+      <div class="flex items-center gap-2 text-center md:text-left">
+        <img src="logo-region.png" alt="Logo de la región" class="h-6 w-6 flex-shrink-0" />
+        <span class="text-xs sm:text-sm text-gray-700 font-medium">
+          Dirección Regional de Educación Junín
+        </span>
+      </div>
+      
+      <!-- Información de contacto -->
+      <div class="flex flex-col sm:flex-row items-center flex-wrap justify-center gap-3 sm:gap-4 lg:gap-6">
+        
+        <!-- Email -->
+        <a href="mailto:soporte@drej.edu.pe" 
+           class="flex items-center gap-2 hover:text-blue-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 rounded px-2 py-1 transition">
+          <svg class="w-4 h-4 text-blue-600 flex-shrink-0" aria-hidden="true" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path d="M2.003 5.884L12 12.882l9.997-6.998A2 2 0 0 0 20 4H4a2 2 0 0 0-1.997 1.884z" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M22 8.118V20a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V8.118" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          <span class="text-xs sm:text-sm">soporte&#64;drej.edu.pe</span>
+        </a>
+        
+        <!-- Dirección -->
+        <span class="flex items-center gap-2 px-2 py-1">
+          <svg class="w-4 h-4 text-blue-600 flex-shrink-0" aria-hidden="true" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+                  d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
+          </svg>
+          <span class="text-xs sm:text-sm">Av. Julio C. Tello 776</span>
+        </span>
+        
+        <!-- Ubicación -->
+        <span class="flex items-center gap-2 px-2 py-1">
+          <svg class="w-4 h-4 text-blue-600 flex-shrink-0" aria-hidden="true" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+                  d="M3 21v-4m0 0V5a2 2 0 012-2h6.5l1 1H21l-3 6 3 6h-8.5l-1-1H5a2 2 0 00-2 2zm9-13.5V9"/>
+          </svg>
+          <span class="text-xs sm:text-sm font-medium">DREJ Junín</span>
+        </span>
+      </div>
+    </div>
   </div>
 </footer>

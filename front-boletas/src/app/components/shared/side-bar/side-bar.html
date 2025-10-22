@@ -1,47 +1,100 @@
-<nav class="bg-white shadow-md px-4 py-4 rounded-2xl border border-blue-100 max-w-xs w-full" role="navigation" aria-label="Carrito de boletas">
-  <h2 class="text-lg font-semibold text-blue-700 mb-4 flex items-center gap-2">
-    Carrito de boletas
-  </h2>
-  <ul class="space-y-2 mb-4">
-    <li class="text-gray-500 italic text-sm" *ngIf="carrito.length === 0">
-      No hay boletas en el carrito.
-    </li>
-    <ng-container *ngFor="let boleta of carrito; let i = index; trackBy: trackByIndex">
-      <li class="flex flex-col gap-1 bg-blue-50 rounded-lg px-2 py-2">
-        <div class="flex justify-between items-center">
-          <div>
-            <div class="font-semibold text-blue-900 leading-tight text-base break-words">
-              {{ boleta.nombres }} {{ boleta.apellidos }}
-            </div>
-            <div class="text-xs text-gray-500 leading-tight">
-              {{ boleta.mes }} {{ boleta.anio }} | DNI: {{ boleta.documento_identidad }}
-            </div>
-          </div>
-          <button
-            class="text-red-500 hover:bg-red-100 rounded-full p-2 transition"
-            aria-label="Eliminar esta boleta"
-            (click)="removeBoleta(i)">
-            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2"
-              viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round"
-                d="M6 18L18 6M6 6l12 12"/></svg>
-          </button>
-        </div>
-        <a
-  *ngIf="boleta.id !== undefined && boleta.id !== null"
-  [href]="'/boleta/' + boleta.id"
-  target="_blank"
-  rel="noopener"
-  class="mt-1 text-center text-blue-600 font-semibold px-3 py-1 rounded hover:bg-blue-100 transition block w-full"
->
-  Imprimir
-</a>
-      </li>
-    </ng-container>
-  </ul>
-  <div class="mt-6">
-    <button class="w-full bg-gray-100 text-gray-700 py-2 rounded-lg hover:bg-gray-200 transition shadow"
-            (click)="salir()">Salir</button>
+<nav class="bg-white h-full flex flex-col overflow-hidden" role="navigation" aria-label="Carrito de boletas">
+  
+  <!-- Header del sidebar con botón de cerrar en mobile -->
+  <div class="flex items-center justify-between mb-4 pb-3 border-b border-blue-100 flex-shrink-0">
+    <h2 class="text-base lg:text-lg font-semibold text-blue-700 flex items-center gap-2">
+      <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+              d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"/>
+      </svg>
+      <span>Carrito de boletas</span>
+    </h2>
+    <button 
+      class="lg:hidden p-2 hover:bg-gray-100 rounded-full transition focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
+      (click)="close()"
+      aria-label="Cerrar carrito">
+      <svg class="w-5 h-5 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+      </svg>
+    </button>
   </div>
+
+  <!-- Lista de boletas con scroll -->
+  <div class="flex-1 overflow-y-auto mb-4 pr-1 custom-scrollbar">
+    <ul class="space-y-3">
+      <!-- Estado vacío -->
+      <li class="text-gray-400 italic text-sm text-center py-8 px-4" *ngIf="carrito.length === 0">
+        <svg class="w-16 h-16 mx-auto mb-3 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" 
+                d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"/>
+        </svg>
+        <p>No hay boletas en el carrito.</p>
+      </li>
+      
+      <!-- Items del carrito -->
+      <ng-container *ngFor="let boleta of carrito; let i = index; trackBy: trackByIndex">
+        <li class="bg-blue-50 rounded-lg p-3 shadow-sm hover:shadow-md transition-all">
+          <div class="flex justify-between items-start gap-2 mb-2">
+            <div class="flex-1 min-w-0">
+              <div class="font-semibold text-blue-900 leading-tight text-sm break-words">
+                {{ boleta.nombres }} {{ boleta.apellidos }}
+              </div>
+              <div class="text-xs text-gray-600 leading-tight mt-1">
+                {{ boleta.mes }} {{ boleta.anio }}
+              </div>
+              <div class="text-xs text-gray-500 mt-0.5">
+                DNI: {{ boleta.documento_identidad }}
+              </div>
+            </div>
+            <button
+              class="text-red-500 hover:bg-red-100 rounded-full p-1.5 transition flex-shrink-0 focus:outline-none focus-visible:ring-2 focus-visible:ring-red-500"
+              aria-label="Eliminar esta boleta"
+              (click)="removeBoleta(i)">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/>
+              </svg>
+            </button>
+          </div>
+          
+          <!-- Botón Imprimir -->
+          <a
+            *ngIf="boleta.id !== undefined && boleta.id !== null"
+            [href]="'/boleta/' + boleta.id"
+            target="_blank"
+            rel="noopener"
+            class="flex items-center justify-center gap-2 text-xs sm:text-sm text-blue-600 font-semibold px-3 py-2 rounded hover:bg-blue-100 transition w-full focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+                    d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"/>
+            </svg>
+            Imprimir
+          </a>
+        </li>
+      </ng-container>
+    </ul>
+  </div>
+
+  <!-- Botones de acción -->
+  <div class="space-y-2 pt-3 border-t border-blue-100 flex-shrink-0">
+    <button 
+      *ngIf="carrito.length > 0"
+      class="w-full bg-blue-600 text-white py-2.5 rounded-lg hover:bg-blue-700 transition shadow-md font-semibold flex items-center justify-center gap-2 text-sm focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
+      (click)="imprimirBoleta(carrito[0])">
+      <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+              d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"/>
+      </svg>
+      Imprimir Todo
+    </button>
+    
+    <button 
+      class="w-full bg-gray-100 text-gray-700 py-2.5 rounded-lg hover:bg-gray-200 transition shadow font-semibold text-sm focus:outline-none focus-visible:ring-2 focus-visible:ring-gray-500"
+      (click)="salir()">
+      Salir
+    </button>
+  </div>
+
+  <!-- Modal -->
   <app-boleta-detail-modal
     *ngIf="modalBoleta"
     [boleta]="modalBoleta"

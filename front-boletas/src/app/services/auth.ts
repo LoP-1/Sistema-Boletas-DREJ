@@ -20,24 +20,24 @@ export class AuthService {
   }
 
   saveToken(token: string) {
-    localStorage.setItem(this.tokenKey, token);
-    try {
-      const payload = this.decodeJwt(token);
-      if (payload) {
-        const id = payload.uid ?? payload.id ?? payload.userId ?? payload.user_id ?? null;
-        if (id != null) localStorage.setItem('userId', String(id));
+  localStorage.setItem(this.tokenKey, token);
+  try {
+    const payload = this.decodeJwt(token);
+    if (payload) {
+      const id = payload.uid ?? payload.id ?? payload.userId ?? payload.user_id ?? payload.sub ?? null;
+      if (id != null) localStorage.setItem('userId', String(id));
 
-        if (payload.dni) localStorage.setItem('userDni', String(payload.dni));
-        if (payload.nombre) localStorage.setItem('userNombre', payload.nombre);
-        if (payload.apellido) localStorage.setItem('userApellido', payload.apellido);
-        if (payload.sub) localStorage.setItem('userCorreo', payload.sub);
-        if (payload.telefono) localStorage.setItem('userTelefono', payload.telefono);
-        if (payload.rol) localStorage.setItem('userRol', payload.rol);
-      }
-    } catch {
-      // Ignorar errores de decodificación
+      if (payload.dni) localStorage.setItem('userDni', String(payload.dni));
+      if (payload.nombre) localStorage.setItem('userNombre', payload.nombre);
+      if (payload.apellido) localStorage.setItem('userApellido', payload.apellido);
+      if (payload.sub) localStorage.setItem('userCorreo', payload.sub);
+      if (payload.telefono) localStorage.setItem('userTelefono', payload.telefono);
+      if (payload.rol) localStorage.setItem('userRol', payload.rol);
     }
+  } catch {
+    
   }
+}
 
   getToken(): string | null { return localStorage.getItem(this.tokenKey); }
   logout(): void { localStorage.removeItem(this.tokenKey); }

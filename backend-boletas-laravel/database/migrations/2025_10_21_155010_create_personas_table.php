@@ -12,7 +12,7 @@ class CreatePersonasTable extends Migration
             $table->id();
             $table->string('apellidos');
             $table->string('nombres');
-            $table->string('documento_identidad');
+            $table->string('documento_identidad')->unique();
             $table->date('fecha_nacimiento')->nullable();
             $table->timestamps();
         });

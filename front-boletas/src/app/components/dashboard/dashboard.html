@@ -1,10 +1,55 @@
 <div class="flex flex-col min-h-screen">
   <app-navbar></app-navbar>
-  <div class="flex flex-1 min-h-0">
-    <div class="flex-1 min-w-0 bg-blue-50">
+  
+  <!-- Layout principal con sidebar colapsable -->
+  <div class="flex flex-1 min-h-0 relative">
+    
+    <!-- Contenido principal -->
+    <div class="flex-1 min-w-0 bg-blue-50 w-full lg:pr-0">
       <router-outlet></router-outlet>
     </div>
-    <app-side-bar class="w-[300px] min-h-[calc(100vh-56px)] bg-white shadow-lg rounded-xl p-5"></app-side-bar>
+    
+    <!-- Sidebar - Desktop: siempre visible, Mobile: toggle -->
+    <aside 
+      class="fixed lg:static inset-y-0 right-0 z-40 w-[85vw] sm:w-[350px] lg:w-[320px] xl:w-[350px] transform transition-transform duration-300 ease-in-out"
+      [ngClass]="{
+        'translate-x-0': sidebarOpen, 
+        'translate-x-full': !sidebarOpen,
+        'lg:translate-x-0': true
+      }">
+      <div class="h-full lg:h-auto lg:min-h-[calc(100vh-theme(spacing.16))] bg-white shadow-2xl lg:shadow-md">
+        <app-side-bar 
+          class="block h-full p-4 lg:p-5"
+          (closeSidebar)="toggleSidebar()">
+        </app-side-bar>
+      </div>
+    </aside>
+    
+    <!-- Overlay para mobile cuando sidebar está abierto -->
+    <div 
+      *ngIf="sidebarOpen"
+      class="fixed inset-0 bg-black bg-opacity-50 z-30 lg:hidden transition-opacity duration-300"
+      (click)="toggleSidebar()"
+      aria-hidden="true">
+    </div>
   </div>
+  
+  <!-- Botón flotante para abrir carrito en mobile -->
+  <button
+    class="fixed bottom-6 right-6 z-50 lg:hidden bg-blue-600 text-white rounded-full p-4 shadow-2xl hover:bg-blue-700 active:scale-95 transition-all hover:shadow-xl focus:outline-none focus-visible:ring-4 focus-visible:ring-blue-300"
+    (click)="toggleSidebar()"
+    aria-label="Abrir carrito de boletas">
+    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+            d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"/>
+    </svg>
+    <!-- Badge contador -->
+    <span 
+      *ngIf="carritoCount > 0" 
+      class="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full h-6 w-6 flex items-center justify-center font-bold shadow-lg animate-pulse">
+      {{ carritoCount }}
+    </span>
+  </button>
+  
   <app-footer></app-footer>
 </div>

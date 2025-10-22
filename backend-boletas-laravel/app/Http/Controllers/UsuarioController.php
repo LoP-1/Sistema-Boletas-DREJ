@@ -2,17 +2,18 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Usuario;
+use App\Services\UsuarioService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Tymon\JWTAuth\Facades\JWTAuth;
 
 class UsuarioController extends Controller
 {
-    // Registro
+    public function __construct(private UsuarioService $usuarioService) {}
+
     public function registrar(Request $request)
     {
-        $request->validate([
+        $data = $request->validate([
             'nombre' => 'required|string|max:255',
             'apellido' => 'required|string|max:255',
             'correo' => 'required|email|unique:usuarios,correo',
@@ -21,11 +22,7 @@ class UsuarioController extends Controller
             'rol' => 'required|string|max:30',
             'contrasena' => 'required|string|min:6',
         ]);
-
-        $data = $request->all();
-        $data['contrasena'] = Hash::make($data['contrasena']);
-        $usuario = Usuario::create($data);
-
+        $usuario = $this->usuarioService->registrarUsuario($data);
         return response()->json($usuario);
     }
 
@@ -33,7 +30,7 @@ class UsuarioController extends Controller
     public function login(Request $request)
     {
         $credentials = $request->only('correo', 'contrasena');
-        $usuario = Usuario::where('correo', $credentials['correo'])->first();
+        $usuario = $this->usuarioService->buscarPorCorreo($credentials['correo']);
 
         if (!$usuario || !Hash::check($credentials['contrasena'], $usuario->contrasena)) {
             return response('Credenciales inválidas', 401);
@@ -49,25 +46,21 @@ class UsuarioController extends Controller
     // Actualizar datos del usuario (propietario o admin)
     public function actualizarUsuario($id, Request $request)
     {
-        $usuario = Usuario::findOrFail($id);
-        // Aquí puedes verificar permisos según tu lógica JWT
-        $usuario->update($request->all());
+        $usuario = $this->usuarioService->actualizarDatos($id, $request->all());
         return response()->json($usuario);
     }
 
     // Cambiar contraseña (propietario o admin)
     public function cambiarContrasena($id, Request $request)
     {
-        $usuario = Usuario::findOrFail($id);
-        $usuario->contrasena = Hash::make($request->input('nuevaContrasena'));
-        $usuario->save();
-        return response()->json('Contraseña actualizada correctamente');
+        // Aquí delega al servicio, que acepta ambos formatos
+        return $this->usuarioService->cambiarContrasena($id, $request);
     }
 
     // Mostrar usuario
     public function obtenerUsuario($id)
     {
-        $usuario = Usuario::find($id);
+        $usuario = $this->usuarioService->buscarPorId($id);
         if (!$usuario) {
             return response()->json(null, 404);
         }

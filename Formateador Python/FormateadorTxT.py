@@ -7,7 +7,9 @@ from pathlib import Path
 from typing import List, Dict, Any, Generator, Optional
 import sys
 
-# ========== Expresiones regulares y helpers (idéntico a tu lógica) ==========
+import getpass
+
+# ========== Expresiones regulares y helpers (igual que tu lógica) ==========
 
 RE_HEADER = re.compile(r'^DRE JUNIN[^\n]*$', re.MULTILINE)
 RE_SEQ_SAME_LINE = re.compile(r'^\.\s*(?P<seq>0{4,}\d+)\s*$', re.MULTILINE)
@@ -171,7 +173,8 @@ def procesar_archivo(ruta: Path) -> List[Dict[str, Any]]:
     out: List[Dict[str, Any]] = []
     for b in boletas:
         try:
-            out.append(parse_boleta(b, ruta.name))
+            boleta = parse_boleta(b, ruta.name)
+            out.append(boleta)
         except Exception as e:
             out.append({"archivo_origen": ruta.name, "error": str(e), "fragmento_inicial": b[:200]})
     return out
@@ -219,12 +222,20 @@ def pedir_headers() -> Dict[str, str]:
         headers[k.strip()] = v.strip()
     return headers
 
-def pedir_endpoint() -> str:
+def pedir_endpoint(default_host="localhost:8000") -> str:
     while True:
-        url = input("URL del endpoint (ej. https://api.tuapp.com/boletas): ").strip()
-        if url.startswith("http://") or url.startswith("https://"):
+        host = input(f"Dominio o IP del servidor [{default_host}]: ").strip() or default_host
+        url = f"http://{host}/api/boletas"
+        print(f"Endpoint para subir boletas: {url}")
+        ok = input("¿Es correcto? [S/n]: ").strip().lower()
+        if ok in ("", "s", "si", "y", "yes"):
             return url
-        print("URL inválida. Debe comenzar con http:// o https://")
+
+def pedir_login_info() -> Dict[str, str]:
+    print("\nIngresa las credenciales para obtener el token JWT:")
+    correo = input("Correo: ").strip()
+    contrasena = getpass.getpass("Contraseña: ")
+    return {"correo": correo, "contrasena": contrasena}
 
 def pedir_batch_size() -> int:
     while True:
@@ -247,20 +258,49 @@ def pedir_salida() -> Path:
         out = Path(str(out) + ".json")
     return out
 
-def guardar_json_simple(registros: Generator[Dict[str, Any], None, None], destino: Path, skip_errors: bool = True) -> int:
+def guardar_json_simple(
+    registros: Generator[Dict[str, Any], None, None],
+    destino: Path,
+    skip_errors: bool = True,
+    sin_dni_path: Optional[Path] = None
+) -> int:
     total = 0
     arr = []
+    sin_dni = []
     for r in registros:
         if skip_errors and "error" in r:
+            continue
+        if "documento_identidad" not in r or not r["documento_identidad"]:
+            sin_dni.append(r)
             continue
         arr.append(r)
         total += 1
     with open(destino, "w", encoding="utf-8") as f:
         json.dump(arr, f, ensure_ascii=False, separators=(",", ":"), indent=2)
+    if sin_dni_path and sin_dni:
+        with open(sin_dni_path, "w", encoding="utf-8") as f:
+            json.dump(sin_dni, f, ensure_ascii=False, separators=(",", ":"), indent=2)
+        print(f"Guardadas {len(sin_dni)} boletas sin DNI en: {sin_dni_path}")
     return total
 
+def login_obtener_token(base_url: str, correo: str, contrasena: str) -> Optional[str]:
+    try:
+        import requests
+    except ImportError:
+        print("Instala requests: pip install requests", file=sys.stderr)
+        raise
+    url = base_url.rstrip("/") + "/api/usuarios/login"
+    print(f"Solicitando token JWT en {url} ...")
+    resp = requests.post(url, json={"correo": correo, "contrasena": contrasena}, timeout=20)
+    if not (200 <= resp.status_code < 300):
+        print(f"[ERROR] Login falló: HTTP {resp.status_code}: {resp.text}")
+        return None
+    token = resp.text.strip().replace('"', '')  # asume token como string simple
+    print("Token JWT obtenido.")
+    return token
+
 def subir_por_lotes(endpoint: str, registros: Generator[Dict[str, Any], None, None],
-                    headers: Optional[Dict[str, str]] = None, batch_size: int = 500,
+                    token: str = "", headers: Optional[Dict[str, str]] = None, batch_size: int = 500,
                     skip_errors: bool = True) -> int:
     try:
         import requests
@@ -269,6 +309,8 @@ def subir_por_lotes(endpoint: str, registros: Generator[Dict[str, Any], None, No
         raise
     headers = dict(headers or {})
     headers.setdefault("Content-Type", "application/json")
+    if token:
+        headers["Authorization"] = f"Bearer {token}"
     buffer: List[Dict[str, Any]] = []
     total = 0
 
@@ -287,6 +329,8 @@ def subir_por_lotes(endpoint: str, registros: Generator[Dict[str, Any], None, No
     for r in registros:
         if skip_errors and "error" in r:
             continue
+        if "documento_identidad" not in r or not r["documento_identidad"]:
+            continue  # Omitir sin DNI en subida
         buffer.append(r)
         if len(buffer) >= batch_size:
             flush()
@@ -299,23 +343,47 @@ def main():
     opcion = pedir_opcion()
 
     if opcion == 1:
-        endpoint = pedir_endpoint()
-        headers = pedir_headers()
+        # pedir dominio/IP
+        default_host = "localhost:8000"
+        base_url = input(f"Dominio o IP del servidor (sin /api/boletas) [{default_host}]: ").strip() or default_host
+        if base_url.startswith("http://") or base_url.startswith("https://"):
+            base_url = base_url.split("//", 1)[1]
+        base_url = base_url.rstrip("/")
+        api_url = f"http://{base_url}/api/boletas"
+
+        # login
+        login_info = pedir_login_info()
+        token = login_obtener_token(f"http://{base_url}", login_info["correo"], login_info["contrasena"])
+        if not token:
+            print("No se pudo obtener el token. Abortando.")
+            sys.exit(2)
         batch = pedir_batch_size()
         print("\nIniciando subida...")
         try:
-            total = subir_por_lotes(endpoint, iter_registros(raiz), headers=headers, batch_size=batch, skip_errors=True)
+            total = subir_por_lotes(
+                api_url,
+                iter_registros(raiz),
+                token=token,
+                batch_size=batch,
+                skip_errors=True
+            )
         except Exception as e:
             print(f"[ERROR] Falló la subida: {e}", file=sys.stderr)
             sys.exit(1)
-        print(f"\nListo. Enviadas {total} boletas a {endpoint}")
+        print(f"\nListo. Enviadas {total} boletas a {api_url}")
         return
 
     if opcion == 2:
         salida = pedir_salida()
+        sin_dni_out = Path(str(salida).replace('.json', '_sin_dni.json'))
         print("\nGenerando archivo JSON (array)...")
         try:
-            total = guardar_json_simple(iter_registros(raiz), salida, skip_errors=True)
+            total = guardar_json_simple(
+                iter_registros(raiz),
+                salida,
+                skip_errors=True,
+                sin_dni_path=sin_dni_out
+            )
         except Exception as e:
             print(f"[ERROR] Falló la generación: {e}", file=sys.stderr)
             sys.exit(1)

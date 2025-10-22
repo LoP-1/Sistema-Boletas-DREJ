@@ -39,7 +39,6 @@ export class Profile implements OnInit {
   const rol = this.auth.getRol();
 
   if (rol === 'ADMIN') {
-    // ... tu lógica de admin igual que antes ...
     this.adminService.listarUsuarios().subscribe({
       next: (usuarios) => {
         const encontrado = usuarios.find(u => u.dni === dni);
@@ -83,7 +82,6 @@ export class Profile implements OnInit {
     this.usuarioService.actualizarUsuario(this.usuario.id, this.usuario).subscribe({
       next: (res) => {
         this.usuario = res;
-        // Actualiza localStorage con cambios de correo/telefono si aplica
         if (res.correo) localStorage.setItem('userCorreo', res.correo);
         if (res.telefono) localStorage.setItem('userTelefono', res.telefono);
         this.mensajePass = '¡Datos actualizados!';
