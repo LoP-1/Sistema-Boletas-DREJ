@@ -1,3 +1,11 @@
+<div *ngIf="showEmergente" class="fixed z-50 top-8 left-1/2 -translate-x-1/2 bg-green-100 border border-green-400 text-green-800 px-6 py-4 rounded-lg shadow-lg flex items-center gap-4 animate-fade-in-down">
+  <svg class="w-6 h-6 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+  </svg>
+  <span class="font-semibold">{{ mensaje }}</span>
+  <button type="button" (click)="showEmergente = false" class="ml-4 text-green-800 hover:text-green-600 text-xl leading-none">&times;</button>
+</div>
+
 <div class="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 to-blue-100">
   <div class="w-full max-w-md bg-white rounded-2xl shadow-2xl p-8">
      <div class="flex flex-col items-center mb-6">

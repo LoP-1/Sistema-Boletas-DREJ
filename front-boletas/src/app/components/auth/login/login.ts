@@ -15,9 +15,9 @@ export class Login {
   modoRegistro = false;
   mensaje = '';
   cargando = false;
-  // Login form
   correo = '';
   contrasena = '';
+  showEmergente = false;
 
   // Registro form
   registroData: Usuario = {
@@ -57,28 +57,33 @@ export class Login {
   }
 
   registro() {
-    this.cargando = true;
-    this.auth.registro(this.registroData).subscribe({
-      next: usuario => {
-        this.mensaje = '¡Registro exitoso! Ahora inicia sesión.';
-        this.modoRegistro = false;
-        this.cargando = false;
-        this.registroData = {
-          nombre: '',
-          apellido: '',
-          correo: '',
-          dni: '',
-          telefono: '',
-          rol: 'USER',
-          contrasena: ''
-        };
+  this.cargando = true;
+  this.auth.registro(this.registroData).subscribe({
+    next: usuario => {
+      this.modoRegistro = false;
+      this.cargando = false;
+      this.registroData = {
+        nombre: '',
+        apellido: '',
+        correo: '',
+        dni: '',
+        telefono: '',
+        rol: 'USER',
+        contrasena: ''
+      };
+      this.mensaje = '¡Registro exitoso! Su cuenta será revisada en breve.';
+      this.showEmergente = true;
+      this.cd.detectChanges();
+      setTimeout(() => {
+        this.showEmergente = false;
         this.cd.detectChanges();
-      },
-      error: err => {
-        this.mensaje = err.error || 'Registro falló';
-        this.cargando = false;
-        this.cd.detectChanges();
-      }
-    });
-  }
+      }, 4000);
+    },
+    error: err => {
+      this.mensaje = err.error || 'Registro falló';
+      this.cargando = false;
+      this.cd.detectChanges();
+    }
+  });
+}
 }

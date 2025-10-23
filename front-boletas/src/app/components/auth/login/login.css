@@ -7,3 +7,10 @@ input::placeholder {
 input:focus::placeholder {
   opacity: 0.3;           /* Aún más transparente al enfocar */
 }
+@keyframes fade-in-down {
+  0% { opacity: 0; transform: translateY(-30px);}
+  100% { opacity: 1; transform: translateY(0);}
+}
+.animate-fade-in-down {
+  animation: fade-in-down 0.4s cubic-bezier(.39,.575,.565,1) both;
+}
