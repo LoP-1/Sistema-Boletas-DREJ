@@ -1,176 +1,201 @@
-<div class="min-h-screen bg-gradient-to-br from-blue-50 to-blue-100 py-10 px-3 md:px-8">
-  <div class="max-w-6xl mx-auto bg-white rounded-3xl shadow-2xl border border-blue-100 overflow-hidden">
+<div class="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 py-8 px-3 md:px-8">
+  <div class="max-w-7xl mx-auto">
     <!-- Header -->
-    <div class="p-6 md:p-8 bg-gradient-to-r from-blue-100 to-blue-50 border-b border-blue-100">
+    <div class="bg-white rounded-2xl shadow-xl border border-blue-200 p-6 md:p-8 mb-6">
       <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
         <div>
-          <h2 class="text-2xl md:text-3xl font-extrabold text-blue-900 tracking-tight">Gestión de Personas</h2>
-          <p class="text-gray-600">Crea, edita y administra personas y sus boletas</p>
+          <h1 class="text-3xl md:text-4xl font-bold text-blue-900 tracking-tight mb-2">
+            Gestión de Personas y Boletas
+          </h1>
+          <p class="text-gray-600 text-sm md:text-base">
+            Administra personas, edita información y gestiona sus boletas de pago
+          </p>
         </div>
-        <div class="flex items-center gap-2">
-          <button (click)="cargarPersonas(personaPage)"
-            class="px-4 py-2 bg-white border border-blue-300 text-blue-700 rounded-xl shadow hover:bg-blue-50 transition">
-            Recargar
-          </button>
-        </div>
+        <button 
+          (click)="cargarPersonas(personaPage)"
+          class="inline-flex items-center gap-2 px-5 py-2.5 bg-blue-600 text-white rounded-xl shadow-lg hover:bg-blue-700 hover:shadow-xl transition-all duration-200 font-semibold"
+          aria-label="Recargar lista de personas">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+          </svg>
+          Recargar
+        </button>
       </div>
     </div>
 
-    <div class="p-6 md:p-8">
-      <!-- Filtro -->
-      <div class="flex flex-col md:flex-row md:items-center gap-3 mb-5">
-        <div class="flex-1 relative">
-          <input [(ngModel)]="filtro" (ngModelChange)="onFiltroChange()"
-            placeholder="Buscar por persona (nombre, apellido, DNI) o boleta (mes, año, establecimiento, cargo, estado)"
-            class="w-full pl-10 pr-4 py-2 border border-blue-200 rounded-xl focus:ring-2 focus:ring-blue-300 outline-none transition" />
-          <svg class="w-5 h-5 text-blue-400 absolute left-3 top-2.5" fill="none" stroke="currentColor" stroke-width="2"
-            viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round"
-              d="m21 21-4.35-4.35M17 10.5A6.5 6.5 0 1 1 4 10.5a6.5 6.5 0 0 1 13 0z" />
-          </svg>
-        </div>
+    <!-- Search Bar -->
+    <div class="bg-white rounded-2xl shadow-xl border border-blue-200 p-4 md:p-6 mb-6">
+      <label for="search-filter" class="sr-only">Buscar personas o boletas</label>
+      <div class="relative">
+        <svg class="w-5 h-5 text-blue-400 absolute left-4 top-1/2 -translate-y-1/2 pointer-events-none" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" d="m21 21-4.35-4.35M17 10.5A6.5 6.5 0 1 1 4 10.5a6.5 6.5 0 0 1 13 0z" />
+        </svg>
+        <input 
+          id="search-filter"
+          [(ngModel)]="filtro" 
+          (ngModelChange)="onFiltroChange()"
+          placeholder="Buscar por nombre, apellido, DNI, mes, año, establecimiento, cargo o estado..."
+          class="w-full pl-12 pr-4 py-3 border-2 border-blue-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all text-gray-700 placeholder-gray-400 placeholder-opacity-60"
+          aria-label="Campo de búsqueda para filtrar personas y boletas" />
       </div>
+    </div>
 
-      <!-- Estado -->
-      <div class="min-h-[28px] mb-3">
-        <div *ngIf="personaLoading"
-          class="px-4 py-2 bg-blue-50 text-blue-800 rounded-xl border border-blue-200 shadow-sm">
-          Cargando personas...
-        </div>
+    <!-- Loading State -->
+    <div *ngIf="personaLoading" class="bg-white rounded-2xl shadow-xl border border-blue-200 p-8 text-center">
+      <div class="inline-flex items-center gap-3 text-blue-600">
+        <svg class="animate-spin h-6 w-6" fill="none" viewBox="0 0 24 24">
+          <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+          <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+        </svg>
+        <span class="text-lg font-semibold">Cargando personas...</span>
       </div>
+    </div>
 
-      <!-- Tabla única: personas + filas de boletas expandibles -->
-      <div class="overflow-x-auto rounded-xl shadow-lg">
-        <table *ngIf="!personaLoading" class="min-w-full bg-white rounded-xl">
-          <thead class="bg-blue-100 text-blue-800">
+    <!-- Table Container -->
+    <div *ngIf="!personaLoading" class="bg-white rounded-2xl shadow-xl border border-blue-200 overflow-hidden">
+      <div class="overflow-x-auto">
+        <table class="min-w-full divide-y divide-blue-100">
+          <thead class="bg-gradient-to-r from-blue-600 to-indigo-600">
             <tr>
-              <th class="py-3 px-4 text-left font-semibold w-12"></th>
-              <th class="py-3 px-4 text-left font-semibold">ID</th>
-              <th class="py-3 px-4 text-left font-semibold">DNI</th>
-              <th class="py-3 px-4 text-left font-semibold">Nombre</th>
-              <th class="py-3 px-4 text-left font-semibold">Apellido</th>
-              <th class="py-3 px-4 text-left font-semibold">Nacimiento</th>
-              <th class="py-3 px-4 text-left font-semibold">Acciones</th>
+              <th scope="col" class="py-4 px-4 text-left font-bold text-white text-sm uppercase tracking-wider w-16">
+                <span class="sr-only">Expandir</span>
+              </th>
+              <th scope="col" class="py-4 px-6 text-left font-bold text-white text-sm uppercase tracking-wider">ID</th>
+              <th scope="col" class="py-4 px-6 text-left font-bold text-white text-sm uppercase tracking-wider">DNI</th>
+              <th scope="col" class="py-4 px-6 text-left font-bold text-white text-sm uppercase tracking-wider">Nombre</th>
+              <th scope="col" class="py-4 px-6 text-left font-bold text-white text-sm uppercase tracking-wider">Apellido</th>
+              <th scope="col" class="py-4 px-6 text-left font-bold text-white text-sm uppercase tracking-wider">Nacimiento</th>
+              <th scope="col" class="py-4 px-6 text-left font-bold text-white text-sm uppercase tracking-wider">Acciones</th>
             </tr>
           </thead>
-          <tbody>
-            <ng-container *ngFor="let p of filtrarPersonas()">
-              <!-- Fila de persona -->
-              <tr class="border-b last:border-0 hover:bg-blue-50 transition">
-                <td class="py-2 px-4">
-                  <button (click)="toggleExpand(p, $event)"
-                    class="w-7 h-7 rounded-full border border-blue-200 flex items-center justify-center bg-white hover:bg-blue-50 transition">
-                    <svg class="w-4 h-4 text-blue-700 transition-transform"
-                      [ngStyle]="{'transform': isExpanded(p.id) ? 'rotate(90deg)' : 'rotate(0deg)'}" fill="none"
-                      stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+          <tbody class="divide-y divide-blue-50">
+            <ng-container *ngFor="let p of filtrarPersonas(); let i = index; trackBy: trackByPersona">
+              <!-- Persona Row -->
+              <tr class="hover:bg-blue-50 transition-colors duration-150" [class.bg-blue-25]="i % 2 === 0">
+                <td class="py-4 px-4">
+                  <button 
+                    (click)="toggleExpand(p, $event)"
+                    [attr.aria-expanded]="isExpanded(p.id)"
+                    [attr.aria-label]="'Expandir boletas de ' + p.nombres + ' ' + p.apellidos"
+                    class="w-9 h-9 rounded-lg border-2 border-blue-300 flex items-center justify-center bg-white hover:bg-blue-100 hover:border-blue-400 transition-all duration-200 focus:ring-2 focus:ring-blue-500 focus:outline-none">
+                    <svg 
+                      class="w-5 h-5 text-blue-700 transition-transform duration-300"
+                      [ngStyle]="{'transform': isExpanded(p.id) ? 'rotate(90deg)' : 'rotate(0deg)'}" 
+                      fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
                       <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
                     </svg>
                   </button>
                 </td>
-                <td class="py-2 px-4">{{p.id}}</td>
-                <td class="py-2 px-4">{{p.documentoIdentidad}}</td>
-                <td class="py-2 px-4">{{p.nombres}}</td>
-                <td class="py-2 px-4">{{p.apellidos}}</td>
-                <td class="py-2 px-4">{{p.fechaNacimiento}}</td>
-                <td class="py-2 px-4">
+                <td class="py-4 px-6 text-sm font-semibold text-gray-700">{{p.id}}</td>
+                <td class="py-4 px-6 text-sm font-medium text-gray-900">{{p.documentoIdentidad}}</td>
+                <td class="py-4 px-6 text-sm font-medium text-gray-900">{{p.nombres}}</td>
+                <td class="py-4 px-6 text-sm font-medium text-gray-900">{{p.apellidos}}</td>
+                <td class="py-4 px-6 text-sm text-gray-600">{{p.fechaNacimiento}}</td>
+                <td class="py-4 px-6">
                   <div class="flex flex-wrap gap-2">
-                    <button (click)="mostrarEditarPersona(p, $event)"
-                      class="bg-blue-600 text-white px-3 py-1.5 rounded-lg text-xs font-semibold shadow hover:bg-blue-700 transition">
+                    <button 
+                      (click)="mostrarEditarPersona(p, $event)"
+                      class="inline-flex items-center gap-1.5 bg-blue-600 text-white px-4 py-2 rounded-lg text-xs font-bold shadow-md hover:bg-blue-700 hover:shadow-lg transition-all duration-200 focus:ring-2 focus:ring-blue-500 focus:outline-none"
+                      aria-label="Editar persona {{p.nombres}} {{p.apellidos}}">
+                      <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                      </svg>
                       Editar
                     </button>
-                    <button (click)="eliminarPersona(p.id ?? 0, $event)"
-                      class="bg-red-100 text-red-600 px-3 py-1.5 rounded-lg text-xs font-semibold shadow hover:bg-red-200 transition">
+                    <button 
+                      (click)="eliminarPersona(p.id ?? 0, $event)"
+                      class="inline-flex items-center gap-1.5 bg-red-600 text-white px-4 py-2 rounded-lg text-xs font-bold shadow-md hover:bg-red-700 hover:shadow-lg transition-all duration-200 focus:ring-2 focus:ring-red-500 focus:outline-none"
+                      aria-label="Eliminar persona {{p.nombres}} {{p.apellidos}}">
+                      <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                      </svg>
                       Eliminar
                     </button>
                   </div>
                 </td>
               </tr>
 
-              <!-- Fila de edición persona (expandida bajo la persona, ocupando columnas) -->
-              <tr *ngIf="editandoPersona && editandoPersona.id === p.id" class="bg-blue-50">
-                <td></td>
-                <td colspan="6" class="p-0 border-t-0">
-                  <form (ngSubmit)="guardarPersona()" class="flex flex-col md:flex-row gap-2 items-center px-6 py-4">
-                    <input [(ngModel)]="editandoPersona.nombres" name="nombreEdit" placeholder="Nombre"
-                      class="w-40 px-3 py-2 border border-blue-200 rounded focus:outline-none focus:ring-2 focus:ring-blue-300 transition text-sm" />
-                    <input [(ngModel)]="editandoPersona.apellidos" name="apellidoEdit" placeholder="Apellido"
-                      class="w-40 px-3 py-2 border border-blue-200 rounded focus:outline-none focus:ring-2 focus:ring-blue-300 transition text-sm" />
-                    <input [(ngModel)]="editandoPersona.documentoIdentidad" name="dniEdit" placeholder="DNI"
-                      class="w-40 px-3 py-2 border border-blue-200 rounded focus:outline-none focus:ring-2 focus:ring-blue-300 transition text-sm" />
-                    <input [(ngModel)]="editandoPersona.fechaNacimiento" name="nacEdit"
-                      placeholder="Nacimiento (YYYY-MM-DD)"
-                      class="w-56 px-3 py-2 border border-blue-200 rounded focus:outline-none focus:ring-2 focus:ring-blue-300 transition text-sm" />
-                    <button type="submit"
-                      class="bg-green-600 text-white px-4 py-1.5 rounded-lg shadow hover:bg-green-700 transition">
-                      Guardar
-                    </button>
-                    <button type="button" (click)="cancelarEdicionPersona()"
-                      class="bg-red-100 text-red-600 px-3 py-1.5 rounded-lg shadow hover:bg-red-200 transition">
-                      Cancelar
-                    </button>
-                  </form>
+              <!-- Loading Boletas -->
+              <tr *ngIf="isExpanded(p.id) && loadingPersonaId === p.id" class="bg-blue-50">
+                <td colspan="7" class="py-6 px-6 text-center">
+                  <div class="inline-flex items-center gap-3 text-blue-600">
+                    <svg class="animate-spin h-5 w-5" fill="none" viewBox="0 0 24 24">
+                      <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                      <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                    </svg>
+                    <span class="font-semibold">Cargando boletas...</span>
+                  </div>
                 </td>
               </tr>
 
-              <!-- Fila de boletas: loading -->
-              <tr *ngIf="isExpanded(p.id) && loadingPersonaId === p.id" class="bg-white">
-                <td></td>
-                <td colspan="6" class="py-3 px-4 text-blue-700">
-                  Cargando boletas...
-                </td>
-              </tr>
-
-              <!-- Filas de boletas: una por boleta, inline -->
+              <!-- Boletas Rows -->
               <ng-container *ngIf="isExpanded(p.id) && loadingPersonaId !== p.id">
                 <ng-container *ngIf="(boletasFiltradas(p.id!)?.length ?? 0) > 0; else noBoletas">
-                  <tr *ngFor="let b of boletasFiltradas(p.id!)"
-                    class="border-b last:border-0 bg-white hover:bg-blue-50 transition">
-                    <td class="py-2 px-4"></td>
-                    <td class="py-2 px-4">
-                      <span class="text-xs font-semibold text-blue-700 bg-blue-100 px-2 py-0.5 rounded">Boleta</span>
+                  <tr *ngFor="let b of boletasFiltradas(p.id!); let j = index; trackBy: trackByBoleta"
+                    class="bg-gradient-to-r from-blue-50 to-indigo-50 hover:from-blue-100 hover:to-indigo-100 transition-colors duration-150 border-l-4 border-blue-400">
+                    <td class="py-3 px-4"></td>
+                    <td class="py-3 px-6">
+                      <span class="inline-flex items-center gap-1.5 text-xs font-bold text-blue-700 bg-blue-200 px-3 py-1.5 rounded-full">
+                        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                          <path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                        </svg>
+                        Boleta
+                      </span>
                     </td>
-                    <td class="py-2 px-4">
-                      <div class="text-sm font-semibold text-blue-900">{{ b.mes }}/{{ b.anio }}</div>
-                      <div class="text-xs text-gray-500">Sec: {{ b.secuencia }}</div>
+                    <td class="py-3 px-6">
+                      <div class="text-sm font-bold text-blue-900">{{ b.mes }}/{{ b.anio }}</div>
+                      <div class="text-xs text-gray-500 mt-0.5">Sec: {{ b.secuencia }}</div>
                     </td>
-                    <td class="py-2 px-4">
-                      <div class="text-sm">{{ b.establecimiento }}</div>
+                    <td class="py-3 px-6">
+                      <div class="text-sm font-medium text-gray-800">{{ b.establecimiento }}</div>
                     </td>
-                    <td class="py-2 px-4">
-                      <div class="text-sm">{{ b.cargo }}</div>
+                    <td class="py-3 px-6">
+                      <div class="text-sm font-medium text-gray-800">{{ b.cargo }}</div>
                     </td>
-                    <td class="py-2 px-4">
-                      <span class="px-2 py-1 rounded text-xs font-semibold" [ngClass]="{
-                              'bg-green-100 text-green-700': b.estado === 'ACTIVO',
-                              'bg-red-100 text-red-600': b.estado !== 'ACTIVO'
-                            }">{{ b.estado }}</span>
+                    <td class="py-3 px-6">
+                      <span 
+                        class="inline-block px-3 py-1.5 rounded-full text-xs font-bold shadow-sm" 
+                        [ngClass]="{
+                          'bg-green-100 text-green-800 border border-green-300': b.estado === 'ACTIVO',
+                          'bg-red-100 text-red-800 border border-red-300': b.estado !== 'ACTIVO'
+                        }">
+                        {{ b.estado }}
+                      </span>
                     </td>
-                    <td class="py-2 px-4">
+                    <td class="py-3 px-6">
                       <div class="flex flex-wrap gap-2">
-                        <button (click)="mostrarEditarBoleta(b, $event)"
-                          class="bg-blue-600 text-white px-3 py-1.5 rounded-lg text-xs font-semibold shadow hover:bg-blue-700 transition">
+                        <button 
+                          (click)="mostrarEditarBoleta(b, $event)"
+                          class="inline-flex items-center gap-1.5 bg-indigo-600 text-white px-4 py-2 rounded-lg text-xs font-bold shadow-md hover:bg-indigo-700 hover:shadow-lg transition-all duration-200 focus:ring-2 focus:ring-indigo-500 focus:outline-none"
+                          aria-label="Editar boleta {{b.mes}}/{{b.anio}}">
+                          <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                          </svg>
                           Editar
                         </button>
-                        <button (click)="eliminarBoleta(b.id ?? 0, p.id!, $event)"
-                          class="bg-red-100 text-red-600 px-3 py-1.5 rounded-lg text-xs font-semibold shadow hover:bg-red-200 transition">
+                        <button 
+                          (click)="eliminarBoleta(b.id ?? 0, p.id!, $event)"
+                          class="inline-flex items-center gap-1.5 bg-red-600 text-white px-4 py-2 rounded-lg text-xs font-bold shadow-md hover:bg-red-700 hover:shadow-lg transition-all duration-200 focus:ring-2 focus:ring-red-500 focus:outline-none"
+                          aria-label="Eliminar boleta {{b.mes}}/{{b.anio}}">
+                          <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                          </svg>
                           Eliminar
                         </button>
                       </div>
                     </td>
                   </tr>
-
-                  <!-- Fila de edición de boleta (inline bajo la boleta) -->
-                  <tr *ngIf="isEditandoBoletaVisible(p.id ?? -1) && editandoBoleta" class="bg-blue-50">
-                    <td></td>
-                    <td colspan="6" class="p-0 border-t-0">
-                      <!-- Aquí estaba la edición inline de boleta -->
-                    </td>
-                  </tr>
                 </ng-container>
                 <ng-template #noBoletas>
-                  <tr class="bg-white">
-                    <td></td>
-                    <td colspan="6" class="py-3 px-4 text-gray-500 italic">No se encontraron boletas.</td>
+                  <tr class="bg-blue-50">
+                    <td colspan="7" class="py-6 px-6 text-center">
+                      <div class="text-gray-500 italic">
+                        <svg class="w-12 h-12 mx-auto mb-2 text-gray-400" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+                          <path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                        </svg>
+                        No se encontraron boletas para esta persona.
+                      </div>
+                    </td>
                   </tr>
                 </ng-template>
               </ng-container>
@@ -179,18 +204,267 @@
         </table>
       </div>
 
-      <!-- Paginación -->
-      <div class="pagination flex gap-2 items-center justify-center mt-6">
-        <button (click)="cargarPersonas(personaPage-1)" [disabled]="personaPage===0"
-          class="px-4 py-2 rounded-xl bg-white border border-blue-300 text-blue-700 font-semibold disabled:bg-gray-100 disabled:text-gray-400">
-          Anterior
-        </button>
-        <span class="text-blue-800 font-semibold">Página {{personaPage+1}} / {{totalPersonaPages}}</span>
-        <button (click)="cargarPersonas(personaPage+1)" [disabled]="personaPage>=totalPersonaPages-1"
-          class="px-4 py-2 rounded-xl bg-blue-600 text-white font-semibold disabled:bg-gray-200 disabled:text-gray-400">
-          Siguiente
-        </button>
+      <!-- Pagination -->
+      <div class="bg-gradient-to-r from-blue-50 to-indigo-50 px-6 py-5 border-t border-blue-200">
+        <nav class="flex items-center justify-between" aria-label="Paginación">
+          <button 
+            (click)="cargarPersonas(personaPage-1)" 
+            [disabled]="personaPage===0"
+            class="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-white border-2 border-blue-300 text-blue-700 font-bold disabled:bg-gray-100 disabled:text-gray-400 disabled:border-gray-300 disabled:cursor-not-allowed hover:bg-blue-50 hover:border-blue-400 transition-all duration-200 focus:ring-2 focus:ring-blue-500 focus:outline-none"
+            aria-label="Página anterior">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" />
+            </svg>
+            Anterior
+          </button>
+          
+          <span class="text-blue-900 font-bold text-lg" aria-live="polite" aria-atomic="true">
+            Página <span class="text-indigo-600">{{personaPage+1}}</span> de <span class="text-indigo-600">{{totalPersonaPages}}</span>
+          </span>
+          
+          <button 
+            (click)="cargarPersonas(personaPage+1)" 
+            [disabled]="personaPage>=totalPersonaPages-1"
+            class="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-blue-600 text-white font-bold disabled:bg-gray-200 disabled:text-gray-400 disabled:cursor-not-allowed hover:bg-blue-700 hover:shadow-lg transition-all duration-200 focus:ring-2 focus:ring-blue-500 focus:outline-none"
+            aria-label="Página siguiente">
+            Siguiente
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
+            </svg>
+          </button>
+        </nav>
       </div>
+    </div>
+  </div>
+
+  <!-- Modal Editar Persona -->
+  <div 
+    *ngIf="showEditarPersonaModal && editandoPersona" 
+    class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="modal-persona-title">
+    <div class="bg-white rounded-3xl shadow-2xl max-w-lg w-full p-8 relative animate-fadeIn">
+      <button 
+        (click)="cancelarEdicionPersona()"
+        class="absolute top-4 right-4 w-10 h-10 flex items-center justify-center rounded-full text-gray-400 hover:text-gray-600 hover:bg-gray-100 transition-colors duration-200 focus:ring-2 focus:ring-blue-500 focus:outline-none"
+        aria-label="Cerrar modal">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+        </svg>
+      </button>
+      
+      <div class="mb-6">
+        <h3 id="modal-persona-title" class="text-2xl font-bold text-blue-900 mb-2">Editar Persona</h3>
+        <p class="text-gray-600 text-sm">Modifica la información de la persona seleccionada</p>
+      </div>
+      
+      <form (ngSubmit)="guardarPersona()" class="space-y-5">
+        <div>
+          <label for="persona-nombres" class="block text-sm font-bold text-gray-700 mb-2">
+            Nombres <span class="text-red-500">*</span>
+          </label>
+          <input 
+            id="persona-nombres"
+            [(ngModel)]="editandoPersona.nombres" 
+            name="nombreEdit" 
+            placeholder="Ej: Juan Carlos"
+            required
+            class="w-full px-4 py-3 border-2 border-blue-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all text-gray-800 placeholder-gray-400 placeholder-opacity-50"
+            aria-required="true" />
+        </div>
+        
+        <div>
+          <label for="persona-apellidos" class="block text-sm font-bold text-gray-700 mb-2">
+            Apellidos <span class="text-red-500">*</span>
+          </label>
+          <input 
+            id="persona-apellidos"
+            [(ngModel)]="editandoPersona.apellidos" 
+            name="apellidoEdit" 
+            placeholder="Ej: García Pérez"
+            required
+            class="w-full px-4 py-3 border-2 border-blue-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all text-gray-800 placeholder-gray-400 placeholder-opacity-50"
+            aria-required="true" />
+        </div>
+        
+        <div>
+          <label for="persona-dni" class="block text-sm font-bold text-gray-700 mb-2">
+            DNI <span class="text-red-500">*</span>
+          </label>
+          <input 
+            id="persona-dni"
+            [(ngModel)]="editandoPersona.documentoIdentidad" 
+            name="dniEdit" 
+            placeholder="Ej: 12345678"
+            required
+            maxlength="8"
+            pattern="[0-9]{8}"
+            class="w-full px-4 py-3 border-2 border-blue-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all text-gray-800 placeholder-gray-400 placeholder-opacity-50"
+            aria-required="true" />
+        </div>
+        
+        <div>
+          <label for="persona-nacimiento" class="block text-sm font-bold text-gray-700 mb-2">
+            Fecha de Nacimiento <span class="text-red-500">*</span>
+          </label>
+          <input 
+            id="persona-nacimiento"
+            type="date"
+            [(ngModel)]="editandoPersona.fechaNacimiento" 
+            name="nacEdit" 
+            required
+            class="w-full px-4 py-3 border-2 border-blue-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all text-gray-800"
+            aria-required="true" />
+        </div>
+        
+        <div class="flex gap-3 mt-8 pt-6 border-t border-gray-200">
+          <button 
+            type="submit"
+            class="flex-1 inline-flex items-center justify-center gap-2 bg-green-600 text-white px-6 py-3 rounded-xl shadow-lg hover:bg-green-700 hover:shadow-xl transition-all duration-200 font-bold focus:ring-2 focus:ring-green-500 focus:outline-none">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+            </svg>
+            Guardar Cambios
+          </button>
+          <button 
+            type="button" 
+            (click)="cancelarEdicionPersona()"
+            class="flex-1 inline-flex items-center justify-center gap-2 bg-gray-200 text-gray-800 px-6 py-3 rounded-xl hover:bg-gray-300 transition-all duration-200 font-bold focus:ring-2 focus:ring-gray-400 focus:outline-none">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+            </svg>
+            Cancelar
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Modal Editar Boleta -->
+  <div 
+    *ngIf="showEditarBoletaModal && editandoBoleta" 
+    class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="modal-boleta-title">
+    <div class="bg-white rounded-3xl shadow-2xl max-w-lg w-full p-8 relative animate-fadeIn">
+      <button 
+        (click)="cancelarEdicionBoleta()"
+        class="absolute top-4 right-4 w-10 h-10 flex items-center justify-center rounded-full text-gray-400 hover:text-gray-600 hover:bg-gray-100 transition-colors duration-200 focus:ring-2 focus:ring-indigo-500 focus:outline-none"
+        aria-label="Cerrar modal">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+        </svg>
+      </button>
+      
+      <div class="mb-6">
+        <h3 id="modal-boleta-title" class="text-2xl font-bold text-indigo-900 mb-2">Editar Boleta</h3>
+        <p class="text-gray-600 text-sm">Modifica la información de la boleta de pago</p>
+      </div>
+      
+      <form (ngSubmit)="guardarBoleta()" class="space-y-5">
+        <div class="grid grid-cols-2 gap-4">
+          <div>
+            <label for="boleta-mes" class="block text-sm font-bold text-gray-700 mb-2">
+              Mes <span class="text-red-500">*</span>
+            </label>
+            <input 
+              id="boleta-mes"
+              [(ngModel)]="editandoBoleta.mes" 
+              name="mesEdit" 
+              placeholder="Ej: 01"
+              required
+              maxlength="2"
+              pattern="(0[1-9]|1[0-2])"
+              class="w-full px-4 py-3 border-2 border-indigo-200 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition-all text-gray-800 placeholder-gray-400 placeholder-opacity-50"
+              aria-required="true" />
+          </div>
+          
+          <div>
+            <label for="boleta-anio" class="block text-sm font-bold text-gray-700 mb-2">
+              Año <span class="text-red-500">*</span>
+            </label>
+            <input 
+              id="boleta-anio"
+              [(ngModel)]="editandoBoleta.anio" 
+              name="anioEdit" 
+              placeholder="Ej: 2025"
+              required
+              maxlength="4"
+              pattern="[0-9]{4}"
+              class="w-full px-4 py-3 border-2 border-indigo-200 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition-all text-gray-800 placeholder-gray-400 placeholder-opacity-50"
+              aria-required="true" />
+          </div>
+        </div>
+        
+        <div>
+          <label for="boleta-establecimiento" class="block text-sm font-bold text-gray-700 mb-2">
+            Establecimiento <span class="text-red-500">*</span>
+          </label>
+          <input 
+            id="boleta-establecimiento"
+            [(ngModel)]="editandoBoleta.establecimiento" 
+            name="establecimientoEdit" 
+            placeholder="Ej: Sede Central"
+            required
+            class="w-full px-4 py-3 border-2 border-indigo-200 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition-all text-gray-800 placeholder-gray-400 placeholder-opacity-50"
+            aria-required="true" />
+        </div>
+        
+        <div>
+          <label for="boleta-cargo" class="block text-sm font-bold text-gray-700 mb-2">
+            Cargo <span class="text-red-500">*</span>
+          </label>
+          <input 
+            id="boleta-cargo"
+            [(ngModel)]="editandoBoleta.cargo" 
+            name="cargoEdit" 
+            placeholder="Ej: Analista"
+            required
+            class="w-full px-4 py-3 border-2 border-indigo-200 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition-all text-gray-800 placeholder-gray-400 placeholder-opacity-50"
+            aria-required="true" />
+        </div>
+        
+        <div>
+          <label for="boleta-estado" class="block text-sm font-bold text-gray-700 mb-2">
+            Estado <span class="text-red-500">*</span>
+          </label>
+          <select 
+            id="boleta-estado"
+            [(ngModel)]="editandoBoleta.estado" 
+            name="estadoEdit" 
+            required
+            class="w-full px-4 py-3 border-2 border-indigo-200 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition-all text-gray-800 bg-white"
+            aria-required="true">
+            <option value="" disabled>Seleccionar estado</option>
+            <option value="ACTIVO">ACTIVO</option>
+            <option value="INACTIVO">INACTIVO</option>
+            <option value="PENDIENTE">PENDIENTE</option>
+            <option value="PROCESADO">PROCESADO</option>
+          </select>
+        </div>
+        
+        <div class="flex gap-3 mt-8 pt-6 border-t border-gray-200">
+          <button 
+            type="submit"
+            class="flex-1 inline-flex items-center justify-center gap-2 bg-green-600 text-white px-6 py-3 rounded-xl shadow-lg hover:bg-green-700 hover:shadow-xl transition-all duration-200 font-bold focus:ring-2 focus:ring-green-500 focus:outline-none">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+            </svg>
+            Guardar Cambios
+          </button>
+          <button 
+            type="button" 
+            (click)="cancelarEdicionBoleta()"
+            class="flex-1 inline-flex items-center justify-center gap-2 bg-gray-200 text-gray-800 px-6 py-3 rounded-xl hover:bg-gray-300 transition-all duration-200 font-bold focus:ring-2 focus:ring-gray-400 focus:outline-none">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+            </svg>
+            Cancelar
+          </button>
+        </div>
+      </form>
     </div>
   </div>
 </div>

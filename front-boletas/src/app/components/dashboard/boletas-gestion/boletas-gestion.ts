@@ -27,10 +27,11 @@ export class BoletasGestion implements OnInit {
   boletasByPersona: Record<number, BoletaDTO[]> = {};
   loadingPersonaId: number | null = null;
 
-  nuevaPersona: PersonaDTO = { id: undefined, nombres: '', apellidos: '', documentoIdentidad: '', fechaNacimiento: '' };
   editandoPersona: PersonaDTO | null = null;
+  showEditarPersonaModal = false;
 
   editandoBoleta: BoletaDTO | null = null;
+  showEditarBoletaModal = false;
 
   constructor(
     private adminService: AdminService,
@@ -155,12 +156,8 @@ export class BoletasGestion implements OnInit {
   mostrarEditarPersona(persona: PersonaDTO, event?: MouseEvent) {
     if (event) event.stopPropagation();
     this.editandoPersona = { ...persona };
-  }
-
-  isEditandoBoletaVisible(personaId: number): boolean {
-    if (!this.editandoBoleta) return false;
-    const boletas = this.boletasByPersona[personaId] ?? [];
-    return boletas.some(x => x.id === this.editandoBoleta!.id);
+    this.showEditarPersonaModal = true;
+    this.cd.markForCheck();
   }
 
   guardarPersona() {
@@ -168,9 +165,14 @@ export class BoletasGestion implements OnInit {
     this.adminService.editarPersona(p.id!, p).subscribe({
       next: () => {
         this.editandoPersona = null;
+        this.showEditarPersonaModal = false;
         this.cargarPersonas(this.personaPage);
+        this.cd.markForCheck();
       },
-      error: () => console.error('Error actualizando persona')
+      error: () => {
+        this.showEditarPersonaModal = false;
+        this.cd.markForCheck();
+      }
     });
   }
 
@@ -181,17 +183,21 @@ export class BoletasGestion implements OnInit {
       this.expanded.delete(id);
       delete this.boletasByPersona[id];
       this.cargarPersonas(this.personaPage);
+      this.cd.markForCheck();
     });
   }
 
   cancelarEdicionPersona() {
     this.editandoPersona = null;
+    this.showEditarPersonaModal = false;
     this.cd.markForCheck();
   }
 
   mostrarEditarBoleta(boleta: BoletaDTO, event?: MouseEvent) {
     if (event) event.stopPropagation();
     this.editandoBoleta = { ...boleta };
+    this.showEditarBoletaModal = true;
+    this.cd.markForCheck();
   }
 
   guardarBoleta() {
@@ -204,9 +210,13 @@ export class BoletasGestion implements OnInit {
           this.boletasByPersona[personaId] = (this.boletasByPersona[personaId] ?? []).map(x => x.id === b.id ? b : x);
         }
         this.editandoBoleta = null;
+        this.showEditarBoletaModal = false;
         this.cd.markForCheck();
       },
-      error: () => console.error('Error actualizando boleta')
+      error: () => {
+        this.showEditarBoletaModal = false;
+        this.cd.markForCheck();
+      }
     });
   }
 
@@ -217,6 +227,12 @@ export class BoletasGestion implements OnInit {
       this.boletasByPersona[personaId] = (this.boletasByPersona[personaId] ?? []).filter(b => b.id !== id);
       this.cd.markForCheck();
     });
+  }
+
+  cancelarEdicionBoleta() {
+    this.editandoBoleta = null;
+    this.showEditarBoletaModal = false;
+    this.cd.markForCheck();
   }
 
   private findPersonaIdByBoleta(boletaId: number): number | null {

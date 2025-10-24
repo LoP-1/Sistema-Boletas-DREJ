@@ -1,4 +1,4 @@
-<nav class="bg-white h-full flex flex-col overflow-hidden" role="navigation" aria-label="Carrito de boletas">
+<nav class="tour-sidebar-carrito bg-white h-full flex flex-col overflow-hidden" role="navigation" aria-label="Carrito de boletas">
   
   <!-- Header del sidebar con botón de cerrar en mobile -->
   <div class="flex items-center justify-between mb-4 pb-3 border-b border-blue-100 flex-shrink-0">
@@ -76,17 +76,6 @@
 
   <!-- Botones de acción -->
   <div class="space-y-2 pt-3 border-t border-blue-100 flex-shrink-0">
-    <button 
-      *ngIf="carrito.length > 0"
-      class="w-full bg-blue-600 text-white py-2.5 rounded-lg hover:bg-blue-700 transition shadow-md font-semibold flex items-center justify-center gap-2 text-sm focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
-      (click)="imprimirBoleta(carrito[0])">
-      <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
-              d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"/>
-      </svg>
-      Imprimir Todo
-    </button>
-    
     <button 
       class="w-full bg-gray-100 text-gray-700 py-2.5 rounded-lg hover:bg-gray-200 transition shadow font-semibold text-sm focus:outline-none focus-visible:ring-2 focus-visible:ring-gray-500"
       (click)="salir()">

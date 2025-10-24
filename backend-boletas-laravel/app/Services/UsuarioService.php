@@ -44,10 +44,15 @@ class UsuarioService
         $usuario->save();
 
         // Enviar correo al usuario (bienvenida/pendiente)
-        Mail::to($usuario->correo)->send(new UsuarioBienvenidaMailable($usuario));
+        if (!empty($usuario->correo) && filter_var($usuario->correo, FILTER_VALIDATE_EMAIL)) {
+            Mail::to($usuario->correo)->send(new UsuarioBienvenidaMailable($usuario));
+        }
 
         // Enviar correo al admin (nuevo registro)
-        Mail::to('correo del admin')->send(new AdminNuevoRegistroMailable($usuario));
+        $adminMail = env('MAIL_ADMIN', 'admin@tu-dominio.com');
+        if (!empty($adminMail) && filter_var($adminMail, FILTER_VALIDATE_EMAIL)) {
+            Mail::to($adminMail)->send(new AdminNuevoRegistroMailable($usuario));
+        }
 
         return $usuario;
     }
@@ -61,15 +66,37 @@ class UsuarioService
     // Actualizar estado cuenta
 public function actualizarEstado($id, $nuevoEstado)
 {
-    // Asegura que cualquier valor "1", "true", 1, true, etc. sea true
     $estadoBooleano = filter_var($nuevoEstado, FILTER_VALIDATE_BOOLEAN);
-
     $usuario = Usuario::findOrFail($id);
     $usuario->estado_cuenta = $estadoBooleano;
     $usuario->save();
 
-    if ($estadoBooleano) {
-        \Mail::to($usuario->correo)->send(new \App\Mail\UsuarioCuentaAprobadaMailable($usuario));
+    \Log::info('Intentando enviar correo de cuenta aprobada', [
+        'usuario_id' => $usuario->id,
+        'correo' => $usuario->correo,
+        'estadoBooleano' => $estadoBooleano
+    ]);
+
+    if ($estadoBooleano && !empty($usuario->correo) && filter_var($usuario->correo, FILTER_VALIDATE_EMAIL)) {
+        try {
+            Mail::to($usuario->correo)->send(new UsuarioCuentaAprobadaMailable($usuario));
+            \Log::info('Correo de cuenta aprobada enviado correctamente', [
+                'usuario_id' => $usuario->id,
+                'correo' => $usuario->correo
+            ]);
+        } catch (\Exception $e) {
+            \Log::error('Error enviando correo de cuenta aprobada', [
+                'usuario_id' => $usuario->id,
+                'correo' => $usuario->correo,
+                'error' => $e->getMessage()
+            ]);
+        }
+    } else {
+        \Log::warning('No se envió correo de cuenta aprobada: correo inválido o estado no aprobado', [
+            'usuario_id' => $usuario->id,
+            'correo' => $usuario->correo,
+            'estadoBooleano' => $estadoBooleano
+        ]);
     }
 
     return $usuario;

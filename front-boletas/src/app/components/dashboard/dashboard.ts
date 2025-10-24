@@ -27,4 +27,6 @@ export class Dashboard implements OnInit {
   toggleSidebar() {
     this.sidebarOpen = !this.sidebarOpen;
   }
+
+  
 }

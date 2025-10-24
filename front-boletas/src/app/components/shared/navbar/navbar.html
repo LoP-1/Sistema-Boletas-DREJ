@@ -27,7 +27,7 @@
            routerLinkActive="font-bold text-blue-700 underline underline-offset-8"
            class="text-gray-700 hover:text-blue-700 px-2 lg:px-3 py-2 rounded transition focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 text-sm lg:text-base whitespace-nowrap">
           Boletas
-        </a>
+</a>
       </li>
       <li *ngIf="rol === 'ADMIN'">
         <a routerLink="/dashboard/admin" 
@@ -51,11 +51,10 @@
         </a>
       </li>
       <li>
-        <a routerLink="/dashboard/perfil" 
-           routerLinkActive="font-bold text-blue-700 underline underline-offset-8"
-           class="text-gray-700 hover:text-blue-700 px-2 lg:px-3 py-2 rounded transition focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 text-sm lg:text-base whitespace-nowrap">
-          Perfil
-        </a>
+        <a routerLink="/dashboard/perfil"
+   class="tour-nav-perfil text-gray-700 hover:text-blue-700 px-2 lg:px-3 py-2 rounded transition focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 text-sm lg:text-base whitespace-nowrap">
+  Perfil
+</a>
       </li>
     </ul>
 
@@ -88,12 +87,10 @@
         </a>
       </li>
       <li>
-        <a routerLink="/dashboard/boletas" 
-           routerLinkActive="bg-blue-100 text-blue-700 font-semibold"
-           (click)="closeMenu()"
-           class="block text-gray-700 hover:bg-blue-50 hover:text-blue-700 px-4 py-2.5 rounded transition">
-          Boletas
-        </a>
+        <a routerLink="/dashboard/boletas"
+   class="tour-nav-boletas text-gray-700 hover:text-blue-700 px-2 lg:px-3 py-2 rounded transition focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 text-sm lg:text-base whitespace-nowrap">
+  Boletas
+</a>
       </li>
       <li *ngIf="rol === 'ADMIN'">
         <a routerLink="/dashboard/admin" 
@@ -120,12 +117,10 @@
         </a>
       </li>
       <li>
-        <a routerLink="/dashboard/perfil" 
-           routerLinkActive="bg-blue-100 text-blue-700 font-semibold"
-           (click)="closeMenu()"
-           class="block text-gray-700 hover:bg-blue-50 hover:text-blue-700 px-4 py-2.5 rounded transition">
-          Perfil
-        </a>
+        <a routerLink="/dashboard/perfil"
+   class="tour-nav-perfil text-gray-700 hover:text-blue-700 px-2 lg:px-3 py-2 rounded transition focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 text-sm lg:text-base whitespace-nowrap">
+  Perfil
+</a>
       </li>
     </ul>
   </div>

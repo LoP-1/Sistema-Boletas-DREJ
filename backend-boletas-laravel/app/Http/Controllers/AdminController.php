@@ -7,6 +7,7 @@ use App\Models\Persona;
 use App\Models\Usuario;
 use App\Services\BoletaService;
 use Illuminate\Http\Request;
+use App\Services\UsuarioService;
 
 class AdminController extends Controller
 {
@@ -121,9 +122,7 @@ class AdminController extends Controller
         return response()->json(['error' => 'Debe enviar un estado booleano'], 422);
     }
 
-    $usuario = Usuario::findOrFail($id);
-    $usuario->estado_cuenta = (bool)$nuevoEstado;
-    $usuario->save();
+    $usuario = $this->usuarioService->actualizarEstado($id, $nuevoEstado);
     return response()->json($usuario);
 }
 }
