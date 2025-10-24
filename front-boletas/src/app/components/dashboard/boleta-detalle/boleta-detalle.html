@@ -1,261 +1,190 @@
-<!-- Modal Overlay (background) con animación de fade-in -->
+<!-- Modal Overlay -->
 <div 
-  class="fixed inset-0 bg-black/60 z-[100] backdrop-blur-sm animate-fade-in" 
+  class="fixed inset-0 bg-black/50 z-[100] backdrop-blur-sm animate-fade-in" 
   (click)="onClose()"
   role="button"
   tabindex="0"
   aria-label="Cerrar modal">
 </div>
 
-<!-- Modal Content con animación de slide-up -->
-<div class="fixed inset-0 flex items-center justify-center z-[110] print:static print:bg-white p-4 animate-slide-up">
+<!-- Modal Content -->
+<div class="fixed inset-0 flex items-center justify-center z-[110] p-4 animate-slide-up pointer-events-none">
   <div 
-    class="relative bg-white rounded-2xl shadow-2xl w-full max-w-4xl mx-auto overflow-hidden print:shadow-none print:rounded-none print:max-w-none print:w-full max-h-[90vh] overflow-y-auto custom-scrollbar"
+    class="pointer-events-auto relative bg-white rounded-2xl shadow-2xl w-full max-w-3xl mx-auto overflow-hidden max-h-[90vh] overflow-y-auto custom-scrollbar"
     role="dialog"
     aria-modal="true"
     aria-labelledby="modal-title">
     
-    <!-- Botón cerrar mejorado -->
-    <div class="absolute top-4 right-4 flex gap-2 print:hidden z-10">
-      <button 
-        class="group bg-white/90 backdrop-blur-sm hover:bg-red-50 text-gray-500 hover:text-red-600 transition-all duration-300 font-bold w-10 h-10 rounded-full shadow-lg hover:shadow-xl hover:scale-110 flex items-center justify-center focus:outline-none focus-visible:ring-2 focus-visible:ring-red-500 focus-visible:ring-offset-2" 
-        (click)="onClose()"
-        aria-label="Cerrar ventana de boleta">
-        <svg class="w-6 h-6 transition-transform group-hover:rotate-90 duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M6 18L18 6M6 6l12 12"/>
-        </svg>
-      </button>
-    </div>
-
-    <!-- CABECERA con degradado sutil -->
-    <div class="flex justify-between items-start px-7 pt-7 pb-4 border-b-2 border-blue-100 bg-gradient-to-r from-blue-50 to-white">
-      <div class="animate-fade-in-left">
-        <div class="text-xs text-gray-600 font-medium mb-1 uppercase tracking-wide">Código Modular - Secuencia</div>
-        <div class="text-lg text-blue-900 font-bold">{{boleta?.secuencia}}</div>
-      </div>
-      <div class="text-right animate-fade-in-right">
-        <div class="text-base font-bold text-gray-800 uppercase mb-1" id="modal-title">Boleta de Pago</div>
-        <div class="text-sm text-gray-700 font-semibold">
-          {{boleta?.establecimiento}}
-        </div>
-        <div class="text-xs text-gray-500 mt-1">{{boleta?.cargo}}</div>
-      </div>
-    </div>
-    
-    <!-- DATOS INSTITUCION Y MES con badge animado -->
-    <div class="flex justify-between items-center px-7 pt-4 pb-4 border-b border-gray-200 bg-white">
-      <div class="text-xs text-gray-600 font-semibold animate-fade-in-left delay-100">
-        <div class="flex items-center gap-2 mb-1">
-          <svg class="w-4 h-4 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/>
-          </svg>
-          <span>{{boleta?.ruc_bloque}}</span>
-        </div>
-        <div class="ml-6">{{boleta?.establecimiento}}</div>
-      </div>
-      <div class="text-right animate-fade-in-right delay-100">
-        <div class="text-2xl font-bold text-red-600 uppercase tracking-wider mb-2 animate-pulse-subtle">
-          {{boleta?.mes}} - {{boleta?.anio}}
-        </div>
-        <div class="inline-flex items-center gap-2 bg-green-50 px-3 py-1 rounded-full border border-green-200">
-          <span class="text-xs text-gray-700 font-semibold">Tipo de Planilla</span>
-          <span class="text-xs text-green-700 font-bold px-2 py-0.5 bg-green-100 rounded-full">{{boleta?.estado}}</span>
-        </div>
-      </div>
-    </div>
-
-    <!-- DATOS PERSONALES con icono -->
-    <div class="bg-gradient-to-r from-blue-100 to-blue-50 px-7 py-3 text-sm font-bold text-blue-900 border-b border-blue-200 flex items-center gap-2">
-      <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
+    <!-- Botón cerrar -->
+    <button 
+      class="absolute top-4 right-4 z-10 bg-white hover:bg-red-50 text-gray-500 hover:text-red-600 transition-all duration-200 font-bold w-10 h-10 rounded-full shadow-lg hover:shadow-xl flex items-center justify-center group" 
+      (click)="onClose()"
+      aria-label="Cerrar ventana">
+      <svg class="w-5 h-5 group-hover:rotate-90 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M6 18L18 6M6 6l12 12"/>
       </svg>
-      <span>Datos Personales</span>
-    </div>
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 px-7 py-4 text-sm border-b border-gray-200 bg-white">
-      <div class="animate-fade-in delay-150 hover:scale-105 transition-transform duration-300">
-        <div class="font-bold text-gray-700 mb-1 text-xs uppercase tracking-wide">Apellidos</div>
-        <div class="font-normal text-gray-900">{{boleta?.apellidos}}</div>
-      </div>
-      <div class="animate-fade-in delay-200 hover:scale-105 transition-transform duration-300">
-        <div class="font-bold text-gray-700 mb-1 text-xs uppercase tracking-wide">Nombres</div>
-        <div class="font-normal text-gray-900">{{boleta?.nombres}}</div>
-      </div>
-      <div class="animate-fade-in delay-250 hover:scale-105 transition-transform duration-300">
-        <div class="font-bold text-gray-700 mb-1 text-xs uppercase tracking-wide">D.N.I</div>
-        <div class="font-normal text-gray-900 font-mono">{{boleta?.documento_identidad}}</div>
-      </div>
-    </div>
+    </button>
 
-    <!-- DETALLE LABORAL con mejor espaciado -->
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 px-7 py-5 text-xs border-b border-gray-200 bg-gray-50">
-      <div class="space-y-2 animate-fade-in delay-300">
-        <div class="hover:bg-white p-2 rounded-lg transition-colors duration-200">
-          <span class="font-bold text-gray-700">Centro Trabajo: </span> 
-          <span class="text-gray-900">{{boleta?.establecimiento}}</span>
+    <!-- Header -->
+    <div class="p-6 bg-gradient-to-r from-blue-100 to-blue-50 border-b border-blue-200">
+      <div class="flex items-start justify-between pr-8">
+        <div>
+          <div class="text-xs text-gray-600 font-medium uppercase tracking-wide">Código - Secuencia</div>
+          <div class="text-sm text-blue-900 font-bold">{{boleta?.codigo_encabezado || '—'}}-{{boleta?.secuencia}}</div>
         </div>
-        <div class="hover:bg-white p-2 rounded-lg transition-colors duration-200">
-          <span class="font-bold text-gray-700">Cargo: </span> 
-          <span class="text-gray-900">{{boleta?.cargo}}</span>
+        <div class="text-center">
+          <h2 class="text-2xl font-extrabold text-blue-900 tracking-tight" id="modal-title">BOLETA DE PAGO</h2>
+          <div class="text-xs text-gray-600 mt-1">{{boleta?.tipo_pensionista ? 'PENSIONISTA' : 'TRABAJADOR'}}</div>
         </div>
-        <div class="hover:bg-white p-2 rounded-lg transition-colors duration-200">
-          <span class="font-bold text-gray-700">Tipo Servidor: </span> 
-          <span class="text-gray-900">{{boleta?.tipo_servidor}}</span>
-        </div>
-        <div class="hover:bg-white p-2 rounded-lg transition-colors duration-200">
-          <span class="font-bold text-gray-700">Régimen Laboral: </span> 
-          <span class="text-gray-900">{{boleta?.regimen_pensionario}}</span>
-        </div>
-        <div class="hover:bg-white p-2 rounded-lg transition-colors duration-200">
-          <span class="font-bold text-gray-700">Vínculo Laboral: </span> 
-          <span class="text-gray-900">INGRESO {{boleta?.fecha_ingreso_registro}} TÉRMINO: {{boleta?.fecha_termino_registro}}</span>
-        </div>
-        <div class="hover:bg-white p-2 rounded-lg transition-colors duration-200">
-          <span class="font-bold text-gray-700">Leyenda Permanente: </span> 
-          <span class="text-gray-900">{{boleta?.leyenda_permanente}}</span>
-        </div>
-      </div>
-      <div class="space-y-2 animate-fade-in delay-350">
-        <div class="hover:bg-white p-2 rounded-lg transition-colors duration-200">
-          <span class="font-bold text-gray-700">Nivel Educativo: </span> 
-          <span class="text-gray-900">{{boleta?.nivel_mag_horas}}</span>
-        </div>
-        <div class="hover:bg-white p-2 rounded-lg transition-colors duration-200">
-          <span class="font-bold text-gray-700">Nivel Magisterial: </span> 
-          <span class="text-gray-900">{{boleta?.nivel_mag_horas}}</span>
-        </div>
-        <div class="hover:bg-white p-2 rounded-lg transition-colors duration-200">
-          <span class="font-bold text-gray-700">Tipo Pensionista: </span> 
-          <span class="text-gray-900">{{boleta?.tipo_pensionista}}</span>
-        </div>
-        <div class="hover:bg-white p-2 rounded-lg transition-colors duration-200">
-          <span class="font-bold text-gray-700">Tipo Pension: </span> 
-          <span class="text-gray-900">{{boleta?.tipo_pension}}</span>
-        </div>
-        <div class="hover:bg-white p-2 rounded-lg transition-colors duration-200">
-          <span class="font-bold text-gray-700">Cuenta Principal: </span> 
-          <span class="text-gray-900 font-mono">{{boleta?.cuenta_principal}}</span>
-        </div>
-        <div class="hover:bg-white p-2 rounded-lg transition-colors duration-200">
-          <span class="font-bold text-gray-700">Afiliación: </span> 
-          <span class="text-gray-900">{{boleta?.reg_pensionario_detalle?.afiliacion}}</span>
+        <div class="text-right">
+          <div class="text-xs text-gray-600">UGEL / RUC</div>
+          <div class="text-sm font-semibold text-gray-800">{{boleta?.ruc_bloque || '20188468706'}}</div>
+          <div class="mt-2 text-lg font-extrabold text-red-600 uppercase">{{boleta?.mes}} {{boleta?.anio}}</div>
         </div>
       </div>
     </div>
 
-    <!-- INGRESOS Y DESCUENTOS con cards -->
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 px-7 py-6 border-b border-gray-200 bg-gradient-to-br from-blue-50 to-green-50">
-      <!-- INGRESOS -->
-      <div class="bg-white rounded-xl shadow-md p-4 animate-fade-in delay-400 hover:shadow-xl transition-shadow duration-300">
-        <div class="font-bold text-green-700 mb-3 flex items-center gap-2 text-base">
-          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
-          </svg>
-          Ingresos
+    <!-- Datos Personales -->
+    <div class="px-6 py-4">
+      <div class="text-sm font-bold text-blue-900 border-b border-blue-200 pb-1 mb-3">DATOS PERSONALES</div>
+      <div class="grid grid-cols-3 gap-4 text-sm">
+        <div>
+          <div class="text-xs text-gray-500 mb-1">Apellidos</div>
+          <div class="font-semibold text-gray-900 uppercase">{{boleta?.apellidos}}</div>
         </div>
-        <div class="overflow-hidden rounded-lg border border-green-100">
-          <table class="w-full text-xs">
-            <thead>
-              <tr class="bg-gradient-to-r from-green-100 to-green-50">
-                <th class="font-semibold text-left px-3 py-2 text-green-900">Concepto</th>
-                <th class="font-semibold text-right px-3 py-2 text-green-900">Monto</th>
-              </tr>
-            </thead>
-            <tbody class="divide-y divide-green-50">
-              <tr *ngFor="let concepto of boleta?.conceptos; let i = index" 
-                  [ngIf]="concepto.tipo === 'INGRESO'"
-                  class="hover:bg-green-50 transition-colors duration-200 animate-fade-in"
-                  [style.animation-delay]="(i * 50) + 'ms'">
-                <td class="px-3 py-2 text-gray-700">{{concepto.concepto}}</td>
-                <td class="px-3 py-2 text-right font-semibold text-green-700">{{concepto.monto | currency:'S/.'}}</td>
-              </tr>
-            </tbody>
-          </table>
+        <div>
+          <div class="text-xs text-gray-500 mb-1">Nombres</div>
+          <div class="font-semibold text-gray-900 uppercase">{{boleta?.nombres}}</div>
         </div>
-        <div class="mt-4 pt-3 border-t-2 border-green-200 font-bold text-right text-sm">
-          <span class="text-gray-700">TOTAL INGRESOS:</span> 
-          <span class="text-green-700 text-lg ml-2">{{boleta?.total_remuneraciones | currency:'S/.'}}</span>
-        </div>
-      </div>
-      
-      <!-- DESCUENTOS -->
-      <div class="bg-white rounded-xl shadow-md p-4 animate-fade-in delay-450 hover:shadow-xl transition-shadow duration-300">
-        <div class="font-bold text-red-700 mb-3 flex items-center gap-2 text-base">
-          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 12H4"/>
-          </svg>
-          Descuentos
-        </div>
-        <div class="overflow-hidden rounded-lg border border-red-100">
-          <table class="w-full text-xs">
-            <thead>
-              <tr class="bg-gradient-to-r from-red-100 to-red-50">
-                <th class="font-semibold text-left px-3 py-2 text-red-900">Concepto</th>
-                <th class="font-semibold text-right px-3 py-2 text-red-900">Monto</th>
-              </tr>
-            </thead>
-            <tbody class="divide-y divide-red-50">
-              <tr *ngFor="let concepto of boleta?.conceptos; let i = index" 
-                  [ngIf]="concepto.tipo === 'DESCUENTO'"
-                  class="hover:bg-red-50 transition-colors duration-200 animate-fade-in"
-                  [style.animation-delay]="(i * 50) + 'ms'">
-                <td class="px-3 py-2 text-gray-700">{{concepto.concepto}}</td>
-                <td class="px-3 py-2 text-right font-semibold text-red-700">{{concepto.monto | currency:'S/.'}}</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-        <div class="mt-4 pt-3 border-t-2 border-red-200 font-bold text-right text-sm">
-          <span class="text-gray-700">TOTAL DESCUENTOS:</span> 
-          <span class="text-red-700 text-lg ml-2">{{boleta?.total_descuentos | currency:'S/.'}}</span>
+        <div>
+          <div class="text-xs text-gray-500 mb-1">DNI</div>
+          <div class="font-semibold text-gray-900 font-mono">{{boleta?.documento_identidad}}</div>
         </div>
       </div>
     </div>
 
-    <!-- TOTAL LÍQUIDO Y IMPONIBLE con highlights -->
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 px-7 py-5 border-b border-gray-200 bg-white">
-      <div class="bg-gradient-to-r from-green-50 to-green-100 p-4 rounded-xl border-2 border-green-300 animate-fade-in delay-500 hover:scale-105 transition-transform duration-300">
-        <div class="font-bold text-gray-700 text-sm mb-1">TOTAL LÍQUIDO</div>
-        <div class="text-3xl font-bold text-green-700">{{boleta?.total_liquido | currency:'S/.'}}</div>
-      </div>
-      <div class="bg-gradient-to-r from-red-50 to-red-100 p-4 rounded-xl border-2 border-red-300 animate-fade-in delay-550 hover:scale-105 transition-transform duration-300">
-        <div class="font-bold text-gray-700 text-sm mb-1">AFECTO A CARGAS SOCIALES</div>
-        <div class="text-3xl font-bold text-red-700">{{boleta?.monto_imponible | currency:'S/.'}}</div>
+    <!-- Información Laboral/Pensión -->
+    <div class="px-6 py-4 bg-gray-50">
+      <div class="grid grid-cols-2 gap-x-6 gap-y-3 text-xs">
+        <div>
+          <span class="text-gray-600">Centro de Trabajo:</span>
+          <span class="ml-2 font-semibold text-gray-900">{{boleta?.establecimiento || '—'}}</span>
+        </div>
+        <div>
+          <span class="text-gray-600">Cargo:</span>
+          <span class="ml-2 font-semibold text-gray-900">{{boleta?.cargo}}</span>
+        </div>
+        <div>
+          <span class="text-gray-600">Tipo Servidor:</span>
+          <span class="ml-2 font-semibold text-gray-900">{{boleta?.tipo_servidor || boleta?.tipo_pensionista || '—'}}</span>
+        </div>
+        <div *ngIf="boleta?.tipo_pension">
+          <span class="text-gray-600">Tipo de Pensión:</span>
+          <span class="ml-2 font-semibold text-gray-900">{{boleta?.tipo_pension}}</span>
+        </div>
+        <div *ngIf="!boleta?.tipo_pension">
+          <span class="text-gray-600">Régimen Laboral:</span>
+          <span class="ml-2 font-semibold text-gray-900">{{boleta?.regimen_pensionario || '—'}}</span>
+        </div>
+        <div>
+          <span class="text-gray-600">Nivel Mag./Horas:</span>
+          <span class="ml-2 font-semibold text-gray-900">{{boleta?.nivel_mag_horas}}</span>
+        </div>
+        <div class="col-span-2">
+          <span class="text-gray-600">Leyenda:</span>
+          <span class="ml-2 font-semibold text-gray-900">{{boleta?.leyenda_permanente}}</span>
+        </div>
+        <div>
+          <span class="text-gray-600">Cuenta:</span>
+          <span class="ml-2 font-semibold text-gray-900 font-mono">{{boleta?.cuenta_principal}}</span>
+        </div>
+        <div *ngIf="boleta?.reg_pensionario_detalle?.afiliacion">
+          <span class="text-gray-600">Afiliación:</span>
+          <span class="ml-2 font-semibold text-gray-900">{{boleta?.reg_pensionario_detalle?.afiliacion}}</span>
+        </div>
       </div>
     </div>
 
-    <!-- MENSAJE Y PIE -->
-    <div class="px-7 py-5 text-xs bg-gray-50">
-      <div class="mb-3 p-3 bg-blue-50 rounded-lg border-l-4 border-blue-500 animate-fade-in delay-600">
-        <span class="font-bold text-blue-900">MENSAJE:</span>
-        <span class="text-gray-700 ml-2">{{boleta?.leyenda_mensual || "Visite la página web del Ministerio de Educación: www.gob.pe/minedu"}}</span>
-      </div>
-      <div class="flex items-center gap-3 p-3 bg-green-50 rounded-lg border border-green-200 animate-fade-in delay-650">
-        <svg class="w-7 h-7 text-green-700 flex-shrink-0 animate-bounce-subtle" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
-        </svg>
-        <span class="text-gray-600 text-xs leading-relaxed">
-          Antes de imprimir esta boleta de pago, piense en su responsabilidad social y compromiso con el medio ambiente.
-        </span>
+    <!-- Ingresos y Descuentos -->
+    <div class="px-6 py-4">
+      <div class="grid grid-cols-2 gap-4">
+        <!-- Ingresos -->
+        <div class="border border-green-200 rounded-lg overflow-hidden">
+          <div class="bg-green-100 text-green-800 text-xs font-semibold px-3 py-2">INGRESOS</div>
+          <div class="max-h-48 overflow-y-auto">
+            <table class="w-full text-xs">
+              <tbody>
+                <tr *ngFor="let concepto of boleta?.conceptos" 
+                    [class.hidden]="concepto.tipo !== 'INGRESO'"
+                    class="border-b last:border-0">
+                  <td class="px-3 py-2 text-gray-700">{{concepto.concepto}}</td>
+                  <td class="px-3 py-2 text-right font-semibold text-green-700">{{concepto.monto | currency:'S/ '}}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="bg-green-50 px-3 py-2 flex justify-between items-center text-xs font-semibold">
+            <span>TOTAL</span>
+            <span class="text-green-700">{{boleta?.total_remuneraciones | currency:'S/ '}}</span>
+          </div>
+        </div>
+
+        <!-- Descuentos -->
+        <div class="border border-red-200 rounded-lg overflow-hidden">
+          <div class="bg-red-100 text-red-800 text-xs font-semibold px-3 py-2">DESCUENTOS</div>
+          <div class="max-h-48 overflow-y-auto">
+            <table class="w-full text-xs">
+              <tbody>
+                <tr *ngFor="let concepto of boleta?.conceptos" 
+                    [class.hidden]="concepto.tipo !== 'DESCUENTO'"
+                    class="border-b last:border-0">
+                  <td class="px-3 py-2 text-gray-700">{{concepto.concepto}}</td>
+                  <td class="px-3 py-2 text-right font-semibold text-red-700">{{concepto.monto | currency:'S/ '}}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="bg-red-50 px-3 py-2 flex justify-between items-center text-xs font-semibold">
+            <span>TOTAL</span>
+            <span class="text-red-700">{{boleta?.total_descuentos | currency:'S/ '}}</span>
+          </div>
+        </div>
       </div>
     </div>
 
-    <!-- BOTÓN IMPRIMIR mejorado -->
-    <div class="px-7 pb-6 pt-4 print:hidden bg-gradient-to-t from-blue-50 to-white">
+    <!-- Totales -->
+    <div class="px-6 py-4 bg-gradient-to-r from-blue-50 to-green-50">
+      <div class="grid grid-cols-2 gap-4">
+        <div class="bg-white border-2 border-green-300 rounded-lg p-4 text-center">
+          <div class="text-xs text-gray-600 font-semibold mb-1">TOTAL LÍQUIDO</div>
+          <div class="text-2xl font-extrabold text-green-700">{{boleta?.total_liquido | currency:'S/ '}}</div>
+        </div>
+        <div class="bg-white border-2 border-blue-300 rounded-lg p-4 text-center">
+          <div class="text-xs text-gray-600 font-semibold mb-1">AFECTO A CARGAS SOCIALES</div>
+          <div class="text-2xl font-extrabold text-blue-700">{{boleta?.monto_imponible | currency:'S/ '}}</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Mensaje -->
+    <div class="px-6 py-4 text-xs text-gray-600 border-t">
+      <strong>MENSAJE:</strong> {{boleta?.leyenda_mensual || 'Visite la página web del Ministerio de Educación: www.gob.pe/minedu'}}
+    </div>
+
+    <!-- Botón Imprimir -->
+    <div class="px-6 pb-6">
       <a
         *ngIf="boleta?.id !== undefined && boleta?.id !== null"
         [href]="'/boleta/' + boleta?.id"
         target="_blank"
         rel="noopener"
-        class="group flex items-center justify-center gap-3 w-full bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white py-3.5 rounded-xl transition-all duration-300 shadow-lg hover:shadow-2xl font-bold text-base focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2 hover:scale-105 animate-fade-in delay-700"
-        aria-label="Imprimir boleta en nueva pestaña">
-        <svg class="w-6 h-6 group-hover:scale-110 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        class="flex items-center justify-center gap-2 w-full bg-blue-600 hover:bg-blue-700 text-white py-3 rounded-lg transition-all duration-200 shadow-md hover:shadow-lg font-semibold"
+        aria-label="Imprimir boleta">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
                 d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"/>
         </svg>
-        <span class="group-hover:tracking-wider transition-all duration-300">Imprimir en Nueva Pestaña</span>
-        <svg class="w-5 h-5 group-hover:translate-x-1 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/>
-        </svg>
+        Imprimir Boleta
       </a>
     </div>
 

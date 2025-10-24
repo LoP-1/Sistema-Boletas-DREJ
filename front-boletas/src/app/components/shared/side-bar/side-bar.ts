@@ -59,4 +59,5 @@ export class SideBar implements OnInit {
     localStorage.removeItem('userRol');
     this.router.navigate(['/login']);
   }
+  
 }

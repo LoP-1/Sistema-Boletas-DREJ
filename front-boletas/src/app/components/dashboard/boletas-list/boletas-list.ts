@@ -31,6 +31,22 @@ export class BoletasList implements OnInit {
 
   filtro = '';
 
+  // Mapa de colores por mes
+  private monthColors: { [key: string]: string } = {
+    'Enero': 'bg-sky-100 border-sky-300 text-sky-800 hover:bg-sky-200',
+    'Febrero': 'bg-pink-100 border-pink-300 text-pink-800 hover:bg-pink-200',
+    'Marzo': 'bg-emerald-100 border-emerald-300 text-emerald-800 hover:bg-emerald-200',
+    'Abril': 'bg-amber-100 border-amber-300 text-amber-800 hover:bg-amber-200',
+    'Mayo': 'bg-lime-100 border-lime-300 text-lime-800 hover:bg-lime-200',
+    'Junio': 'bg-cyan-100 border-cyan-300 text-cyan-800 hover:bg-cyan-200',
+    'Julio': 'bg-orange-100 border-orange-300 text-orange-800 hover:bg-orange-200',
+    'Agosto': 'bg-violet-100 border-violet-300 text-violet-800 hover:bg-violet-200',
+    'Septiembre': 'bg-rose-100 border-rose-300 text-rose-800 hover:bg-rose-200',
+    'Octubre': 'bg-teal-100 border-teal-300 text-teal-800 hover:bg-teal-200',
+    'Noviembre': 'bg-indigo-100 border-indigo-300 text-indigo-800 hover:bg-indigo-200',
+    'Diciembre': 'bg-red-100 border-red-300 text-red-800 hover:bg-red-200'
+  };
+
   ngOnInit(): void {
     this.loadBoletasForLoggedUser();
   }
@@ -88,7 +104,10 @@ export class BoletasList implements OnInit {
           (b.estado ?? '').toLowerCase().includes(f) ||
           (b.mes ?? '').toLowerCase().includes(f) ||
           (b.anio ?? '').toLowerCase().includes(f) ||
-          (b.secuencia ?? '').toLowerCase().includes(f)
+          (b.secuencia ?? '').toLowerCase().includes(f) ||
+          (b.tipo_servidor ?? '').toLowerCase().includes(f) ||
+          (b.tipo_pensionista ?? '').toLowerCase().includes(f) ||
+          (b.tipo_pension ?? '').toLowerCase().includes(f)
         );
         if (filtered.length) {
           if (!result[anio]) result[anio] = {};
@@ -98,10 +117,15 @@ export class BoletasList implements OnInit {
       }
     }
     return result;
-    }
+  }
 
   getKeys(obj: any): string[] {
     return Object.keys(obj || {});
+  }
+
+  // Retorna las clases CSS de color para cada mes
+  getMonthColorClasses(mes: string): string {
+    return this.monthColors[mes] || 'bg-gray-100 border-gray-300 text-gray-800 hover:bg-gray-200';
   }
 
   selectYear(anio: string) {
@@ -135,7 +159,12 @@ export class BoletasList implements OnInit {
   }
 
   addToCart(boleta: BoletaDTO) {
-  console.log('Boleta que se agrega:', boleta); // <-- Asegúrate aquí de ver el campo id
-  this.carritoService.addBoleta(boleta);
+    console.log('Boleta que se agrega:', boleta);
+    this.carritoService.addBoleta(boleta);
+  }
+
+  openModalAndAdd(boleta: BoletaDTO) {
+  this.addToCart(boleta);
+  this.openModal(boleta);
 }
 }

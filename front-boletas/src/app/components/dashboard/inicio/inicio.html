@@ -34,7 +34,7 @@
 
     <!-- Contenido -->
     <div class="p-6 md:p-8">
-      <div class="mb-5">
+      <div class="mb-6">
         <h3 class="text-lg md:text-xl font-semibold text-blue-800">Tus 3 boletas más recientes</h3>
         <p class="text-gray-500 text-sm">Accede rápidamente a tus últimos documentos</p>
       </div>
@@ -42,68 +42,92 @@
       <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
         <ng-container *ngIf="boletasRecientes.length > 0; else sinBoletas">
           <div
-            *ngFor="let boleta of boletasRecientes"
-            class="group relative bg-white rounded-2xl border border-blue-100 shadow hover:shadow-lg transition p-5 overflow-hidden">
-            <div class="mt-6 flex items-center justify-between">
-              <div class="text-blue-800 font-semibold text-sm">
-                {{ boleta.mes }}/{{ boleta.anio }}
+            *ngFor="let boleta of boletasRecientes; let i = index"
+            class="group relative rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden transform hover:-translate-y-1"
+            [ngClass]="getCardColorClass(i)">
+            
+            <!-- Header de la tarjeta con mes y año -->
+            <div class="px-5 pt-5 pb-3 border-b relative" [ngClass]="getHeaderBorderClass(i)">
+              <!-- Indicador de posición movido aquí -->
+              <div class="absolute -top-2 -right-2 w-10 h-10 rounded-full flex items-center justify-center text-xs font-bold shadow-lg" 
+                   [ngClass]="getBadgeClass(i)">
+                #{{ i + 1 }}
               </div>
-              <span
-                class="text-[11px] font-bold px-2 py-0.5 rounded"
-                [ngClass]="{
-                  'bg-green-100 text-green-700': boleta.estado === 'ACTIVO',
-                  'bg-red-100 text-red-600': boleta.estado === 'INACTIVO'
-                }">
-                {{ boleta.estado }}
-              </span>
-            </div>
-
-            <div class="mt-3 text-gray-700 text-sm space-y-1">
-              <div class="flex gap-2">
-                <span class="font-semibold text-blue-900">Establecimiento:</span>
-                <span class="truncate">{{ boleta.establecimiento }}</span>
-              </div>
-              <div class="flex gap-2">
-                <span class="font-semibold text-blue-900">Cargo:</span>
-                <span class="truncate">{{ boleta.cargo }}</span>
-              </div>
-              <div class="flex gap-2">
-                <span class="font-semibold text-blue-900">Tipo:</span>
-                <span class="truncate">{{ boleta.tipo_servidor || boleta.tipo_pensionista }}</span>
-              </div>
-              <div class="pt-2 text-blue-900 font-bold flex items-center justify-between">
-                <span>Total líquido:</span>
-                <span>S/. {{ boleta.total_liquido | number:'1.2-2' }}</span>
+              
+              <div class="flex items-center justify-between pr-8">
+                <div>
+                  <h4 class="text-2xl font-extrabold tracking-tight" [ngClass]="getHeaderTextClass(i)">
+                    {{ boleta.mes }}
+                  </h4>
+                  <p class="text-lg font-semibold" [ngClass]="getSubheaderTextClass(i)">
+                    {{ boleta.anio }}
+                  </p>
+                </div>
+                <span
+                  class="text-[11px] font-bold px-2.5 py-1 rounded-full shadow-sm"
+                  [ngClass]="{
+                    'bg-green-100 text-green-700': boleta.estado.toUpperCase().includes('ACTIV') || boleta.estado.toUpperCase().includes('HABIL'),
+                    'bg-red-100 text-red-600': !(boleta.estado.toUpperCase().includes('ACTIV') || boleta.estado.toUpperCase().includes('HABIL'))
+                  }">
+                  {{ boleta.estado }}
+                </span>
               </div>
             </div>
 
-            <button
-              type="button"
-              (click)="verDetalle(boleta)"
-              class="mt-4 w-full py-2 rounded-lg bg-blue-600 text-white text-sm font-semibold shadow hover:bg-blue-700 transition">
-              Ver detalles
-            </button>
+            <!-- Contenido de la tarjeta -->
+            <div class="px-5 py-4">
+              <div class="space-y-2 text-sm">
+                <div class="flex flex-col">
+                  <span class="text-xs font-medium opacity-70">Establecimiento</span>
+                  <span class="font-semibold truncate">{{ boleta.establecimiento || '—' }}</span>
+                </div>
+                <div class="flex flex-col">
+                  <span class="text-xs font-medium opacity-70">Cargo</span>
+                  <span class="font-semibold truncate">{{ boleta.cargo }}</span>
+                </div>
+                <div class="flex flex-col">
+                  <span class="text-xs font-medium opacity-70">Tipo</span>
+                  <span class="font-semibold truncate">{{ boleta.tipo_servidor || boleta.tipo_pensionista || '—' }}</span>
+                </div>
+                
+                <!-- Total líquido destacado -->
+                <div class="pt-3 mt-3 border-t" [ngClass]="getBorderClass(i)">
+                  <div class="flex items-center justify-between">
+                    <span class="text-xs font-medium opacity-70">Total líquido</span>
+                    <span class="text-xl font-extrabold" [ngClass]="getTotalTextClass(i)">
+                      S/ {{ boleta.total_liquido | number:'1.2-2' }}
+                    </span>
+                  </div>
+                </div>
+              </div>
 
-            <!-- Borde animado sutil -->
-            <div class="pointer-events-none absolute inset-0 rounded-2xl border-2 border-transparent group-hover:border-blue-200 transition"></div>
+              <button
+                type="button"
+                (click)="verDetalle(boleta)"
+                class="mt-4 w-full py-2.5 rounded-lg text-white text-sm font-semibold shadow-md hover:shadow-lg transition-all duration-200 transform hover:scale-105"
+                [ngClass]="getButtonClass(i)">
+                Ver detalles completos
+              </button>
+            </div>
           </div>
         </ng-container>
 
         <ng-template #sinBoletas>
-          <div class="col-span-full flex flex-col items-center justify-center py-10 text-center">
-            <div class="w-14 h-14 rounded-full bg-blue-100 flex items-center justify-center mb-3">
-              <svg class="w-7 h-7 text-blue-500" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M8 7v10l9-5-9-5z"/>
+          <div class="col-span-full flex flex-col items-center justify-center py-12 text-center">
+            <div class="w-16 h-16 rounded-full bg-blue-100 flex items-center justify-center mb-4 shadow-lg">
+              <svg class="w-8 h-8 text-blue-500" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
               </svg>
             </div>
-            <p class="text-gray-500 italic">No se encontraron boletas recientes.</p>
+            <p class="text-gray-500 text-lg font-medium">No se encontraron boletas recientes</p>
+            <p class="text-gray-400 text-sm mt-1">Tus documentos aparecerán aquí cuando estén disponibles</p>
           </div>
         </ng-template>
       </div>
     </div>
   </div>
 
-  <!-- Modal de detalle (si lo usas en otra pieza) -->
+  <!-- Modal de detalle -->
   <app-boleta-detail-modal
     *ngIf="modalBoleta"
     [boleta]="modalBoleta"

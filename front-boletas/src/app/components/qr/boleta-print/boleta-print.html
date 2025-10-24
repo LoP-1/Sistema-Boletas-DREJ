@@ -17,12 +17,12 @@
         </div>
         <div class="text-center">
           <div class="text-2xl font-extrabold text-blue-900 tracking-wide">BOLETA DE PAGO</div>
-          <div class="text-[11px] text-gray-500 mt-1">TIPO DE PLANILLA</div>
+          <div class="text-[11px] text-gray-500 mt-1">{{ boleta?.tipo_pensionista ? 'PENSIONISTA' : 'TIPO DE PLANILLA' }}</div>
           <div class="inline-block text-[11px] font-bold px-2 py-0.5 rounded mt-1" [ngClass]="estadoChipClasses">{{ boleta?.estado }}</div>
         </div>
         <div class="text-right">
           <div class="text-[11px] text-gray-600 leading-tight">UGEL / RUC</div>
-          <div class="text-xs font-semibold text-gray-800">20188468706 </div>
+          <div class="text-xs font-semibold text-gray-800">20188468706</div>
           <div class="mt-2 text-sm font-extrabold text-red-500 uppercase">{{ boleta?.mes }} - {{ boleta?.anio }}</div>
         </div>
       </div>
@@ -46,19 +46,27 @@
         </div>
 
         <div class="col-span-4">
+          <div class="text-gray-500">FECHA DE NACIMIENTO</div>
+          <div class="font-semibold text-gray-900">{{ boleta?.fecha_nacimiento || '—' }}</div>
+        </div>
+        <div class="col-span-4">
           <div class="text-gray-500">CENTRO DE TRABAJO</div>
-          <div class="font-semibold text-gray-900">{{ boleta?.establecimiento }}</div>
+          <div class="font-semibold text-gray-900">{{ boleta?.establecimiento || '—' }}</div>
         </div>
         <div class="col-span-4">
           <div class="text-gray-500">CARGO</div>
           <div class="font-semibold text-gray-900">{{ boleta?.cargo }}</div>
         </div>
-        <div class="col-span-4">
-          <div class="text-gray-500">TIPO SERVIDOR</div>
-          <div class="font-semibold text-gray-900">{{ boleta?.tipo_servidor || boleta?.tipo_pensionista }}</div>
-        </div>
 
         <div class="col-span-4">
+          <div class="text-gray-500">TIPO SERVIDOR</div>
+          <div class="font-semibold text-gray-900">{{ boleta?.tipo_servidor || boleta?.tipo_pensionista || '—' }}</div>
+        </div>
+        <div class="col-span-4" *ngIf="boleta?.tipo_pension">
+          <div class="text-gray-500">TIPO DE PENSIÓN</div>
+          <div class="font-semibold text-gray-900">{{ boleta?.tipo_pension }}</div>
+        </div>
+        <div class="col-span-4" *ngIf="!boleta?.tipo_pension">
           <div class="text-gray-500">RÉGIMEN LABORAL</div>
           <div class="font-semibold text-gray-900">{{ boleta?.regimen_pensionario || '—' }}</div>
         </div>
@@ -66,11 +74,11 @@
           <div class="text-gray-500">NIVEL MAG./HORAS</div>
           <div class="font-semibold text-gray-900">{{ boleta?.nivel_mag_horas }}</div>
         </div>
+
         <div class="col-span-4">
           <div class="text-gray-500">TIEMPO SERVICIO</div>
           <div class="font-semibold text-gray-900">{{ boleta?.tiempo_servicio }}</div>
         </div>
-
         <div class="col-span-4">
           <div class="text-gray-500">LEYENDA PERMANENTE</div>
           <div class="font-semibold text-gray-900">{{ boleta?.leyenda_permanente }}</div>
@@ -79,7 +87,8 @@
           <div class="text-gray-500">LEYENDA MENSUAL</div>
           <div class="font-semibold text-gray-900">{{ boleta?.leyenda_mensual || '—' }}</div>
         </div>
-        <div class="col-span-4">
+
+        <div class="col-span-6">
           <div class="text-gray-500">CUENTA PRINCIPAL</div>
           <div class="font-semibold text-gray-900">{{ boleta?.cuenta_principal }}</div>
         </div>
