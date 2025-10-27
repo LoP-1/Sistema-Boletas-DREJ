@@ -74,54 +74,64 @@
   </div>
 
   <!-- Menú Mobile Desplegable -->
-  <div 
-    *ngIf="menuOpen"
-    class="md:hidden mt-3 pb-3 border-t border-blue-100 pt-3 animate-slideDown">
-    <ul class="flex flex-col gap-2">
-      <li>
-        <a routerLink="/dashboard/inicio" 
-           routerLinkActive="bg-blue-100 text-blue-700 font-semibold"
-           (click)="closeMenu()"
-           class="block text-gray-700 hover:bg-blue-50 hover:text-blue-700 px-4 py-2.5 rounded transition">
-          Inicio
-        </a>
-      </li>
-      <li>
-        <a routerLink="/dashboard/boletas"
-   class="tour-nav-boletas text-gray-700 hover:text-blue-700 px-2 lg:px-3 py-2 rounded transition focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 text-sm lg:text-base whitespace-nowrap">
-  Boletas
-</a>
-      </li>
-      <li *ngIf="rol === 'ADMIN'">
-        <a routerLink="/dashboard/admin" 
-           routerLinkActive="bg-blue-100 text-blue-700 font-semibold"
-           (click)="closeMenu()"
-           class="block text-gray-700 hover:bg-blue-50 hover:text-blue-700 px-4 py-2.5 rounded transition">
-          Usuarios
-        </a>
-      </li>
-      <li *ngIf="rol === 'ADMIN'">
-        <a routerLink="/dashboard/gestion-boletas" 
-           routerLinkActive="bg-blue-100 text-blue-700 font-semibold"
-           (click)="closeMenu()"
-           class="block text-gray-700 hover:bg-blue-50 hover:text-blue-700 px-4 py-2.5 rounded transition">
-          Gestionar Boletas
-        </a>
-      </li>
-      <li *ngIf="rol === 'ADMIN'">
-        <a routerLink="/dashboard/subir-boleta" 
-           routerLinkActive="bg-blue-100 text-blue-700 font-semibold"
-           (click)="closeMenu()"
-           class="block text-gray-700 hover:bg-blue-50 hover:text-blue-700 px-4 py-2.5 rounded transition">
-          Subir Boleta
-        </a>
-      </li>
-      <li>
-        <a routerLink="/dashboard/perfil"
-   class="tour-nav-perfil text-gray-700 hover:text-blue-700 px-2 lg:px-3 py-2 rounded transition focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 text-sm lg:text-base whitespace-nowrap">
-  Perfil
-</a>
-      </li>
-    </ul>
-  </div>
+<div 
+  *ngIf="menuOpen"
+  class="md:hidden mt-3 pb-3 border-t border-blue-100 pt-3 animate-slideDown">
+  <ul class="flex flex-col gap-2">
+    <li>
+      <a routerLink="/dashboard/inicio" 
+         routerLinkActive="bg-blue-100 text-blue-700 font-semibold"
+         [routerLinkActiveOptions]="{ exact: true }"
+         (click)="closeMenu()"
+         class="block text-gray-700 hover:bg-blue-50 hover:text-blue-700 px-4 py-2.5 rounded transition">
+        Inicio
+      </a>
+    </li>
+    <li>
+      <a routerLink="/dashboard/boletas"
+         routerLinkActive="bg-blue-100 text-blue-700 font-semibold"
+         [routerLinkActiveOptions]="{ exact: true }"
+         (click)="closeMenu()"
+         class="block text-gray-700 hover:bg-blue-50 hover:text-blue-700 px-4 py-2.5 rounded transition">
+        Boletas
+      </a>
+    </li>
+    <li *ngIf="rol === 'ADMIN'">
+      <a routerLink="/dashboard/admin" 
+         routerLinkActive="bg-blue-100 text-blue-700 font-semibold"
+         [routerLinkActiveOptions]="{ exact: true }"
+         (click)="closeMenu()"
+         class="block text-gray-700 hover:bg-blue-50 hover:text-blue-700 px-4 py-2.5 rounded transition">
+        Usuarios
+      </a>
+    </li>
+    <li *ngIf="rol === 'ADMIN'">
+      <a routerLink="/dashboard/gestion-boletas" 
+         routerLinkActive="bg-blue-100 text-blue-700 font-semibold"
+         [routerLinkActiveOptions]="{ exact: true }"
+         (click)="closeMenu()"
+         class="block text-gray-700 hover:bg-blue-50 hover:text-blue-700 px-4 py-2.5 rounded transition">
+        Gestionar Boletas
+      </a>
+    </li>
+    <li *ngIf="rol === 'ADMIN'">
+      <a routerLink="/dashboard/subir-boleta" 
+         routerLinkActive="bg-blue-100 text-blue-700 font-semibold"
+         [routerLinkActiveOptions]="{ exact: true }"
+         (click)="closeMenu()"
+         class="block text-gray-700 hover:bg-blue-50 hover:text-blue-700 px-4 py-2.5 rounded transition">
+        Subir Boleta
+      </a>
+    </li>
+    <li>
+      <a routerLink="/dashboard/perfil"
+         routerLinkActive="bg-blue-100 text-blue-700 font-semibold"
+         [routerLinkActiveOptions]="{ exact: true }"
+         (click)="closeMenu()"
+         class="block text-gray-700 hover:bg-blue-50 hover:text-blue-700 px-4 py-2.5 rounded transition">
+        Perfil
+      </a>
+    </li>
+  </ul>
+</div>
 </nav>

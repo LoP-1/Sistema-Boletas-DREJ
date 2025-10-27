@@ -14,3 +14,6 @@ input:focus::placeholder {
 .animate-fade-in-down {
   animation: fade-in-down 0.4s cubic-bezier(.39,.575,.565,1) both;
 }
+.error-msg{
+  
+}

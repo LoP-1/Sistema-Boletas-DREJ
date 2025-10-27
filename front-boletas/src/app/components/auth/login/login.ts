@@ -18,6 +18,7 @@ export class Login implements OnInit {
   correo = '';
   contrasena = '';
   showEmergente = false;
+  showEmergenteError = false;
 
   // Registro form
   registroData: Usuario = {
@@ -59,6 +60,15 @@ export class Login implements OnInit {
       this.cd.detectChanges();
     }, 4000);
   }
+  mostrarEmergenteError(msj: string) {
+    this.mensaje = msj;
+    this.showEmergenteError = true;
+    this.cd.detectChanges();
+    setTimeout(() => {
+      this.showEmergenteError = false;
+      this.cd.detectChanges();
+    }, 4000);
+  }
 
   login() {
     this.cargando = true;
@@ -71,7 +81,7 @@ export class Login implements OnInit {
       },
       error: err => {
         this.cargando = false;
-        this.mostrarEmergente(err.error || 'Login falló');
+        this.mostrarEmergenteError(err.error || 'Login falló');
       }
     });
   }
@@ -95,7 +105,7 @@ export class Login implements OnInit {
       },
       error: err => {
         this.cargando = false;
-        this.mostrarEmergente(err.error || 'Registro falló');
+        this.mostrarEmergenteError(err.error || 'Registro falló');
       }
     });
   }
