@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { Usuario } from '../../../models/usuario.model';
 import { AuthService } from '../../../services/auth';
@@ -11,7 +11,7 @@ import { FormsModule } from '@angular/forms';
   templateUrl: './login.html',
   styleUrl: './login.css'
 })
-export class Login implements OnInit {
+export class Login {
   modoRegistro = false;
   mensaje = '';
   cargando = false;
@@ -20,7 +20,6 @@ export class Login implements OnInit {
   showEmergente = false;
   showEmergenteError = false;
 
-  // Registro form
   registroData: Usuario = {
     nombre: '',
     apellido: '',
@@ -35,15 +34,7 @@ export class Login implements OnInit {
     private auth: AuthService,
     private router: Router,
     private cd: ChangeDetectorRef
-  ) {}
-
-  ngOnInit() {
-    if (typeof window !== 'undefined' && window.localStorage) {
-      const token = localStorage.getItem('token');
-      if (token) {
-        this.router.navigate(['/dashboard']);
-      }
-    }
+  ) {
   }
 
   alternarModo() {
@@ -60,6 +51,7 @@ export class Login implements OnInit {
       this.cd.detectChanges();
     }, 4000);
   }
+
   mostrarEmergenteError(msj: string) {
     this.mensaje = msj;
     this.showEmergenteError = true;
@@ -81,7 +73,8 @@ export class Login implements OnInit {
       },
       error: err => {
         this.cargando = false;
-        this.mostrarEmergenteError(err.error || 'Login falló');
+        const errorMsg = err.error?.message || err.error || 'Credenciales incorrectas';
+        this.mostrarEmergenteError(errorMsg);
       }
     });
   }
@@ -105,7 +98,8 @@ export class Login implements OnInit {
       },
       error: err => {
         this.cargando = false;
-        this.mostrarEmergenteError(err.error || 'Registro falló');
+        const errorMsg = err.error?.message || err.error || 'Error en el registro';
+        this.mostrarEmergenteError(errorMsg);
       }
     });
   }

@@ -65,6 +65,26 @@
       </form>
       <div *ngIf="mensajePass" class="text-center text-green-600 font-medium mt-2">{{mensajePass}}</div>
     </div>
+
+    <!-- Botón para reiniciar el tour -->
+    <div class="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-2xl shadow-lg p-6 flex flex-col gap-3 border-2 border-blue-200">
+      <h3 class="text-lg font-bold text-blue-700 flex items-center gap-2">
+        <span class="text-2xl">🎯</span>
+        Tutorial del Sistema
+      </h3>
+      <p class="text-sm text-gray-600">
+        ¿Necesitas ayuda? Vuelve a ver el tutorial de navegación del sistema.
+      </p>
+      <button 
+        (click)="restartTour()"
+        class="flex items-center justify-center gap-2 bg-gradient-to-r from-blue-600 to-indigo-600 text-white px-4 py-3 rounded-lg hover:from-blue-700 hover:to-indigo-700 transition-all shadow-md hover:shadow-xl transform hover:-translate-y-0.5 font-semibold">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"/>
+          <path stroke-linecap="round" stroke-linejoin="round" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+        </svg>
+        Ver Tutorial de Nuevo
+      </button>
+    </div>
   </div>
 
   <!-- Columna Derecha: Tarjeta DNI solo informativa -->

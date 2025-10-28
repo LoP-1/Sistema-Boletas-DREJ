@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { AuthService } from '../../../services/auth';
 import { CommonModule } from '@angular/common';
@@ -12,8 +12,10 @@ import { CommonModule } from '@angular/common';
 export class Navbar {
   rol: string | null = null;
   menuOpen = false;
+  
+  private auth = inject(AuthService);
 
-  constructor(private auth: AuthService) {
+  constructor() {
     this.rol = this.auth.getRol();
   }
 
@@ -23,5 +25,9 @@ export class Navbar {
 
   closeMenu() {
     this.menuOpen = false;
+  }
+
+  logout() {
+    this.auth.logout();
   }
 }

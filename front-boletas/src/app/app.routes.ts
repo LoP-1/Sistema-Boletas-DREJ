@@ -5,11 +5,12 @@ import { Profile } from './components/dashboard/profile/profile';
 import { Inicio } from './components/dashboard/inicio/inicio';
 import { Admin } from './components/dashboard/admin/admin';
 import { authGuard } from './guards/auth-guard';
+import { loginGuard } from './guards/login-guard';
 import { adminGuard } from './guards/admin-guard';
 import { SubirBoletas } from './components/dashboard/subir-boletas/subir-boletas';
 
 export const routes: Routes = [
-  { path: '', redirectTo: 'login', pathMatch: 'full' },
+  { path: '', redirectTo: 'dashboard', pathMatch: 'full' }, // Cambio: ahora redirige a dashboard
 
   // Ruta pública para QR
   {
@@ -45,6 +46,10 @@ export const routes: Routes = [
 
   {
     path: 'login',
-    loadComponent: () => import('./components/auth/login/login').then(m => m.Login)
-  }
+    loadComponent: () => import('./components/auth/login/login').then(m => m.Login),
+    canActivate: [loginGuard]
+  },
+
+  // Ruta wildcard para cualquier ruta no encontrada
+  { path: '**', redirectTo: 'dashboard' }
 ];

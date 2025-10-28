@@ -11,6 +11,7 @@
     
     <!-- Sidebar - Desktop: siempre visible, Mobile: toggle -->
     <aside 
+      data-tour="carrito-sidebar"
       class="fixed lg:static inset-y-0 right-0 z-40 w-[85vw] sm:w-[350px] lg:w-[320px] xl:w-[350px] transform transition-transform duration-300 ease-in-out"
       [ngClass]="{
         'translate-x-0': sidebarOpen, 
@@ -36,6 +37,7 @@
   
   <!-- Botón flotante para abrir carrito en mobile -->
   <button
+    data-tour="carrito-mobile"
     class="fixed bottom-6 right-6 z-50 lg:hidden bg-blue-600 text-white rounded-full p-4 shadow-2xl hover:bg-blue-700 active:scale-95 transition-all hover:shadow-xl focus:outline-none focus-visible:ring-4 focus-visible:ring-blue-300"
     (click)="toggleSidebar()"
     aria-label="Abrir carrito de boletas">

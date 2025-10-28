@@ -1,2 +1,160 @@
 @import "tailwindcss";
 
+/* Importar Driver.js */
+@import 'driver.js/dist/driver.css';
+
+/* Personalización del tour */
+.driver-popover {
+  background: white;
+  border-radius: 16px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
+  max-width: 400px;
+  border: 2px solid #3b82f6;
+}
+
+/* Ajustes para móvil */
+@media (max-width: 768px) {
+  .driver-popover {
+    max-width: calc(100vw - 40px);
+    margin: 0 20px;
+  }
+  
+  .driver-popover-title {
+    font-size: 1.125rem;
+  }
+  
+  .driver-popover-description {
+    font-size: 0.9375rem;
+  }
+}
+
+.driver-popover-title {
+  font-size: 1.375rem;
+  font-weight: 700;
+  color: #1e40af;
+  margin-bottom: 0.75rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 2px solid #dbeafe;
+}
+
+.driver-popover-description {
+  font-size: 1.0625rem;
+  line-height: 1.7;
+  color: #374151;
+}
+
+.driver-popover-description strong {
+  color: #2563eb;
+  font-weight: 700;
+}
+
+.driver-popover-footer {
+  padding-top: 1rem;
+  border-top: 1px solid #e5e7eb;
+  margin-top: 1rem;
+}
+
+.driver-popover-next-btn,
+.driver-popover-prev-btn,
+.driver-popover-close-btn {
+  background: #2563eb;
+  color: white;
+  border: none;
+  border-radius: 10px;
+  padding: 12px 24px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-size: 0.9375rem;
+}
+
+.driver-popover-next-btn:hover {
+  background: #1d4ed8;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(37, 99, 235, 0.4);
+}
+
+.driver-popover-prev-btn {
+  background: #6b7280;
+  margin-right: 0.5rem;
+}
+
+.driver-popover-prev-btn:hover {
+  background: #4b5563;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(107, 114, 128, 0.3);
+}
+
+.driver-popover-close-btn {
+  background: transparent;
+  color: #9ca3af;
+  font-size: 1.75rem;
+  padding: 8px;
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.driver-popover-close-btn:hover {
+  background: #f3f4f6;
+  color: #374151;
+}
+
+.driver-popover-progress-text {
+  color: #2563eb;
+  font-weight: 700;
+  font-size: 0.9375rem;
+  background: #dbeafe;
+  padding: 4px 12px;
+  border-radius: 20px;
+}
+
+.driver-active-element {
+  outline: 4px solid #3b82f6 !important;
+  outline-offset: 6px;
+  border-radius: 8px;
+}
+
+/* Especial para el menú hamburguesa */
+[data-tour="menu-hamburguesa"].driver-active-element {
+  outline-offset: 4px;
+  border-radius: 10px;
+}
+
+/* Especial para el botón flotante del carrito */
+[data-tour="carrito-mobile"].driver-active-element {
+  outline-offset: 8px;
+  border-radius: 50%;
+}
+
+.driver-overlay {
+  background: rgba(0, 0, 0, 0.75);
+  backdrop-filter: blur(2px);
+}
+
+/* Animación de entrada del popover */
+@keyframes driverPopoverIn {
+  from {
+    opacity: 0;
+    transform: scale(0.95) translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+.driver-popover {
+  animation: driverPopoverIn 0.3s ease-out;
+}
+
+/* Asegurar que el popover esté por encima del z-index del navbar */
+.driver-popover-wrapper {
+  z-index: 10000 !important;
+}
+
+.driver-overlay {
+  z-index: 9999 !important;
+}
