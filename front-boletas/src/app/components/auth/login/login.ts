@@ -34,8 +34,7 @@ export class Login {
     private auth: AuthService,
     private router: Router,
     private cd: ChangeDetectorRef
-  ) {
-  }
+  ) {}
 
   alternarModo() {
     this.modoRegistro = !this.modoRegistro;
@@ -60,6 +59,11 @@ export class Login {
       this.showEmergenteError = false;
       this.cd.detectChanges();
     }, 4000);
+  }
+
+  // ← AGREGAR ESTE MÉTODO
+  abrirGuia() {
+    window.open('https://view.genially.com/6900d3ed0b868adecd208cfd/interactive-content-como-imprimir-mis-boletas', '_blank');
   }
 
   login() {
