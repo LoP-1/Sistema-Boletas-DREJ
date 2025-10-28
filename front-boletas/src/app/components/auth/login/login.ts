@@ -19,6 +19,7 @@ export class Login {
   contrasena = '';
   showEmergente = false;
   showEmergenteError = false;
+  showGuia = false; // ← AGREGAR ESTO
 
   registroData: Usuario = {
     nombre: '',
@@ -61,9 +62,15 @@ export class Login {
     }, 4000);
   }
 
-  // ← AGREGAR ESTE MÉTODO
+  // ← AGREGAR ESTOS MÉTODOS
   abrirGuia() {
-    window.open('https://view.genially.com/6900d3ed0b868adecd208cfd/interactive-content-como-imprimir-mis-boletas', '_blank');
+    this.showGuia = true;
+    this.cd.detectChanges();
+  }
+
+  cerrarGuia() {
+    this.showGuia = false;
+    this.cd.detectChanges();
   }
 
   login() {
