@@ -64,6 +64,9 @@ export class BoletaPrint implements OnInit {
   private cdr = inject(ChangeDetectorRef);
   private zone = inject(NgZone);
 
+  // Exponer Math para usar en el template
+  Math = Math;
+
   apiUrl = environment.apiUrl;
   boleta: BoletaDTO | null = null;
   ingresos: ConceptoDTO[] = [];
@@ -138,5 +141,31 @@ export class BoletaPrint implements OnInit {
     if (estado.includes('ACT')) return 'bg-green-100 text-green-700';
     if (estado.includes('INA')) return 'bg-red-100 text-red-600';
     return 'bg-gray-100 text-gray-600';
+  }
+
+  // Formatear fecha desde string a DD/MM/YYYY
+formatFecha(fecha: string | null | undefined): string {
+  if (!fecha) return '---';
+  try {
+    const d = new Date(fecha);
+    const dia = String(d.getDate()).padStart(2, '0');
+    const mes = String(d.getMonth() + 1).padStart(2, '0');
+    const anio = d.getFullYear();
+    return `${dia}/${mes}/${anio}`;
+  } catch {
+    return '---';
+  }
+}
+
+  // Determinar si es pensionista
+  get esPensionista(): boolean {
+    return !!this.boleta?.tipo_pensionista;
+  }
+
+  // Obtener tipo de servidor o pensionista
+  get tipoServidor(): string {
+    if (this.boleta?.tipo_pensionista) return this.boleta.tipo_pensionista;
+    if (this.boleta?.tipo_servidor) return this.boleta.tipo_servidor;
+    return '---';
   }
 }

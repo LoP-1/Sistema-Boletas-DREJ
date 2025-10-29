@@ -1,18 +1,206 @@
 :host {
   display: block;
+  background-color: #f5f5f5;
+  min-height: 100vh;
+  padding: 20px 0;
 }
+
 @media print {
+  :host {
+    background-color: white;
+    padding: 0;
+  }
+
   @page {
     size: A4;
-    margin: 12mm;
+    margin: 10mm 15mm;
   }
-  .print\\:bg-white { background: white !important; }
-  .print\\:py-0 { padding-top: 0 !important; padding-bottom: 0 !important; }
-  .print\\:px-0 { padding-left: 0 !important; padding-right: 0 !important; }
-  .print\\:p-4 { padding: 16px !important; }
-  .print\\:shadow-none { box-shadow: none !important; }
-  .print\\:border-0 { border: 0 !important; }
-  .print\\:rounded-none { border-radius: 0 !important; }
-  .print\\:bg-white { background-color: #fff !important; }
-  .print\\:hidden { display: none !important; }
+
+  /* Forzar que todo el contenido quepa en una página */
+  body {
+    margin: 0;
+    padding: 0;
+  }
+
+  /* Escalar el contenido para que quepa en una página */
+  .max-w-\[210mm\] {
+    max-width: 100% !important;
+    width: 100% !important;
+    transform-origin: top center;
+    page-break-after: avoid;
+    page-break-before: avoid;
+    page-break-inside: avoid;
+  }
+
+  /* Prevenir saltos de página */
+  * {
+    page-break-inside: avoid !important;
+  }
+
+  .print\\:hidden {
+    display: none !important;
+  }
+
+  .print\\:p-0 {
+    padding: 0 !important;
+  }
+
+  .print\\:mb-4 {
+    margin-bottom: 0.75rem !important;
+  }
+
+  .print\\:h-12 {
+    height: 2.5rem !important;
+  }
+
+  /* Reducir padding/margins para ahorrar espacio */
+  .p-8 {
+    padding: 8px !important;
+  }
+
+  .mb-6 {
+    margin-bottom: 8px !important;
+  }
+
+  .mb-4 {
+    margin-bottom: 6px !important;
+  }
+
+  .gap-4 {
+    gap: 8px !important;
+  }
+
+  .py-2 {
+    padding-top: 4px !important;
+    padding-bottom: 4px !important;
+  }
+
+  .py-1 {
+    padding-top: 2px !important;
+    padding-bottom: 2px !important;
+  }
+
+  /* Ajustar tamaños de fuente si es necesario */
+  .text-2xl {
+    font-size: 1.25rem !important;
+  }
+
+  .text-sm {
+    font-size: 0.75rem !important;
+  }
+
+  /* Asegurar que las tablas se vean bien en impresión */
+  table, .grid {
+    page-break-inside: avoid;
+  }
+
+  /* Mejorar contraste para impresión */
+  .bg-gray-100 {
+    background-color: #f3f4f6 !important;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  .bg-blue-50 {
+    background-color: #eff6ff !important;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  .border-gray-300 {
+    border-color: #d1d5db !important;
+  }
+
+  /* Asegurar que el QR se imprima */
+  img {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  /* Reducir tamaño del QR si es necesario */
+  .w-32 {
+    width: 6rem !important;
+    height: 6rem !important;
+  }
+
+  /* Ajustar altura de logo */
+  .h-14 {
+    height: 2.5rem !important;
+  }
+}
+
+/* Alternativa: Usar @page con size fit */
+@media print {
+  @page {
+    size: A4 portrait;
+    margin: 12mm 10mm;
+  }
+
+  :host {
+    background-color: white;
+    padding: 0;
+  }
+
+  /* Contenedor principal con escala fija */
+  .max-w-\[210mm\] {
+    max-width: 100% !important;
+    width: 190mm !important;
+    margin: 0 auto !important;
+    padding: 4mm !important;
+    transform: scale(0.98);
+    transform-origin: top center;
+    page-break-after: avoid;
+    page-break-inside: avoid;
+  }
+
+  /* Prevenir saltos de página en elementos clave */
+  .border {
+    page-break-inside: avoid;
+  }
+
+  /* Comprimir espaciados */
+  .mb-6, .mb-4 {
+    margin-bottom: 3mm !important;
+  }
+
+  .gap-4 {
+    gap: 2mm !important;
+  }
+
+  .p-8 {
+    padding: 0 !important;
+  }
+
+  /* Ajustar tamaños para ahorrar espacio */
+  .text-2xl {
+    font-size: 1.1rem !important;
+    line-height: 1.2 !important;
+  }
+
+  .py-2 {
+    padding-top: 2px !important;
+    padding-bottom: 2px !important;
+  }
+
+  .px-3 {
+    padding-left: 6px !important;
+    padding-right: 6px !important;
+  }
+
+  /* QR más pequeño */
+  .w-32.h-32 {
+    width: 5rem !important;
+    height: 5rem !important;
+  }
+
+  /* Ocultar elementos no necesarios */
+  .print\\:hidden {
+    display: none !important;
+  }
+
+  /* Asegurar colores en impresión */
+  * {
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
 }
