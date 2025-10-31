@@ -10,7 +10,8 @@
     <div class="flex items-center justify-between mb-2 print:mb-1">
       <!-- Logo más grande (izquierda) -->
       <div class="flex-shrink-0" style="width: 60%;">
-        <img src="logo-2.png" alt="Perú - Ministerio de Educación" class="w-full h-auto max-h-20 object-contain print:max-h-16">
+        <img src="logo-2.png" alt="Perú - Ministerio de Educación"
+          class="w-full h-auto max-h-20 object-contain print:max-h-16">
       </div>
 
       <!-- Espacio flexible (centro) -->
@@ -58,7 +59,7 @@
 
       <!-- Contenido en 3 columnas principales - 5 filas cada una -->
       <div class="grid grid-cols-3 text-[11px]">
-        
+
         <!-- COLUMNA 1 -->
         <div class="border-r border-gray-300">
           <!-- Fila 1: Apellidos -->
@@ -66,25 +67,25 @@
             <div class="text-gray-600 text-[10px] mb-0.5">APELLIDOS</div>
             <div class="font-bold text-gray-900">{{ boleta?.apellidos }}</div>
           </div>
-          
+
           <!-- Fila 2: Cargo -->
           <div class="border-b border-gray-300 px-3 py-2">
             <div class="text-gray-600 text-[10px] mb-0.5">CARGO</div>
             <div class="font-bold text-gray-900">{{ boleta?.cargo }}</div>
           </div>
-          
+
           <!-- Fila 3: Leyenda Permanente -->
           <div class="border-b border-gray-300 px-3 py-2">
             <div class="text-gray-600 text-[10px] mb-0.5">LEYENDA PERMANENTE</div>
             <div class="font-bold text-gray-900">{{ boleta?.leyenda_permanente || '--' }}</div>
           </div>
-          
+
           <!-- Fila 4: Situación -->
           <div class="border-b border-gray-300 px-3 py-2">
             <div class="text-gray-600 text-[10px] mb-0.5">SITUACIÓN</div>
             <div class="font-bold text-gray-900">{{ boleta?.estado }}</div>
           </div>
-          
+
           <!-- Fila 5: Código Modular IE -->
           <div class="px-3 py-2">
             <div class="text-gray-600 text-[10px] mb-0.5">CÓDIGO MODULAR-IE</div>
@@ -99,25 +100,25 @@
             <div class="text-gray-600 text-[10px] mb-0.5">NOMBRES</div>
             <div class="font-bold text-gray-900">{{ boleta?.nombres }}</div>
           </div>
-          
+
           <!-- Fila 2: Vínculo Laboral -->
           <div class="border-b border-gray-300 px-3 py-2">
             <div class="text-gray-600 text-[10px] mb-0.5">VÍNCULO LABORAL</div>
             <div class="font-bold text-gray-900">{{ boleta?.tipo_pension || '--' }}</div>
           </div>
-          
+
           <!-- Fila 3: Doc. de Referencia -->
           <div class="border-b border-gray-300 px-3 py-2">
             <div class="text-gray-600 text-[10px] mb-0.5">DOC. DE REFERENCIA</div>
             <div class="font-bold text-gray-900">{{ boleta?.leyenda_mensual || '--' }}</div>
           </div>
-          
+
           <!-- Fila 4: Jornada Laboral -->
           <div class="border-b border-gray-300 px-3 py-2">
             <div class="text-gray-600 text-[10px] mb-0.5">JORNADA LABORAL</div>
             <div class="font-bold text-gray-900">{{ boleta?.nivel_mag_horas || '--' }}</div>
           </div>
-          
+
           <!-- Fila 5: Régimen Pensionario -->
           <div class="px-3 py-2">
             <div class="text-gray-600 text-[10px] mb-0.5">RÉGIMEN PENSIONARIO</div>
@@ -132,25 +133,25 @@
             <div class="text-gray-600 text-[10px] mb-0.5">D.N.I</div>
             <div class="font-bold text-gray-900">{{ boleta?.documento_identidad }}</div>
           </div>
-          
+
           <!-- Fila 2: Tipo Servidor -->
           <div class="border-b border-gray-300 px-3 py-2">
             <div class="text-gray-600 text-[10px] mb-0.5">TIPO SERVIDOR</div>
             <div class="font-bold text-gray-900">{{ tipoServidor }}</div>
           </div>
-          
+
           <!-- Fila 3: Fecha Nacimiento -->
           <div class="border-b border-gray-300 px-3 py-2">
             <div class="text-gray-600 text-[10px] mb-0.5">FECHA NACIMIENTO</div>
             <div class="font-bold text-gray-900">{{ formatFecha(boleta?.fecha_nacimiento) }}</div>
           </div>
-          
+
           <!-- Fila 4: Término -->
           <div class="border-b border-gray-300 px-3 py-2">
             <div class="text-gray-600 text-[10px] mb-0.5">TÉRMINO</div>
             <div class="font-bold text-gray-900">{{ boleta?.fecha_termino_registro}}</div>
           </div>
-          
+
           <!-- Fila 5: Régimen Laboral / Escala Magisterial -->
           <div class="px-3 py-2">
             <div class="text-gray-600 text-[10px] mb-0.5">RÉGIMEN LABORAL</div>
@@ -163,53 +164,62 @@
 
     <!-- Ingresos y Descuentos -->
     <div class="grid grid-cols-2 gap-4 mb-4">
-      <!-- Ingresos -->
-      <div class="border border-gray-300">
+      <div class="border border-gray-300 mb-3">
         <div class="bg-blue-100 px-3 py-1 border-b border-gray-300">
           <div class="text-xs font-bold text-blue-800">INGRESOS</div>
         </div>
-        <div class="grid grid-cols-2 text-xs border-b border-gray-300 bg-gray-50">
-          <div class="px-3 py-1 font-bold text-gray-700 border-r border-gray-300">CONCEPTO</div>
-          <div class="px-3 py-1 font-bold text-gray-700 text-right">MONTO</div>
+        <div class="grid grid-cols-4 text-xs border-b border-gray-300 bg-gray-50">
+          <div class="px-2 py-1 font-bold text-gray-700 border-r border-gray-300 col-span-1">CONCEPTO</div>
+          <div class="px-2 py-1 font-bold text-gray-700 text-right border-r border-gray-300">MONTO</div>
+          <div class="px-2 py-1 font-bold text-gray-700 border-r border-gray-300">CONCEPTO</div>
+          <div class="px-2 py-1 font-bold text-gray-700 text-right">MONTO</div>
         </div>
-        <div *ngFor="let ing of ingresos" class="grid grid-cols-2 text-xs border-b border-gray-300">
-          <div class="px-3 py-1 border-r border-gray-300">{{ ing.concepto }}</div>
-          <div class="px-3 py-1 text-right">S/ {{ ing.monto | number:'1.2-2' }}</div>
-        </div>
-        <div *ngIf="ingresos.length === 0" class="px-3 py-6 text-xs text-gray-400 italic text-center">
+
+        <!-- Iteramos en pares -->
+        <ng-container *ngFor="let row of ingresosEnPares; let i = index">
+          <div class="grid grid-cols-4 text-[10px] border-b border-gray-300">
+            <!-- Primera columna (izquierda) -->
+            <div class="px-2 py-1 border-r border-gray-300">{{ row[0]?.concepto || '&nbsp;' }}</div>
+            <div class="px-2 py-1 text-right border-r border-gray-300">
+              <span *ngIf="row[0]">S/ {{ row[0].monto | number:'1.2-2' }}</span>
+              <span *ngIf="!row[0]">&nbsp;</span>
+            </div>
+
+            <!-- Segunda columna (derecha) -->
+            <div class="px-2 py-1 border-r border-gray-300">{{ row[1]?.concepto || '&nbsp;' }}</div>
+            <div class="px-2 py-1 text-right">
+              <span *ngIf="row[1]">S/ {{ row[1].monto | number:'1.2-2' }}</span>
+              <span *ngIf="!row[1]">&nbsp;</span>
+            </div>
+          </div>
+        </ng-container>
+
+        <div *ngIf="ingresos.length === 0" class="px-3 py-4 text-xs text-gray-400 italic text-center">
           Sin ingresos
-        </div>
-        <!-- Espaciador para igualar altura -->
-        <div *ngFor="let i of [].constructor(Math.max(0, descuentos.length - ingresos.length))" 
-             class="grid grid-cols-2 text-xs border-b border-gray-300">
-          <div class="px-3 py-1 border-r border-gray-300">&nbsp;</div>
-          <div class="px-3 py-1 text-right">&nbsp;</div>
         </div>
       </div>
 
       <!-- Descuentos -->
-      <div class="border border-gray-300">
-        <div class="bg-blue-100 px-3 py-1 border-b border-gray-300">
-          <div class="text-xs font-bold text-blue-800">DESCUENTOS</div>
-        </div>
-        <div class="grid grid-cols-2 text-xs border-b border-gray-300 bg-gray-50">
-          <div class="px-3 py-1 font-bold text-gray-700 border-r border-gray-300">CONCEPTO</div>
-          <div class="px-3 py-1 font-bold text-gray-700 text-right">MONTO</div>
-        </div>
-        <div *ngFor="let desc of descuentos" class="grid grid-cols-2 text-xs border-b border-gray-300">
-          <div class="px-3 py-1 border-r border-gray-300">{{ desc.concepto }}</div>
-          <div class="px-3 py-1 text-right">S/ {{ desc.monto | number:'1.2-2' }}</div>
-        </div>
-        <div *ngIf="descuentos.length === 0" class="px-3 py-6 text-xs text-gray-400 italic text-center">
-          Sin descuentos
-        </div>
-        <!-- Espaciador para igualar altura -->
-        <div *ngFor="let i of [].constructor(Math.max(0, ingresos.length - descuentos.length))" 
-             class="grid grid-cols-2 text-xs border-b border-gray-300">
-          <div class="px-3 py-1 border-r border-gray-300">&nbsp;</div>
-          <div class="px-3 py-1 text-right">&nbsp;</div>
-        </div>
-      </div>
+      <div class="border border-gray-300 mb-4">
+  <div class="bg-blue-100 px-3 py-1 border-b border-gray-300">
+    <div class="text-xs font-bold text-blue-800">DESCUENTOS</div>
+  </div>
+  <div class="grid grid-cols-2 text-xs border-b border-gray-300 bg-gray-50">
+    <div class="px-2 py-1 font-bold text-gray-700 border-r border-gray-300">CONCEPTO</div>
+    <div class="px-2 py-1 font-bold text-gray-700 text-right">MONTO</div>
+  </div>
+
+  <ng-container *ngFor="let descuento of descuentos">
+    <div class="grid grid-cols-2 text-[10px] border-b border-gray-300">
+      <div class="px-2 py-1 border-r border-gray-300">{{ descuento.concepto }}</div>
+      <div class="px-2 py-1 text-right">S/ {{ descuento.monto | number:'1.2-2' }}</div>
+    </div>
+  </ng-container>
+
+  <div *ngIf="descuentos.length === 0" class="px-3 py-4 text-xs text-gray-400 italic text-center">
+    Sin descuentos
+  </div>
+</div>
     </div>
 
     <!-- Totales -->
@@ -240,31 +250,37 @@
       <div class="col-span-8 p-0">
         <!-- Total líquido -->
         <div class="grid grid-cols-2 border-b border-gray-300">
-          <div class="px-3 py-2 bg-blue-100 text-xs font-bold text-gray-800 border-r border-gray-300">TOTAL LÍQUIDO</div>
-          <div class="px-3 py-2 bg-blue-50 text-sm font-bold text-gray-900 text-right">S/ {{ boleta?.total_liquido | number:'1.2-2' }}</div>
+          <div class="px-3 py-2 bg-blue-100 text-xs font-bold text-gray-800 border-r border-gray-300">TOTAL LÍQUIDO
+          </div>
+          <div class="px-3 py-2 bg-blue-50 text-sm font-bold text-gray-900 text-right">S/ {{ boleta?.total_liquido |
+            number:'1.2-2' }}</div>
         </div>
         <!-- Afecto a cargas sociales -->
         <div class="grid grid-cols-2 border-b border-gray-300">
-          <div class="px-3 py-2 bg-blue-50 text-xs text-gray-700 border-r border-gray-300">AFECTO A CARGAS SOCIALES</div>
-          <div class="px-3 py-2 bg-blue-50 text-sm font-bold text-gray-900 text-right">S/ {{ boleta?.monto_imponible | number:'1.2-2' }}</div>
+          <div class="px-3 py-2 bg-blue-50 text-xs text-gray-700 border-r border-gray-300">AFECTO A CARGAS SOCIALES
+          </div>
+          <div class="px-3 py-2 bg-blue-50 text-sm font-bold text-gray-900 text-right">S/ {{ boleta?.monto_imponible |
+            number:'1.2-2' }}</div>
         </div>
         <!-- Mensaje -->
         <div class="px-3 py-2 border-b border-gray-300">
           <div class="text-[10px] font-bold text-gray-800 mb-1">MENSAJE</div>
-          <div class="text-[9px] text-gray-600">Visite la página web del Ministerio de Educación: www.gob.pe/minedu</div>
+          <div class="text-[9px] text-gray-600">Visite la página web del Ministerio de Educación: www.gob.pe/minedu
+          </div>
         </div>
         <!-- Mensaje ecológico -->
         <div class="px-3 py-2 flex items-center gap-3">
           <div class="flex-shrink-0">
             <svg class="w-8 h-8 text-green-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <path d="M12 2L8 8h8l-4-6z"/>
-              <path d="M10 7L6 13h12l-4-6H10z"/>
-              <path d="M8 12L4 18h16l-4-6H8z"/>
-              <rect x="10" y="18" width="4" height="4" fill="currentColor"/>
+              <path d="M12 2L8 8h8l-4-6z" />
+              <path d="M10 7L6 13h12l-4-6H10z" />
+              <path d="M8 12L4 18h16l-4-6H8z" />
+              <rect x="10" y="18" width="4" height="4" fill="currentColor" />
             </svg>
           </div>
           <div class="text-[9px] text-gray-600 leading-tight">
-            Antes de imprimir esta boleta de pago, piense en su responsabilidad social y compromiso con el medio ambiente.
+            Antes de imprimir esta boleta de pago, piense en su responsabilidad social y compromiso con el medio
+            ambiente.
           </div>
         </div>
       </div>
@@ -278,7 +294,8 @@
 
     <!-- Botones de acción -->
     <div class="mt-6 flex items-center justify-between print:hidden">
-      <button (click)="imprimir()" class="px-5 py-2 bg-blue-600 text-white rounded-lg shadow hover:bg-blue-700 transition">
+      <button (click)="imprimir()"
+        class="px-5 py-2 bg-blue-600 text-white rounded-lg shadow hover:bg-blue-700 transition">
         Imprimir
       </button>
       <a [href]="shareUrl" target="_blank" class="text-blue-700 underline text-sm">Abrir enlace de esta boleta</a>

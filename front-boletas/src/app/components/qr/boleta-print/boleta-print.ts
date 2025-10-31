@@ -168,4 +168,22 @@ formatFecha(fecha: string | null | undefined): string {
     if (this.boleta?.tipo_servidor) return this.boleta.tipo_servidor;
     return '---';
   }
+
+  // Agrupar ingresos en pares para mostrar en 2 columnas
+get ingresosEnPares(): any[][] {
+  const pares = [];
+  for (let i = 0; i < this.ingresos.length; i += 2) {
+    pares.push([this.ingresos[i], this.ingresos[i + 1]]);
+  }
+  return pares;
+}
+
+// Lo mismo para descuentos
+get descuentosEnPares(): any[][] {
+  const pares = [];
+  for (let i = 0; i < this.descuentos.length; i += 2) {
+    pares.push([this.descuentos[i], this.descuentos[i + 1]]);
+  }
+  return pares;
+}
 }
