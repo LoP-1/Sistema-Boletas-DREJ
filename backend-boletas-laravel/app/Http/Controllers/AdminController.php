@@ -14,8 +14,7 @@ class AdminController extends Controller
     public function __construct(private BoletaService $boletaService) {}
 
     // --- BOLETAS (ADMIN) ---
-
-    // Listar todas las boletas paginadas (si tu front espera Page<BoletaDTO>, mapea como en el service)
+    // Listar todas las boletas paginadas
     public function listarBoletas(Request $request)
     {
         $page = (int) $request->get('page', 0);
@@ -31,7 +30,7 @@ class AdminController extends Controller
         return response()->json($boletas);
     }
 
-    // Subir/crear varias boletas -> usa Service (crea Persona y Conceptos)
+    // Subir/crear varias boletas
     public function subirBoletas(Request $request)
     {
         $boletas = $request->all();
@@ -58,7 +57,6 @@ class AdminController extends Controller
     {
         $size = (int) $request->get('size', 30);
         $personas = Persona::paginate($size);
-        // Si tu front espera formato Page de Spring, mapea igual que en PersonaService->listarPersonasPaginado
         return response()->json([
             'content' => $personas->items(),
             'totalElements' => $personas->total(),
@@ -68,19 +66,21 @@ class AdminController extends Controller
         ]);
     }
 
+    //crear una persona
     public function crearPersona(Request $request)
     {
         $persona = Persona::create($request->all());
         return response()->json($persona);
     }
 
+    //editar una persona
     public function editarPersona($id, Request $request)
     {
         $persona = Persona::findOrFail($id);
         $persona->update($request->all());
         return response()->json($persona);
     }
-
+    //elimina una persona
     public function eliminarPersona($id)
     {
         Persona::destroy($id);
@@ -88,7 +88,6 @@ class AdminController extends Controller
     }
 
     // --- USUARIOS (ADMIN) ---
-
     public function listarUsuarios()
 {
     $usuarios = \App\Models\Usuario::all()->map(function ($u) {
@@ -107,7 +106,7 @@ class AdminController extends Controller
     });
     return response()->json($usuarios);
 }
-
+    //actualiza el estado de la persona (permite acceder al sistema)
     public function cambiarEstado($id, Request $request)
 {
     $nuevoEstado = $request->json()->all();

@@ -11,6 +11,7 @@ class UsuarioController extends Controller
 {
     public function __construct(private UsuarioService $usuarioService) {}
 
+    //registrar nuevo usuario, es diferente de una persona pero se crea la persona al crear el usuario
     public function registrar(Request $request)
     {
         $data = $request->validate([
@@ -26,12 +27,13 @@ class UsuarioController extends Controller
         return response()->json($usuario);
     }
 
-    // Login
+    // Login de usuarios, revisa si las cuentas estan aprovadas
     public function login(Request $request)
     {
         $credentials = $request->only('correo', 'contrasena');
         $usuario = $this->usuarioService->buscarPorCorreo($credentials['correo']);
 
+        //aqui se revisan
         if (!$usuario || !Hash::check($credentials['contrasena'], $usuario->contrasena)) {
             return response('Credenciales inválidas', 401);
         }
@@ -43,7 +45,7 @@ class UsuarioController extends Controller
         return response($token, 200);
     }
 
-    // Actualizar datos del usuario (propietario o admin)
+    // Actualizar datos del usuario
     public function actualizarUsuario($id, Request $request)
     {
         $usuario = $this->usuarioService->actualizarDatos($id, $request->all());
@@ -53,11 +55,10 @@ class UsuarioController extends Controller
     // Cambiar contraseña (propietario o admin)
     public function cambiarContrasena($id, Request $request)
     {
-        // Aquí delega al servicio, que acepta ambos formatos
         return $this->usuarioService->cambiarContrasena($id, $request);
     }
 
-    // Mostrar usuario
+    // Mostrar usuario utilizando el id
     public function obtenerUsuario($id)
     {
         $usuario = $this->usuarioService->buscarPorId($id);

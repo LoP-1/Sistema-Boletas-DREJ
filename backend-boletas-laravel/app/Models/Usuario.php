@@ -5,9 +5,10 @@ namespace App\Models;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Tymon\JWTAuth\Contracts\JWTSubject;
 
+//Modelo de los usuarios en la bd
 class Usuario extends Authenticatable implements JWTSubject
 {
-    protected $table = 'usuarios'; // Especifica el nombre de la tabla si no es 'users'
+    protected $table = 'usuarios';
 
     protected $fillable = [
         'nombre',

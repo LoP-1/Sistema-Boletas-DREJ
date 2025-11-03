@@ -1,3 +1,4 @@
+<!-- Diseño del correo que avisa al usuario que su cuenta falta activar -->
 <!DOCTYPE html>
 <html lang="es">
 <head>

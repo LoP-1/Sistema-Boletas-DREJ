@@ -11,6 +11,7 @@ use App\Mail\UsuarioBienvenidaMailable;
 use App\Mail\AdminNuevoRegistroMailable;
 use App\Mail\UsuarioCuentaAprobadaMailable;
 
+//logica para los usuarios
 class UsuarioService
 {
     // Registrar usuario (DTO in, entidad out)

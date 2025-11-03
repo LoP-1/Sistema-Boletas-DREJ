@@ -4,6 +4,7 @@ namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 
+//conceptos de la boleta
 class ConceptoResource extends JsonResource
 {
     public function toArray($request)

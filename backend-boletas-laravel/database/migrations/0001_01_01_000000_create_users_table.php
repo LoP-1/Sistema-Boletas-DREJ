@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\Schema;
 return new class extends Migration
 {
     /**
-     * Run the migrations.
+     * Run the migrations. - estos 3 son archivos que se crearon por defecto
      */
     public function up(): void
     {

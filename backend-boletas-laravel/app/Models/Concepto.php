@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
+//Modelo de los conceptos
 class Concepto extends Model
 {
     protected $table = 'conceptos';

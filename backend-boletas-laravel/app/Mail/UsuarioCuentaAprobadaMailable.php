@@ -6,6 +6,7 @@ use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 
+//Cuando un usuario nuevo se le aprueba la cuenta se le envia un correo informando, el modelo esta en resources/views/emails
 class UsuarioCuentaAprobadaMailable extends Mailable
 {
     use Queueable, SerializesModels;

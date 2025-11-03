@@ -6,6 +6,7 @@ use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 
+//Cuando un usuario nuevo se registra se envia un correo, el modelo esta en resources/views/emails
 class AdminNuevoRegistroMailable extends Mailable
 {
     use Queueable, SerializesModels;

@@ -7,6 +7,7 @@ use App\Models\Concepto;
 use App\Models\Persona;
 use Illuminate\Support\Facades\DB;
 
+//servicios, estos se llaman para realizar los procesos de los controladores
 class BoletaService
 {
     // Subir varias boletas (DTOs)
@@ -144,7 +145,7 @@ class BoletaService
         return Boleta::with(['persona', 'conceptos'])->get()->map(fn($b) => $this->toBoletaDTO($b));
     }
 
-    // Convertir a DTO (idéntico a record BoletaDTO)
+    // Convertir a DTO (idéntico a BoletaDTO)
     public function toBoletaDTO($boleta)
     {
         $persona = $boleta->persona;
@@ -188,7 +189,7 @@ class BoletaService
             'monto_imponible' => $boleta->monto_imponible,
         ];
     }
-
+    //convertidor de fechas
     private function parseFecha($fecha)
     {
         if (empty($fecha)) return null;

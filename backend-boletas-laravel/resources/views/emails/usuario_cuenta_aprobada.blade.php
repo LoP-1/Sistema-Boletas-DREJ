@@ -1,3 +1,4 @@
+<!-- Diseño del correo que avisa si la cuenta fue aprobada-->
 <!DOCTYPE html>
 <html lang="es">
 <head>

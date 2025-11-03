@@ -1,3 +1,4 @@
+<!-- Diseño del correo que avisa al administrador -->
 <!DOCTYPE html>
 <html lang="es">
 <head>

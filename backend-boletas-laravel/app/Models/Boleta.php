@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
+//Modelo de las boletas
 class Boleta extends Model
 {
     protected $table = 'boletas';

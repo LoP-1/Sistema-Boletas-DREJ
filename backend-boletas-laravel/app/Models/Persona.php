@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
+//Modelo de personas identico a la base de datos
 class Persona extends Model
 {
     protected $table = 'personas';

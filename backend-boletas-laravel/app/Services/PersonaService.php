@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Models\Persona;
 use Illuminate\Pagination\LengthAwarePaginator;
 
+//logica entre base de datos y formularios, de igual forma se maneja la logica aqui
 class PersonaService
 {
     // Buscar persona por DNI

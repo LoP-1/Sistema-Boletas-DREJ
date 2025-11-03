@@ -15,6 +15,7 @@ class BoletaQrController extends Controller
     }
     public function show($id)
     {
+        //obtiene la boleta por id , sirve para mostrar las boletas y su qr
         $dto = $this->boletaService->obtenerBoleta($id);
         if (!$dto) return response()->json(null, 404);
         return response()->json($dto);

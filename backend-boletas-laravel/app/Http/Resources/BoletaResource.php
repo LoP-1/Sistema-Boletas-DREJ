@@ -4,11 +4,11 @@ namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 
+//formato de la boleta que envia al frontend, todos los resources son formatos de json de respuesta
 class BoletaResource extends JsonResource
 {
     public function toArray($request)
     {
-        // Si reg_pensionario_detalle es array/objeto, lo formateamos usando el resource
         $regPensionario = $this->reg_pensionario_detalle
             ? new RegPensionarioDetalleResource((object)$this->reg_pensionario_detalle)
             : null;
