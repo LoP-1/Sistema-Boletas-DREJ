@@ -17,16 +17,28 @@ RE_TIPO_SERV = re.compile(r'Tipo de Servidor\s*:\s*(.*)')
 RE_TIPO_PENS = re.compile(r'Tipo de Pensionista\s*:\s*(.*)')
 RE_TIPO_PENSION = re.compile(r'Tipo de Pension\s*:\s*(.*)')
 RE_NIV_MAG = re.compile(r'Niv\.Mag\./[^:]*:\s*(.*)')
-RE_TIEMPO_SERV = re.compile(r'Tiempo de Servicio.*:\s*([^\n]*)')
+
+# Expresión mejorada para tiempo de servicio - captura TODO hasta Fecha de Registro
+RE_TIEMPO_SERV = re.compile(
+    r'Tiempo de Servicio[^:]*:\s*(.+?)\s*(?=Fecha de Registro)',
+    re.DOTALL | re.IGNORECASE
+)
+
 RE_FECHA_REG = re.compile(r'Fecha de Registro\s*:\s*Ingr\.:(\d{2}/\d{2}/\d{4})\s+Termino:(\d{2}/\d{2}/\d{4})')
-RE_FECHA_REG_ALT = re.compile(r'Fecha de Registro\s*:\s*Cese\s*:\s*Termino:(\d{2}/\d{2}/\d{4})')
+RE_FECHA_REG_ALT = re.compile(r'Fecha de Registro\s*:\s*Cese\s*:(\d{2}/\d{2}/\d{4})\s+Termino:(\d{2}/\d{2}/\d{4})')
 RE_CTA = re.compile(r'(?:Cta\. TeleAhorro o Nro\. Cheque|Cuenta de TeleAhorro)\s*:\s*(.*)')
 RE_LEYENDA_PERM = re.compile(r'Leyenda Permanente\s*:\s*(.*)')
 RE_LEYENDA_MENS = re.compile(r'Leyenda Mensual\s*:\s*(.*)')
 RE_REGIMEN = re.compile(r'Regimen Pensionario\s*:\s*(.*)')
 RE_REG_PENS_DET_BLOCK = re.compile(r'Reg\.?Pensionario\s*:\s*(.+?)(?:\n[A-Z]|$)', re.DOTALL)
 RE_AFILIACION = re.compile(r'FAfiliacion\s*:\s*([0-9]{2}/[0-9]{2}/[0-9]{4})')
-RE_CONCEPT = re.compile(r'^[ \t]*([+-])([A-Za-z0-9ÁÉÍÓÚÑ./ _%]+)\s+([\d.,]+)\s*$', re.MULTILINE)
+
+# Expresión regular mejorada para capturar conceptos
+RE_CONCEPT = re.compile(
+    r'([+-])([a-zA-Z0-9áéíóúñÁÉÍÓÚÑ./_% -]+?)\s+([\d.,]+)\s*(?=[+-]|$)',
+    re.MULTILINE
+)
+
 RE_TOTALS = re.compile(r'T-REMUN\s+([\d.,]+)\s+T-DSCTO\s+([\d.,]+)\s+T-LIQUI\s+([\d.,]+)')
 RE_MIMP = re.compile(r'MImponible\s+([\d.,]+)')
 
@@ -51,17 +63,46 @@ def partir_boletas(contenido: str) -> List[str]:
 
 def extraer_conceptos(bloque: str) -> List[Dict[str, Any]]:
     conceptos = []
+    
+    # Encontrar el bloque de conceptos entre las líneas de iguales
     secciones = [m.start() for m in re.finditer(r'^=+\s*$', bloque, re.MULTILINE)]
-    sub = bloque
+    
     if len(secciones) >= 2:
+        # Extraer el contenido entre las dos líneas de iguales
         sub = bloque[secciones[0]:secciones[-1]]
-    for m in RE_CONCEPT.finditer(sub):
-        signo, nombre, monto_txt = m.groups()
-        conceptos.append({
-            "tipo": "ingreso" if signo == '+' else "descuento",
-            "concepto": nombre.strip(),
-            "monto": limpiar_monto(monto_txt)
-        })
+    else:
+        sub = bloque
+    
+    # Limpiar el texto: quitar saltos de línea dentro del bloque de conceptos
+    # para procesarlo como líneas continuas
+    lineas = sub.split('\n')
+    texto_limpio = []
+    
+    for linea in lineas:
+        linea = linea.strip()
+        if linea and not linea.startswith('='):
+            texto_limpio.append(linea)
+    
+    # Unir todo en una sola línea para facilitar la captura
+    texto_continuo = ' '.join(texto_limpio)
+    
+    # Buscar todos los conceptos con el patrón mejorado
+    for match in RE_CONCEPT.finditer(texto_continuo):
+        signo = match.group(1)
+        nombre = match.group(2).strip()
+        monto_txt = match.group(3)
+        
+        # Limpiar el nombre del concepto
+        nombre = re.sub(r'\s+', ' ', nombre).strip()
+        
+        # Evitar conceptos vacíos o que sean solo espacios
+        if nombre and not nombre.isspace():
+            conceptos.append({
+                "tipo": "ingreso" if signo == '+' else "descuento",
+                "concepto": nombre,
+                "monto": limpiar_monto(monto_txt)
+            })
+    
     return conceptos
 
 def extraer_reg_pensionario(bloque: str) -> Dict[str, Any]:
@@ -76,6 +117,19 @@ def extraer_reg_pensionario(bloque: str) -> Dict[str, Any]:
             datos["afiliacion"] = af.group(1)
     return datos
 
+def extraer_tiempo_servicio(bloque: str) -> Dict[str, Any]:
+    """
+    Extrae información detallada del tiempo de servicio.
+    Formato esperado: Tiempo de Servicio (AA-MM-DD): 28-07-11 ESSALUD : 4302261AIMIA001
+    """
+    m = RE_TIEMPO_SERV.search(bloque)
+    if not m:
+        return {}
+    
+    # Capturar TODO el texto, incluyendo saltos de línea
+    texto_completo = m.group(1)
+    return texto_completo
+
 def parse_boleta(bloque: str, origen: str) -> Dict[str, Any]:
     d: Dict[str, Any] = {
         "archivo_origen": origen,
@@ -89,7 +143,7 @@ def parse_boleta(bloque: str, origen: str) -> Dict[str, Any]:
 
     primeras = bloque.splitlines()[:3]
     header_text = "\n".join(primeras)
-    code_match = re.search(r'(CF|CL|CG)\d+[A-Z0-9]*', header_text)
+    code_match = re.search(r'(CF|CL|CG|CP)\d+[A-Z0-9]*', header_text)
     if code_match:
         d["codigo_encabezado"] = code_match.group(0)
 
@@ -119,7 +173,12 @@ def parse_boleta(bloque: str, origen: str) -> Dict[str, Any]:
     poner(RE_TIPO_PENS, "tipo_pensionista")
     poner(RE_TIPO_PENSION, "tipo_pension")
     poner(RE_NIV_MAG, "nivel_mag_horas")
-    poner(RE_TIEMPO_SERV, "tiempo_servicio")
+    
+    # Extraer tiempo de servicio con detalles
+    tiempo_serv = extraer_tiempo_servicio(bloque)
+    if tiempo_serv:
+        d["tiempo_servicio"] = tiempo_serv
+    
     poner(RE_LEYENDA_PERM, "leyenda_permanente")
     m = RE_LEYENDA_MENS.search(bloque)
     if m:
@@ -135,7 +194,8 @@ def parse_boleta(bloque: str, origen: str) -> Dict[str, Any]:
     else:
         mfr_alt = RE_FECHA_REG_ALT.search(bloque)
         if mfr_alt:
-            d["fecha_termino_registro"] = mfr_alt.group(1)
+            d["fecha_cese_registro"] = mfr_alt.group(1)
+            d["fecha_termino_registro"] = mfr_alt.group(2)
 
     cuentas = RE_CTA.findall(bloque)
     if cuentas:
