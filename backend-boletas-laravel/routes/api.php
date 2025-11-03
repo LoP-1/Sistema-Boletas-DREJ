@@ -6,7 +6,8 @@ use App\Http\Controllers\BoletaController;
 use App\Http\Controllers\BoletaQrController;
 use App\Http\Controllers\PersonaController;
 use App\Http\Controllers\UsuarioController;
-//rutas del backend
+
+//rutas del backend 
 
 // ----------- Usuarios (auth y registro) -----------
 Route::post('/usuarios/registro', [UsuarioController::class, 'registrar']);
