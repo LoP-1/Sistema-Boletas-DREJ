@@ -7,27 +7,32 @@ import { environment } from '../../enviroments/environment';
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
+  // Base URL para endpoints de usuarios
   private apiUrl = `${environment.apiUrl}/usuarios`;
-  private tokenKey = 'jwtToken';
+  private tokenKey = 'jwtToken'; // clave usada en localStorage para guardar el JWT
 
   constructor(
     private http: HttpClient,
     private router: Router
   ) {}
 
+  // Login: envía credenciales y espera recibir token en texto
   login(correo: string, contrasena: string): Observable<string> {
     return this.http.post(`${this.apiUrl}/login`, { correo, contrasena }, { responseType: 'text' });
   }
 
+  // Registro de nuevo usuario
   registro(usuario: Usuario): Observable<Usuario> {
     return this.http.post<Usuario>(`${this.apiUrl}/registro`, usuario);
   }
 
+  // Guarda el token en localStorage y extrae datos del payload JWT para guardar en localStorage
   saveToken(token: string) {
     localStorage.setItem(this.tokenKey, token);
     try {
       const payload = this.decodeJwt(token);
       if (payload) {
+        // Intentamos guardar varios campos útiles si existen en el payload
         const id = payload.uid ?? payload.id ?? payload.userId ?? payload.user_id ?? payload.sub ?? null;
         if (id != null) localStorage.setItem('userId', String(id));
 
@@ -43,10 +48,12 @@ export class AuthService {
     }
   }
 
+  // Obtener token guardado
   getToken(): string | null { 
     return localStorage.getItem(this.tokenKey); 
   }
 
+  // Valida si el token aún no ha expirado (usa campo exp del payload JWT)
   isTokenValid(): boolean {
     const token = this.getToken();
     if (!token) return false;
@@ -65,11 +72,13 @@ export class AuthService {
     }
   }
 
+  // Logout: limpia almacenamiento local y redirige a login
   logout(): void { 
     localStorage.clear();
     this.router.navigate(['/login']);
   }
 
+  // Helper getters que leen datos guardados en localStorage
   getDni(): string | null { return localStorage.getItem('userDni'); }
   getUserId(): number | null { 
     const v = localStorage.getItem('userId'); 
@@ -81,6 +90,7 @@ export class AuthService {
   getTelefono(): string | null { return localStorage.getItem('userTelefono'); }
   getRol(): string | null { return localStorage.getItem('userRol'); }
 
+  // Decodifica el payload de un JWT (sin verificar firma)
   private decodeJwt(token: string): any | null {
     try {
       const parts = token.split('.');

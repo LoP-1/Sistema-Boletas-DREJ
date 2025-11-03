@@ -6,6 +6,7 @@ import { environment } from '../../../../enviroments/environment';
 import { map, switchMap } from 'rxjs';
 import QRCode from 'qrcode';
 
+
 interface ConceptoDTO {
   tipo: string;
   concepto: string;
@@ -59,23 +60,25 @@ interface BoletaDTO {
   styleUrls: ['./boleta-print.css']
 })
 export class BoletaPrint implements OnInit {
-  private http = inject(HttpClient);
-  private route = inject(ActivatedRoute);
-  private cdr = inject(ChangeDetectorRef);
-  private zone = inject(NgZone);
-
-  // Exponer Math para usar en el template
+  // Inyección de dependencias
+  private http = inject(HttpClient);             
+  private route = inject(ActivatedRoute);    
+  private cdr = inject(ChangeDetectorRef);  
+  private zone = inject(NgZone);              
   Math = Math;
 
+  // URL base de la API (desde environment)
   apiUrl = environment.apiUrl;
-  boleta: BoletaDTO | null = null;
-  ingresos: ConceptoDTO[] = [];
-  descuentos: ConceptoDTO[] = [];
-  qrDataUrl = '';
-  shareUrl = '';
 
-  cargando = true;
-  error = '';
+  // Estado / datos del componente
+  boleta: BoletaDTO | null = null;               // boleta cargada desde la API
+  ingresos: ConceptoDTO[] = [];                  // conceptos de tipo ingreso
+  descuentos: ConceptoDTO[] = [];                // conceptos de tipo descuento
+  qrDataUrl = '';                                // DataURL del QR generado (imagen)
+  shareUrl = '';                                 // URL pública para compartir / QR
+
+  cargando = true;                               // flag de carga
+  error = '';                                    // mensaje de error si hay problema
 
   ngOnInit(): void {
     this.route.paramMap
@@ -83,13 +86,15 @@ export class BoletaPrint implements OnInit {
         map((pm: ParamMap) => Number(pm.get('id'))),
         switchMap((id) => {
           if (!id) {
+            // Si no hay id en la ruta, marcar error y terminar
             this.error = 'Boleta no encontrada';
             this.cargando = false;
             this.cdr.detectChanges();
+            // return array vacío para cumplir con el tipo; no se emitirá next útil
             return [];
           }
 
-          // Reset antes de cargar
+          // Reset del estado antes de cargar la nueva boleta
           this.cargando = true;
           this.error = '';
           this.boleta = null;
@@ -99,21 +104,26 @@ export class BoletaPrint implements OnInit {
           this.shareUrl = `${window.location.origin}/boleta/${id}`;
           this.cdr.detectChanges();
 
+          // Petición HTTP para obtener la boleta por id
           return this.http.get<BoletaDTO>(`${this.apiUrl}/qr/${id}`).pipe(
-            map(data => ({ id, data }))
+            map(data => ({ id, data })) // empacar id y data para usarlo en subscribe
           );
         })
       )
       .subscribe({
         next: ({ id, data }) => {
-          // Carga la boleta
+          // Cuando llega la respuesta, actualizar estado dentro de NgZone
           this.zone.run(() => {
             this.boleta = data;
+
+            // Asegurar que conceptos sea un array y separar ingresos/discounts por tipo
             const conceptos = Array.isArray(this.boleta.conceptos) ? this.boleta.conceptos : [];
             this.ingresos = conceptos.filter(c => (c.tipo || '').toLowerCase().includes('ing'));
             this.descuentos = conceptos.filter(c => (c.tipo || '').toLowerCase().includes('desc'));
-            // Genera el QR dentro de la zona
+
+            // Generar un QR en formato DataURL para la shareUrl
             QRCode.toDataURL(this.shareUrl, { margin: 1, width: 180 }).then(qr => {
+              // Volver a la zona de Angular para actualizar bindings y UI
               this.zone.run(() => {
                 this.qrDataUrl = qr;
                 this.cargando = false;
@@ -123,6 +133,7 @@ export class BoletaPrint implements OnInit {
           });
         },
         error: () => {
+          // Manejo de error: actualizar mensajes y flags dentro de la zona
           this.zone.run(() => {
             this.error = 'No se pudo cargar la boleta';
             this.cargando = false;
@@ -132,10 +143,12 @@ export class BoletaPrint implements OnInit {
       });
   }
 
+  // Acción para imprimir la página (usa window.print)
   imprimir() {
     window.print();
   }
 
+  // Getter que devuelve clases CSS para el chip de estado según el texto del estado
   get estadoChipClasses(): string {
     const estado = (this.boleta?.estado || '').toUpperCase();
     if (estado.includes('ACT')) return 'bg-green-100 text-green-700';
@@ -143,47 +156,38 @@ export class BoletaPrint implements OnInit {
     return 'bg-gray-100 text-gray-600';
   }
 
-  // Formatear fecha desde string a DD/MM/YYYY
-formatFecha(fecha: string | null | undefined): string {
-  if (!fecha) return '---';
-  try {
-    const d = new Date(fecha);
-    const dia = String(d.getDate()).padStart(2, '0');
-    const mes = String(d.getMonth() + 1).padStart(2, '0');
-    const anio = d.getFullYear();
-    return `${dia}/${mes}/${anio}`;
-  } catch {
-    return '---';
+  // Formatea una fecha (string) a DD/MM/YYYY. Si no es válida devuelve '---'
+  formatFecha(fecha: string | null | undefined): string {
+    if (!fecha) return '---';
+    try {
+      const d = new Date(fecha);
+      const dia = String(d.getDate()).padStart(2, '0');
+      const mes = String(d.getMonth() + 1).padStart(2, '0');
+      const anio = d.getFullYear();
+      return `${dia}/${mes}/${anio}`;
+    } catch {
+      return '---';
+    }
   }
-}
 
-  // Determinar si es pensionista
+  // Indica si la boleta corresponde a un pensionista
   get esPensionista(): boolean {
     return !!this.boleta?.tipo_pensionista;
   }
 
-  // Obtener tipo de servidor o pensionista
+  // Retorna el tipo de servidor o, si existe, el tipo de pensionista
   get tipoServidor(): string {
     if (this.boleta?.tipo_pensionista) return this.boleta.tipo_pensionista;
     if (this.boleta?.tipo_servidor) return this.boleta.tipo_servidor;
     return '---';
   }
 
-  // Agrupar ingresos en pares para mostrar en 2 columnas
-get ingresosEnPares(): any[][] {
-  const pares = [];
-  for (let i = 0; i < this.ingresos.length; i += 2) {
-    pares.push([this.ingresos[i], this.ingresos[i + 1]]);
+  // Organiza los ingresos en pares (arrays de 2) para mostrar en 2 columnas en la plantilla
+  get ingresosEnPares(): any[][] {
+    const pares = [];
+    for (let i = 0; i < this.ingresos.length; i += 2) {
+      pares.push([this.ingresos[i], this.ingresos[i + 1]]);
+    }
+    return pares;
   }
-  return pares;
-}
-
-// Lo mismo para descuentos
-get descuentosEnPares(): any[][] {
-  const pares = [];
-  for (let i = 0; i < this.descuentos.length; i += 2) {
-    pares.push([this.descuentos[i], this.descuentos[i + 1]]);
-  }
-  return pares;
-}
 }

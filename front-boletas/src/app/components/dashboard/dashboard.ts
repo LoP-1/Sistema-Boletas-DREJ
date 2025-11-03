@@ -13,6 +13,7 @@ import { TourService } from '../../services/tour';
   templateUrl: './dashboard.html',
   styleUrl: './dashboard.css'
 })
+//configuracion del carrito
 export class Dashboard implements OnInit {
   sidebarOpen = false;
   carritoCount = 0;

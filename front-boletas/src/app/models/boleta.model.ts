@@ -1,6 +1,7 @@
 import { ConceptoDTO } from './concepto.model';
 import { RegPensionarioDetalleDTO } from './reg-pensionario.model';
 
+//modelo de boleta
 export interface BoletaDTO {
   id?: number;
   archivo_origen: string;

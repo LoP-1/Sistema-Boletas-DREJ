@@ -1,308 +1,391 @@
-<!-- Alerta de éxito -->
-<div *ngIf="showEmergente" class="fixed z-50 top-8 left-1/2 -translate-x-1/2 bg-green-100 border border-green-400 text-green-800 px-6 py-4 rounded-lg shadow-lg flex items-center gap-4 animate-fade-in-down">
+<!--
+  login.component.html
+  Plantilla del componente de login / registro estilos o diseño con TailwindCSS.
+-->
+
+<!-- Contenedores de alerta emergente -->
+<!-- Alerta de éxito: se muestra cuando showEmergente === true. -->
+<!-- usa `mensaje` para el texto y permite cerrarla con showEmergente = false -->
+<div *ngIf="showEmergente"
+     class="fixed z-50 top-8 left-1/2 -translate-x-1/2 bg-green-100 border border-green-400 text-green-800 px-6 py-4 rounded-lg shadow-lg flex items-center gap-4 animate-fade-in-down">
+  <!-- Icono de check -->
   <svg class="w-6 h-6 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
   </svg>
+
+  <!-- Mensaje dinámico -->
   <span class="font-semibold">{{ mensaje }}</span>
-  <button type="button" (click)="showEmergente = false" class="ml-4 text-green-800 hover:text-green-600 text-xl leading-none">&times;</button>
+
+  <!-- Botón para cerrar la alerta (accesible, solo visualmente una X) -->
+  <button type="button"
+          (click)="showEmergente = false"
+          class="ml-4 text-green-800 hover:text-green-600 text-xl leading-none"
+          aria-label="Cerrar alerta de éxito">
+    &times;
+  </button>
 </div>
 
-<!-- Alerta de error -->
-<div *ngIf="showEmergenteError" class="fixed z-50 top-8 left-1/2 -translate-x-1/2 bg-red-100 border border-red-400 text-red-800 px-6 py-4 rounded-lg shadow-lg flex items-center gap-4 animate-fade-in-down">
+<!-- Alerta de error: se muestra cuando showEmergenteError === true. -->
+<!-- comparte la misma estructura que la alerta de éxito pero con estilos de error -->
+<div *ngIf="showEmergenteError"
+     class="fixed z-50 top-8 left-1/2 -translate-x-1/2 bg-red-100 border border-red-400 text-red-800 px-6 py-4 rounded-lg shadow-lg flex items-center gap-4 animate-fade-in-down">
+  <!-- Icono de error -->
   <svg class="w-6 h-6 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
   </svg>
+
+  <!-- Mensaje dinámico de error -->
   <span class="font-semibold">{{ mensaje }}</span>
-  <button type="button" (click)="showEmergenteError = false" class="ml-4 text-red-800 hover:text-red-600 text-xl leading-none">&times;</button>
+
+  <!-- Botón para cerrar la alerta de error -->
+  <button type="button"
+          (click)="showEmergenteError = false"
+          class="ml-4 text-red-800 hover:text-red-600 text-xl leading-none"
+          aria-label="Cerrar alerta de error">
+    &times;
+  </button>
 </div>
 
-<!-- Modal de Guía - PANTALLA COMPLETA EN MÓVIL -->
-<div *ngIf="showGuia" 
+<!-- Modal de Guía (pantalla completa en móvil) -->
+<!-- showGuia controla su visibilidad. Haciendo click fuera se cierra con cerrarGuia() -->
+<div *ngIf="showGuia"
      class="fixed inset-0 z-[9999] bg-black bg-opacity-90 animate-fade-in"
      (click)="cerrarGuia()">
-  
-  <!-- Contenedor del modal -->
+
+  <!-- Contenedor principal del modal:
+       - En móvil ocupa todo (inset-0).
+       - En desktop tiene margen (md:inset-4) y border radius.
+       - stopPropagation en el click interior evita que se cierre al interactuar dentro. -->
   <div class="fixed inset-0 flex flex-col bg-white md:inset-4 md:rounded-2xl md:shadow-2xl overflow-hidden"
        (click)="$event.stopPropagation()">
-    
-    <!-- Header del modal - sticky -->
+
+    <!-- Header sticky del modal:
+         - Mantiene el título y botón de cerrar visibles.
+         - Uso de gradiente y sombras para destacar.
+         - Incluye ícono y título responsive. -->
     <div class="flex-shrink-0 flex items-center justify-between p-3 md:p-4 border-b border-gray-200 bg-gradient-to-r from-blue-500 to-blue-600 shadow-lg">
       <h3 class="text-base md:text-xl font-bold text-white flex items-center gap-2">
+        <!-- Icono del manual/guía -->
         <svg class="w-5 h-5 md:w-6 md:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
         </svg>
+        <!-- Texto adaptativo: versión larga en pantallas >= sm -->
         <span class="hidden sm:inline">¿Cómo imprimir mis boletas?</span>
         <span class="sm:hidden">Guía de uso</span>
       </h3>
-      <button 
-        (click)="cerrarGuia()"
-        class="text-white hover:text-gray-200 transition-colors p-2 hover:bg-white/20 rounded-lg active:scale-95"
-        aria-label="Cerrar guía">
+
+      <!-- Botón de cerrar accesible en el header -->
+      <button (click)="cerrarGuia()"
+              class="text-white hover:text-gray-200 transition-colors p-2 hover:bg-white/20 rounded-lg active:scale-95"
+              aria-label="Cerrar guía">
         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
         </svg>
       </button>
     </div>
-    
-    <!-- Contenido del modal - iframe con aspect ratio optimizado -->
+
+    <!-- Contenido del modal:
+         - Contiene un iframe que carga una guía externa (genially).
+         - Se usa una caja relativa y absolute para que el iframe escale y ocupe todo. -->
     <div class="flex-1 overflow-hidden bg-gray-50">
       <div class="w-full h-full relative">
-        <iframe 
-          title="¿COMO IMPRIMIR MIS BOLETAS ?" 
-          frameborder="0" 
-          width="100%" 
-          height="100%" 
+        <iframe
+          title="¿COMO IMPRIMIR MIS BOLETAS ?"
+          frameborder="0"
+          width="100%"
+          height="100%"
           class="absolute inset-0 w-full h-full"
-          src="https://view.genially.com/6900d3ed0b868adecd208cfd" 
-          type="text/html" 
-          allowfullscreen="true" 
+          src="https://view.genially.com/6900d3ed0b868adecd208cfd"
+          type="text/html"
+          allowfullscreen="true"
           scrolling="yes"
           allow="fullscreen"
           loading="lazy">
         </iframe>
       </div>
     </div>
-    
-    <!-- Footer del modal - solo en desktop -->
+
+    <!-- Footer del modal: visible solo en desktop (md) -->
     <div class="hidden md:flex flex-shrink-0 p-3 md:p-4 border-t border-gray-200 bg-gray-50 justify-between items-center">
       <p class="text-sm text-gray-600">
         💡 <span class="font-semibold">Tip:</span> Puedes hacer zoom con Ctrl + rueda del mouse
       </p>
-      <button 
-        (click)="cerrarGuia()"
-        class="px-6 py-2 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 active:scale-95 transition-all shadow-md">
+      <button (click)="cerrarGuia()"
+              class="px-6 py-2 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 active:scale-95 transition-all shadow-md">
         Cerrar
       </button>
     </div>
   </div>
 </div>
 
+<!-- Página principal: centro del login/registro -->
 <div class="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 to-blue-100 relative">
-  
-  <!-- Botón flotante de ayuda -->
-  <button
-    (click)="abrirGuia()"
-    class="fixed bottom-6 right-6 z-50 bg-gradient-to-r from-purple-600 to-blue-600 text-white rounded-full p-3 md:p-4 shadow-2xl hover:shadow-purple-500/50 hover:scale-110 active:scale-95 transition-all duration-300 group"
-    title="Ver guía de uso"
-    aria-label="Ver guía de uso">
+
+  <!-- Botón flotante de ayuda:
+       - Siempre visible en esquina inferior derecha.
+       - Llama a abrirGuia() para mostrar la guía en modal.
+       - Incluye animación y badge para llamar la atención. -->
+  <button (click)="abrirGuia()"
+          class="fixed bottom-6 right-6 z-50 bg-gradient-to-r from-purple-600 to-blue-600 text-white rounded-full p-3 md:p-4 shadow-2xl hover:shadow-purple-500/50 hover:scale-110 active:scale-95 transition-all duration-300 group"
+          title="Ver guía de uso"
+          aria-label="Ver guía de uso">
     <svg class="w-6 h-6 md:w-7 md:h-7 group-hover:rotate-12 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+            d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
     </svg>
+
+    <!-- Indicador rojo/purpura para llamar la atención -->
     <span class="absolute -top-1 -right-1 flex h-3 w-3">
       <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-purple-400 opacity-75"></span>
       <span class="relative inline-flex rounded-full h-3 w-3 bg-purple-500"></span>
     </span>
   </button>
 
+  <!-- Card principal contenedor del form -->
   <div class="w-full max-w-md bg-white rounded-2xl shadow-2xl p-6 md:p-8 mx-4">
     <div class="flex flex-col items-center mb-6">
-      <img
-        src="logo-drej.png"
-        alt="Logo DREJ"
-        class="w-24 h-24 md:w-28 md:h-28 object-contain mb-4"
-        style="background: none; box-shadow: none;"
-      />
+      <!-- Logo -->
+      <img src="logo-drej.png"
+           alt="Logo DREJ"
+           class="w-24 h-24 md:w-28 md:h-28 object-contain mb-4"
+           style="background: none; box-shadow: none;"/>
+
+      <!-- Títulos dependiendo del modo (login vs registro) -->
       <h2 class="text-2xl md:text-3xl font-extrabold text-gray-800 tracking-tight mb-1" *ngIf="!modoRegistro">Bienvenido</h2>
       <h2 class="text-2xl md:text-3xl font-extrabold text-gray-800 tracking-tight mb-1" *ngIf="modoRegistro">Crea tu cuenta</h2>
+
+      <!-- Subtítulos adaptativos -->
       <p class="text-gray-500 text-sm" *ngIf="!modoRegistro">Inicia sesión con tus credenciales</p>
       <p class="text-gray-500 text-sm" *ngIf="modoRegistro">Regístrate para acceder</p>
-      
-      <!-- Botón de ayuda inline -->
-      <button
-        (click)="abrirGuia()"
-        class="mt-3 text-blue-600 hover:text-blue-800 text-sm font-semibold flex items-center gap-1 transition-colors hover:underline underline-offset-2 active:scale-95">
+
+      <!-- Botón de ayuda inline (abre la guía) -->
+      <button (click)="abrirGuia()"
+              class="mt-3 text-blue-600 hover:text-blue-800 text-sm font-semibold flex items-center gap-1 transition-colors hover:underline underline-offset-2 active:scale-95"
+              aria-label="Abrir guía de impresión">
         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
         </svg>
         ¿Necesitas ayuda? Ver guía
       </button>
     </div>
 
-    <!-- LOGIN FORM -->
+    <!-- ===========================
+         FORMULARIO DE LOGIN
+         =========================== -->
+    <!--
+      - Se muestra cuando modoRegistro === false.
+      - Usa ngForm y validación template-driven (ngModel).
+      - Propiedades del componente usadas:
+        correo, contrasena, cargando, login()
+    -->
     <form *ngIf="!modoRegistro" (ngSubmit)="login()" class="flex flex-col gap-4" #loginForm="ngForm" novalidate>
+      <!-- Email -->
       <div>
         <label class="block text-gray-700 text-sm font-semibold mb-1" for="correo">Correo</label>
-        <input
-          type="email"
-          id="correo"
-          [(ngModel)]="correo"
-          name="correo"
-          placeholder="correo@ejemplo.com"
-          required
-          email
-          #correoInput="ngModel"
-          class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-400 focus:outline-none transition"
-        >
-        <div *ngIf="correoInput.invalid && correoInput.touched" class="text-xs text-red-500 mt-1">
+        <input type="email"
+               id="correo"
+               [(ngModel)]="correo"
+               name="correo"
+               placeholder="correo@ejemplo.com"
+               required
+               email
+               #correoInput="ngModel"
+               class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-400 focus:outline-none transition"
+               aria-required="true"
+               aria-describedby="correoHelp">
+        <!-- Mensajes de error de validación (se muestran solo tras touch) -->
+        <div *ngIf="correoInput.invalid && correoInput.touched" class="text-xs text-red-500 mt-1" id="correoHelp">
           <span *ngIf="correoInput.errors?.['required']">El correo es obligatorio.</span>
           <span *ngIf="correoInput.errors?.['email']">Ingrese un correo válido.</span>
         </div>
       </div>
+
+      <!-- Contraseña -->
       <div>
         <label class="block text-gray-700 text-sm font-semibold mb-1" for="contrasena">Contraseña</label>
-        <input
-          type="password"
-          id="contrasena"
-          [(ngModel)]="contrasena"
-          name="contrasena"
-          placeholder="********"
-          required
-          minlength="6"
-          #pwdInput="ngModel"
-          class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-400 focus:outline-none transition"
-        >
+        <input type="password"
+               id="contrasena"
+               [(ngModel)]="contrasena"
+               name="contrasena"
+               placeholder="********"
+               required
+               minlength="6"
+               #pwdInput="ngModel"
+               class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-400 focus:outline-none transition"
+               aria-required="true">
         <div *ngIf="pwdInput.invalid && pwdInput.touched" class="text-xs text-red-500 mt-1">
           <span *ngIf="pwdInput.errors?.['required']">La contraseña es obligatoria.</span>
           <span *ngIf="pwdInput.errors?.['minlength']">Mínimo 6 caracteres.</span>
         </div>
       </div>
-      <button
-        type="submit"
-        [disabled]="cargando || loginForm.invalid"
-        class="w-full bg-blue-600 text-white font-bold py-2 rounded-lg shadow hover:bg-blue-700 active:scale-95 transition-all disabled:bg-blue-300"
-      >
+
+      <!-- Botón de enviar, deshabilitado si hay carga o el form es inválido -->
+      <button type="submit"
+              [disabled]="cargando || loginForm.invalid"
+              class="w-full bg-blue-600 text-white font-bold py-2 rounded-lg shadow hover:bg-blue-700 active:scale-95 transition-all disabled:bg-blue-300"
+              aria-busy="{{cargando}}">
         Ingresar
       </button>
-      <button
-        type="button"
-        (click)="alternarModo()"
-        class="w-full mt-1 bg-white border border-blue-600 text-blue-600 font-semibold py-2 rounded-lg hover:bg-blue-50 active:scale-95 transition-all"
-      >
+
+      <!-- Alternar a modo registro -->
+      <button type="button"
+              (click)="alternarModo()"
+              class="w-full mt-1 bg-white border border-blue-600 text-blue-600 font-semibold py-2 rounded-lg hover:bg-blue-50 active:scale-95 transition-all"
+              aria-pressed="{{modoRegistro}}">
         ¿No tienes cuenta? <span class="underline">Regístrate</span>
       </button>
     </form>
 
-    <!-- REGISTRO FORM -->
+    <!-- ===========================
+         FORMULARIO DE REGISTRO
+         =========================== -->
+    <!--
+      - Se muestra cuando modoRegistro === true.
+      - Usa registroData: { nombre, apellido, correo, dni, telefono, contrasena }
+      - Usa validaciones template-driven (ngModel + pattern/minlength).
+      - Propiedades del componente usadas: registroData, registro(), cargando, alternarModo()
+    -->
     <form *ngIf="modoRegistro" (ngSubmit)="registro()" class="flex flex-col gap-4" #registroForm="ngForm" novalidate>
+      <!-- Nombre y Apellido lado a lado -->
       <div class="flex gap-2">
         <div class="w-1/2">
           <label class="block text-gray-700 text-sm font-semibold mb-1" for="nombre">Nombre</label>
-          <input
-            type="text"
-            id="nombre"
-            [(ngModel)]="registroData.nombre"
-            name="nombre"
-            required
-            minlength="2"
-            #nombreInput="ngModel"
-            placeholder="Nombre"
-            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-400 focus:outline-none transition"
-          >
+          <input type="text"
+                 id="nombre"
+                 [(ngModel)]="registroData.nombre"
+                 name="nombre"
+                 required
+                 minlength="2"
+                 #nombreInput="ngModel"
+                 placeholder="Nombre"
+                 class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-400 focus:outline-none transition"
+                 aria-required="true">
           <div *ngIf="nombreInput.invalid && nombreInput.touched" class="text-xs text-red-500 mt-1">
             <span *ngIf="nombreInput.errors?.['required']">El nombre es obligatorio.</span>
             <span *ngIf="nombreInput.errors?.['minlength']">Mínimo 2 caracteres.</span>
           </div>
         </div>
+
         <div class="w-1/2">
           <label class="block text-gray-700 text-sm font-semibold mb-1" for="apellido">Apellido</label>
-          <input
-            type="text"
-            id="apellido"
-            [(ngModel)]="registroData.apellido"
-            name="apellido"
-            required
-            minlength="2"
-            #apellidoInput="ngModel"
-            placeholder="Apellido"
-            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-400 focus:outline-none transition"
-          >
+          <input type="text"
+                 id="apellido"
+                 [(ngModel)]="registroData.apellido"
+                 name="apellido"
+                 required
+                 minlength="2"
+                 #apellidoInput="ngModel"
+                 placeholder="Apellido"
+                 class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-400 focus:outline-none transition"
+                 aria-required="true">
           <div *ngIf="apellidoInput.invalid && apellidoInput.touched" class="text-xs text-red-500 mt-1">
             <span *ngIf="apellidoInput.errors?.['required']">El apellido es obligatorio.</span>
             <span *ngIf="apellidoInput.errors?.['minlength']">Mínimo 2 caracteres.</span>
           </div>
         </div>
       </div>
+
+      <!-- Correo de registro -->
       <div>
         <label class="block text-gray-700 text-sm font-semibold mb-1" for="correoRegistro">Correo</label>
-        <input
-          type="email"
-          id="correoRegistro"
-          [(ngModel)]="registroData.correo"
-          name="correoRegistro"
-          required
-          email
-          #correoRegistroInput="ngModel"
-          placeholder="correo@ejemplo.com"
-          class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-400 focus:outline-none transition"
-        >
+        <input type="email"
+               id="correoRegistro"
+               [(ngModel)]="registroData.correo"
+               name="correoRegistro"
+               required
+               email
+               #correoRegistroInput="ngModel"
+               placeholder="correo@ejemplo.com"
+               class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-400 focus:outline-none transition"
+               aria-required="true">
         <div *ngIf="correoRegistroInput.invalid && correoRegistroInput.touched" class="text-xs text-red-500 mt-1">
           <span *ngIf="correoRegistroInput.errors?.['required']">El correo es obligatorio.</span>
           <span *ngIf="correoRegistroInput.errors?.['email']">Ingrese un correo válido.</span>
         </div>
       </div>
+
+      <!-- DNI y Teléfono lado a lado con patrones -->
       <div class="flex gap-2">
         <div class="w-1/2">
           <label class="block text-gray-700 text-sm font-semibold mb-1" for="dni">DNI</label>
-          <input
-            type="text"
-            id="dni"
-            [(ngModel)]="registroData.dni"
-            name="dni"
-            required
-            pattern="[0-9]{8}"
-            #dniInput="ngModel"
-            maxlength="8"
-            placeholder="DNI"
-            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-400 focus:outline-none transition"
-          >
+          <input type="text"
+                 id="dni"
+                 [(ngModel)]="registroData.dni"
+                 name="dni"
+                 required
+                 pattern="[0-9]{8}"
+                 #dniInput="ngModel"
+                 maxlength="8"
+                 placeholder="DNI"
+                 class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-400 focus:outline-none transition"
+                 aria-required="true"
+                 inputmode="numeric">
           <div *ngIf="dniInput.invalid && dniInput.touched" class="text-xs text-red-500 mt-1">
             <span *ngIf="dniInput.errors?.['required']">El DNI es obligatorio.</span>
             <span *ngIf="dniInput.errors?.['pattern']">DNI inválido (8 dígitos).</span>
           </div>
         </div>
+
         <div class="w-1/2">
           <label class="block text-gray-700 text-sm font-semibold mb-1" for="telefono">Teléfono</label>
-          <input
-            type="text"
-            id="telefono"
-            [(ngModel)]="registroData.telefono"
-            name="telefono"
-            required
-            pattern="^[0-9]{9}$"
-            #telefonoInput="ngModel"
-            maxlength="9"
-            placeholder="Teléfono"
-            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-400 focus:outline-none transition"
-          >
+          <input type="text"
+                 id="telefono"
+                 [(ngModel)]="registroData.telefono"
+                 name="telefono"
+                 required
+                 pattern="^[0-9]{9}$"
+                 #telefonoInput="ngModel"
+                 maxlength="9"
+                 placeholder="Teléfono"
+                 class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-400 focus:outline-none transition"
+                 aria-required="true"
+                 inputmode="numeric">
           <div *ngIf="telefonoInput.invalid && telefonoInput.touched" class="text-xs text-red-500 mt-1">
             <span *ngIf="telefonoInput.errors?.['required']">El teléfono es obligatorio.</span>
             <span *ngIf="telefonoInput.errors?.['pattern']">Teléfono inválido (9 dígitos).</span>
           </div>
         </div>
       </div>
+
+      <!-- Contraseña de registro -->
       <div>
         <label class="block text-gray-700 text-sm font-semibold mb-1" for="contrasenaRegistro">Contraseña</label>
-        <input
-          type="password"
-          id="contrasenaRegistro"
-          [(ngModel)]="registroData.contrasena"
-          name="contrasenaRegistro"
-          required
-          minlength="6"
-          #pwdRegistroInput="ngModel"
-          placeholder="********"
-          class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-400 focus:outline-none transition"
-        >
+        <input type="password"
+               id="contrasenaRegistro"
+               [(ngModel)]="registroData.contrasena"
+               name="contrasenaRegistro"
+               required
+               minlength="6"
+               #pwdRegistroInput="ngModel"
+               placeholder="********"
+               class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-400 focus:outline-none transition"
+               aria-required="true">
         <div *ngIf="pwdRegistroInput.invalid && pwdRegistroInput.touched" class="text-xs text-red-500 mt-1">
           <span *ngIf="pwdRegistroInput.errors?.['required']">La contraseña es obligatoria.</span>
           <span *ngIf="pwdRegistroInput.errors?.['minlength']">Mínimo 6 caracteres.</span>
         </div>
       </div>
-      <button
-        type="submit"
-        [disabled]="cargando || registroForm.invalid"
-        class="w-full bg-blue-600 text-white font-bold py-2 rounded-lg shadow hover:bg-blue-700 active:scale-95 transition-all disabled:bg-blue-300"
-      >
+
+      <!-- Botón registrar -->
+      <button type="submit"
+              [disabled]="cargando || registroForm.invalid"
+              class="w-full bg-blue-600 text-white font-bold py-2 rounded-lg shadow hover:bg-blue-700 active:scale-95 transition-all disabled:bg-blue-300"
+              aria-busy="{{cargando}}">
         Registrar
       </button>
-      <button
-        type="button"
-        (click)="alternarModo()"
-        class="w-full mt-1 bg-white border border-blue-600 text-blue-600 font-semibold py-2 rounded-lg hover:bg-blue-50 active:scale-95 transition-all"
-      >
+
+      <!-- Alternar a iniciar sesión -->
+      <button type="button"
+              (click)="alternarModo()"
+              class="w-full mt-1 bg-white border border-blue-600 text-blue-600 font-semibold py-2 rounded-lg hover:bg-blue-50 active:scale-95 transition-all"
+              aria-pressed="{{!modoRegistro}}">
         ¿Ya tienes cuenta? <span class="underline">Inicia sesión</span>
       </button>
     </form>
+
+    <!-- Indicador global de carga -->
     <div *ngIf="cargando" class="text-center text-blue-600 mt-2 font-medium animate-pulse">Procesando...</div>
   </div>
 </div>

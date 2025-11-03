@@ -6,17 +6,20 @@ import 'driver.js/dist/driver.css';
   providedIn: 'root'
 })
 export class TourService {
+  // Instancia interna de driver.js
   private driverObj: any;
 
   constructor() {
+    // Configuración inicial del driver (texto de botones, estilo y callback)
     this.driverObj = driver({
-      showProgress: true,
-      showButtons: ['next', 'previous', 'close'],
+      showProgress: true,                       // muestra indicador "1 of N"
+      showButtons: ['next', 'previous', 'close'], // botones visibles
       nextBtnText: 'Siguiente →',
       prevBtnText: '← Anterior',
       doneBtnText: '✓ Entendido',
-      progressText: '{{current}} de {{total}}',
-      popoverClass: 'driverjs-theme',
+      progressText: '{{current}} de {{total}}', // texto del progreso
+      popoverClass: 'driverjs-theme',           // clase CSS custom del popover
+      // Cuando el tour comienza a destruirse, marcamos como completado y destruimos el objeto
       onDestroyStarted: () => {
         this.markTourAsCompleted();
         this.driverObj.destroy();
@@ -24,18 +27,20 @@ export class TourService {
     });
   }
 
+  // Inicia el tour adaptado a móvil o escritorio según el ancho de ventana
   startUserTour() {
     const isMobile = window.innerWidth < 768;
-    
+
     if (isMobile) {
-      // Tour para móviles
+      // Configuración de pasos para móviles (selector de elementos responsive)
       this.driverObj.setConfig({
         steps: [
           {
             element: '[data-tour="menu-hamburguesa"]',
             popover: {
               title: '📋 Menú de Navegación',
-              description: 'Toca aquí para abrir el menú y acceder a la sección de <strong>Boletas</strong>, donde podrás ver e imprimir todos tus documentos.',
+              description:
+                'Toca aquí para abrir el menú y acceder a la sección de <strong>Boletas</strong>, donde podrás ver e imprimir todos tus documentos.',
               side: 'bottom',
               align: 'end'
             }
@@ -44,7 +49,8 @@ export class TourService {
             element: '[data-tour="carrito-mobile"]',
             popover: {
               title: '🛒 Carrito de Boletas',
-              description: 'Usa este botón flotante para abrir tu carrito en cualquier momento. Aquí encontrarás las boletas que selecciones para imprimir.',
+              description:
+                'Usa este botón flotante para abrir tu carrito en cualquier momento. Aquí encontrarás las boletas que selecciones para imprimir.',
               side: 'left',
               align: 'center'
             }
@@ -52,14 +58,15 @@ export class TourService {
         ]
       });
     } else {
-      // Tour para desktop
+      // Pasos para desktop (targets diferentes)
       this.driverObj.setConfig({
         steps: [
           {
             element: '[data-tour="boletas-desktop"]',
             popover: {
               title: '📋 Sección de Boletas',
-              description: 'Aquí puedes ver todas tus boletas disponibles e imprimirlas cuando lo necesites. Es tu principal punto de acceso a los documentos.',
+              description:
+                'Aquí puedes ver todas tus boletas disponibles e imprimirlas cuando lo necesites. Es tu principal punto de acceso a los documentos.',
               side: 'bottom',
               align: 'start'
             }
@@ -68,7 +75,8 @@ export class TourService {
             element: '[data-tour="carrito-sidebar"]',
             popover: {
               title: '🛒 Carrito de Boletas',
-              description: 'En este panel encontrarás las boletas que selecciones. Podrás revisarlas y proceder con la impresión.',
+              description:
+                'En este panel encontrarás las boletas que selecciones. Podrás revisarlas y proceder con la impresión.',
               side: 'left',
               align: 'start'
             }
@@ -77,17 +85,21 @@ export class TourService {
       });
     }
 
+    // Lanza el tour con la configuración definida
     this.driverObj.drive();
   }
 
+  // Marca en localStorage que el usuario ya vio el tour
   private markTourAsCompleted() {
     localStorage.setItem('hasSeenTour', 'true');
   }
 
+  // Determina si se debe mostrar el tour (si no está marcado como visto)
   shouldShowTour(): boolean {
     return !localStorage.getItem('hasSeenTour');
   }
 
+  // Resetea el flag para volver a mostrar el tour
   resetTour() {
     localStorage.removeItem('hasSeenTour');
   }

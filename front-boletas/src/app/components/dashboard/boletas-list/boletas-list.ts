@@ -16,22 +16,24 @@ import { FormsModule } from '@angular/forms';
   styleUrls: ['./boletas-list.css']
 })
 export class BoletasList implements OnInit {
+  // Servicios inyectados con inject() (alternativa al constructor)
   private personaService = inject(PersonaService);
   private boletaService = inject(BoletaService);
   private authService = inject(AuthService);
   private cdr = inject(ChangeDetectorRef);
   private carritoService = inject(Carrito);
 
-  boletas: BoletaDTO[] = [];
-  grouped: { [anio: string]: { [mes: string]: BoletaDTO[] } } = {};
+  // Datos básicos
+  boletas: BoletaDTO[] = []; // todas las boletas del usuario
+  grouped: { [anio: string]: { [mes: string]: BoletaDTO[] } } = {}; // agrupadas por año → mes
 
+  // Estados de UI
   selectedYear: string | null = null;
   selectedMonth: string | null = null;
   modalBoleta: BoletaDTO | null = null;
-
   filtro = '';
 
-  // Mapa de colores por mes
+  // Colores por mes para tarjetas
   private monthColors: { [key: string]: string } = {
     'Enero': 'bg-sky-100 border-sky-300 text-sky-800 hover:bg-sky-200',
     'Febrero': 'bg-pink-100 border-pink-300 text-pink-800 hover:bg-pink-200',
@@ -48,9 +50,14 @@ export class BoletasList implements OnInit {
   };
 
   ngOnInit(): void {
+    // Al iniciar carga las boletas del usuario logueado
     this.loadBoletasForLoggedUser();
   }
 
+  // Carga boletas del usuario actual:
+  // 1) obtiene el DNI del AuthService
+  // 2) consulta PersonaService para obtener la persona
+  // 3) lista boletas con BoletaService y agrupa
   loadBoletasForLoggedUser() {
     const dni = this.authService.getDni();
     if (!dni) return;
@@ -61,8 +68,8 @@ export class BoletasList implements OnInit {
           this.boletaService.listarBoletasPersona(persona.id).subscribe({
             next: data => {
               this.boletas = data ?? [];
-              this.groupBoletas();
-              this.cdr.detectChanges();
+              this.groupBoletas();       // agrupa por año/mes
+              this.cdr.detectChanges();  // forzar detectChanges si es necesario
             },
             error: err => {
               console.error('Error al cargar boletas:', err);
@@ -76,6 +83,7 @@ export class BoletasList implements OnInit {
     });
   }
 
+  // Agrupa boletas en this.grouped por año → mes
   groupBoletas() {
     this.grouped = {};
     for (const boleta of this.boletas) {
@@ -90,7 +98,7 @@ export class BoletasList implements OnInit {
     }
   }
 
-  // Agrupa a partir de boletas filtradas por texto
+  // Retorna las boletas agrupadas aplicando el filtro de texto (filtro busca en varios campos)
   get filteredGrouped(): { [anio: string]: { [mes: string]: BoletaDTO[] } } {
     const f = this.filtro.trim().toLowerCase();
     if (!f) return this.grouped;
@@ -119,30 +127,31 @@ export class BoletasList implements OnInit {
     return result;
   }
 
+  // Utilidad para obtener las claves de un objeto (años o meses)
   getKeys(obj: any): string[] {
     return Object.keys(obj || {});
   }
 
-  // Retorna las clases CSS de color para cada mes
+  // Devuelve clases CSS para colorear tarjetas por mes (fallback gris)
   getMonthColorClasses(mes: string): string {
     return this.monthColors[mes] || 'bg-gray-100 border-gray-300 text-gray-800 hover:bg-gray-200';
   }
 
+  // Selección de año/mes y navegación interna
   selectYear(anio: string) {
     this.selectedYear = anio;
     this.selectedMonth = null;
     this.modalBoleta = null;
   }
-
   selectMonth(mes: string) {
     this.selectedMonth = mes;
     this.modalBoleta = null;
   }
 
+  // Modal: abrir/guardar/ cerrar
   openModal(boleta: BoletaDTO) {
     this.modalBoleta = boleta;
   }
-
   closeModal() {
     this.modalBoleta = null;
   }
@@ -152,19 +161,20 @@ export class BoletasList implements OnInit {
     this.selectedMonth = null;
     this.modalBoleta = null;
   }
-
   backToMonths() {
     this.selectedMonth = null;
     this.modalBoleta = null;
   }
 
+  // Agregar boleta al carrito (usa el servicio Carrito)
   addToCart(boleta: BoletaDTO) {
     console.log('Boleta que se agrega:', boleta);
     this.carritoService.addBoleta(boleta);
   }
 
+  // Atajo: agrega al carrito y abre el modal de detalle
   openModalAndAdd(boleta: BoletaDTO) {
-  this.addToCart(boleta);
-  this.openModal(boleta);
-}
+    this.addToCart(boleta);
+    this.openModal(boleta);
+  }
 }

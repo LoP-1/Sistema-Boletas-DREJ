@@ -1,6 +1,7 @@
 <div class="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 py-8 px-3 md:px-8">
   <div class="max-w-7xl mx-auto">
-    <!-- Header -->
+
+    <!-- Header: título y botón recargar -->
     <div class="bg-white rounded-2xl shadow-xl border border-blue-200 p-6 md:p-8 mb-6">
       <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
         <div>
@@ -11,10 +12,13 @@
             Administra personas, edita información y gestiona sus boletas de pago
           </p>
         </div>
+
+        <!-- Botón que recarga la página de personas actual -->
         <button 
           (click)="cargarPersonas(personaPage)"
           class="inline-flex items-center gap-2 px-5 py-2.5 bg-blue-600 text-white rounded-xl shadow-lg hover:bg-blue-700 hover:shadow-xl transition-all duration-200 font-semibold"
           aria-label="Recargar lista de personas">
+          <!-- icono refresh -->
           <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
           </svg>
@@ -23,13 +27,14 @@
       </div>
     </div>
 
-    <!-- Search Bar -->
+    <!-- Barra de búsqueda: filtro global para personas y boletas -->
     <div class="bg-white rounded-2xl shadow-xl border border-blue-200 p-4 md:p-6 mb-6">
       <label for="search-filter" class="sr-only">Buscar personas o boletas</label>
       <div class="relative">
         <svg class="w-5 h-5 text-blue-400 absolute left-4 top-1/2 -translate-y-1/2 pointer-events-none" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" d="m21 21-4.35-4.35M17 10.5A6.5 6.5 0 1 1 4 10.5a6.5 6.5 0 0 1 13 0z" />
         </svg>
+        <!-- filtro es ngModel; onFiltroChange() prefetch si corresponde -->
         <input 
           id="search-filter"
           [(ngModel)]="filtro" 
@@ -40,7 +45,7 @@
       </div>
     </div>
 
-    <!-- Loading State -->
+    <!-- Estado de carga: muestra spinner cuando personaLoading = true -->
     <div *ngIf="personaLoading" class="bg-white rounded-2xl shadow-xl border border-blue-200 p-8 text-center">
       <div class="inline-flex items-center gap-3 text-blue-600">
         <svg class="animate-spin h-6 w-6" fill="none" viewBox="0 0 24 24">
@@ -51,12 +56,13 @@
       </div>
     </div>
 
-    <!-- Table Container -->
+    <!-- Tabla principal: se muestra cuando no está cargando -->
     <div *ngIf="!personaLoading" class="bg-white rounded-2xl shadow-xl border border-blue-200 overflow-hidden">
       <div class="overflow-x-auto">
         <table class="min-w-full divide-y divide-blue-100">
           <thead class="bg-gradient-to-r from-blue-600 to-indigo-600">
             <tr>
+              <!-- columna para expandir filas -->
               <th scope="col" class="py-4 px-4 text-left font-bold text-white text-sm uppercase tracking-wider w-16">
                 <span class="sr-only">Expandir</span>
               </th>
@@ -68,11 +74,14 @@
               <th scope="col" class="py-4 px-6 text-left font-bold text-white text-sm uppercase tracking-wider">Acciones</th>
             </tr>
           </thead>
+
           <tbody class="divide-y divide-blue-50">
+            <!-- Itera personas filtradas; trackByPersona optimiza re-render -->
             <ng-container *ngFor="let p of filtrarPersonas(); let i = index; trackBy: trackByPersona">
-              <!-- Persona Row -->
+              <!-- Fila de persona -->
               <tr class="hover:bg-blue-50 transition-colors duration-150" [class.bg-blue-25]="i % 2 === 0">
                 <td class="py-4 px-4">
+                  <!-- Botón de expandir: llama toggleExpand(persona) -->
                   <button 
                     (click)="toggleExpand(p, $event)"
                     [attr.aria-expanded]="isExpanded(p.id)"
@@ -86,26 +95,33 @@
                     </svg>
                   </button>
                 </td>
+
+                <!-- Datos básicos de la persona -->
                 <td class="py-4 px-6 text-sm font-semibold text-gray-700">{{p.id}}</td>
                 <td class="py-4 px-6 text-sm font-medium text-gray-900">{{p.documentoIdentidad}}</td>
                 <td class="py-4 px-6 text-sm font-medium text-gray-900">{{p.nombres}}</td>
                 <td class="py-4 px-6 text-sm font-medium text-gray-900">{{p.apellidos}}</td>
                 <td class="py-4 px-6 text-sm text-gray-600">{{p.fechaNacimiento}}</td>
+
+                <!-- Acciones: Editar persona y Eliminar persona -->
                 <td class="py-4 px-6">
                   <div class="flex flex-wrap gap-2">
                     <button 
                       (click)="mostrarEditarPersona(p, $event)"
                       class="inline-flex items-center gap-1.5 bg-blue-600 text-white px-4 py-2 rounded-lg text-xs font-bold shadow-md hover:bg-blue-700 hover:shadow-lg transition-all duration-200 focus:ring-2 focus:ring-blue-500 focus:outline-none"
                       aria-label="Editar persona {{p.nombres}} {{p.apellidos}}">
+                      <!-- icono editar -->
                       <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
                       </svg>
                       Editar
                     </button>
+
                     <button 
                       (click)="eliminarPersona(p.id ?? 0, $event)"
                       class="inline-flex items-center gap-1.5 bg-red-600 text-white px-4 py-2 rounded-lg text-xs font-bold shadow-md hover:bg-red-700 hover:shadow-lg transition-all duration-200 focus:ring-2 focus:ring-red-500 focus:outline-none"
                       aria-label="Eliminar persona {{p.nombres}} {{p.apellidos}}">
+                      <!-- icono eliminar -->
                       <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
                       </svg>
@@ -115,7 +131,7 @@
                 </td>
               </tr>
 
-              <!-- Loading Boletas -->
+              <!-- Fila de loading para boletas mientras se cargan -->
               <tr *ngIf="isExpanded(p.id) && loadingPersonaId === p.id" class="bg-blue-50">
                 <td colspan="7" class="py-6 px-6 text-center">
                   <div class="inline-flex items-center gap-3 text-blue-600">
@@ -128,20 +144,24 @@
                 </td>
               </tr>
 
-              <!-- Boletas Rows -->
+              <!-- Bloque con las boletas: se muestran si la persona está expandida -->
               <ng-container *ngIf="isExpanded(p.id) && loadingPersonaId !== p.id">
+                <!-- Si hay boletas filtradas para esa persona -->
                 <ng-container *ngIf="(boletasFiltradas(p.id!)?.length ?? 0) > 0; else noBoletas">
                   <tr *ngFor="let b of boletasFiltradas(p.id!); let j = index; trackBy: trackByBoleta"
                     class="bg-gradient-to-r from-blue-50 to-indigo-50 hover:from-blue-100 hover:to-indigo-100 transition-colors duration-150 border-l-4 border-blue-400">
                     <td class="py-3 px-4"></td>
                     <td class="py-3 px-6">
                       <span class="inline-flex items-center gap-1.5 text-xs font-bold text-blue-700 bg-blue-200 px-3 py-1.5 rounded-full">
+                        <!-- icono etiqueta Boleta -->
                         <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                           <path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
                         </svg>
                         Boleta
                       </span>
                     </td>
+
+                    <!-- Datos principales de la boleta -->
                     <td class="py-3 px-6">
                       <div class="text-sm font-bold text-blue-900">{{ b.mes }}/{{ b.anio }}</div>
                       <div class="text-xs text-gray-500 mt-0.5">Sec: {{ b.secuencia }}</div>
@@ -162,6 +182,8 @@
                         {{ b.estado }}
                       </span>
                     </td>
+
+                    <!-- Acciones sobre la boleta: Editar y Eliminar -->
                     <td class="py-3 px-6">
                       <div class="flex flex-wrap gap-2">
                         <button 
@@ -173,6 +195,7 @@
                           </svg>
                           Editar
                         </button>
+
                         <button 
                           (click)="eliminarBoleta(b.id ?? 0, p.id!, $event)"
                           class="inline-flex items-center gap-1.5 bg-red-600 text-white px-4 py-2 rounded-lg text-xs font-bold shadow-md hover:bg-red-700 hover:shadow-lg transition-all duration-200 focus:ring-2 focus:ring-red-500 focus:outline-none"
@@ -186,6 +209,8 @@
                     </td>
                   </tr>
                 </ng-container>
+
+                <!-- Mensaje cuando no hay boletas -->
                 <ng-template #noBoletas>
                   <tr class="bg-blue-50">
                     <td colspan="7" class="py-6 px-6 text-center">
@@ -199,12 +224,13 @@
                   </tr>
                 </ng-template>
               </ng-container>
+
             </ng-container>
           </tbody>
         </table>
       </div>
 
-      <!-- Pagination -->
+      <!-- Paginación: botones anterior / siguiente y contador de página -->
       <div class="bg-gradient-to-r from-blue-50 to-indigo-50 px-6 py-5 border-t border-blue-200">
         <nav class="flex items-center justify-between" aria-label="Paginación">
           <button 
@@ -237,7 +263,7 @@
     </div>
   </div>
 
-  <!-- Modal Editar Persona -->
+  <!-- Modal: Editar Persona -->
   <div 
     *ngIf="showEditarPersonaModal && editandoPersona" 
     class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4"
@@ -245,6 +271,7 @@
     aria-modal="true"
     aria-labelledby="modal-persona-title">
     <div class="bg-white rounded-3xl shadow-2xl max-w-lg w-full p-8 relative animate-fadeIn">
+      <!-- Botón cerrar modal -->
       <button 
         (click)="cancelarEdicionPersona()"
         class="absolute top-4 right-4 w-10 h-10 flex items-center justify-center rounded-full text-gray-400 hover:text-gray-600 hover:bg-gray-100 transition-colors duration-200 focus:ring-2 focus:ring-blue-500 focus:outline-none"
@@ -259,6 +286,7 @@
         <p class="text-gray-600 text-sm">Modifica la información de la persona seleccionada</p>
       </div>
       
+      <!-- Formulario de edición de persona (usa editandoPersona como modelo) -->
       <form (ngSubmit)="guardarPersona()" class="space-y-5">
         <div>
           <label for="persona-nombres" class="block text-sm font-bold text-gray-700 mb-2">
@@ -322,11 +350,13 @@
           <button 
             type="submit"
             class="flex-1 inline-flex items-center justify-center gap-2 bg-green-600 text-white px-6 py-3 rounded-xl shadow-lg hover:bg-green-700 hover:shadow-xl transition-all duration-200 font-bold focus:ring-2 focus:ring-green-500 focus:outline-none">
+            <!-- Guardar cambios de persona -->
             <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
             </svg>
             Guardar Cambios
           </button>
+
           <button 
             type="button" 
             (click)="cancelarEdicionPersona()"
@@ -341,7 +371,7 @@
     </div>
   </div>
 
-  <!-- Modal Editar Boleta -->
+  <!-- Modal: Editar Boleta -->
   <div 
     *ngIf="showEditarBoletaModal && editandoBoleta" 
     class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4"
@@ -349,6 +379,7 @@
     aria-modal="true"
     aria-labelledby="modal-boleta-title">
     <div class="bg-white rounded-3xl shadow-2xl max-w-lg w-full p-8 relative animate-fadeIn">
+      <!-- Botón cerrar modal de boleta -->
       <button 
         (click)="cancelarEdicionBoleta()"
         class="absolute top-4 right-4 w-10 h-10 flex items-center justify-center rounded-full text-gray-400 hover:text-gray-600 hover:bg-gray-100 transition-colors duration-200 focus:ring-2 focus:ring-indigo-500 focus:outline-none"
@@ -363,6 +394,7 @@
         <p class="text-gray-600 text-sm">Modifica la información de la boleta de pago</p>
       </div>
       
+      <!-- Formulario de edición de boleta (usa editandoBoleta como modelo) -->
       <form (ngSubmit)="guardarBoleta()" class="space-y-5">
         <div class="grid grid-cols-2 gap-4">
           <div>
@@ -454,6 +486,7 @@
             </svg>
             Guardar Cambios
           </button>
+
           <button 
             type="button" 
             (click)="cancelarEdicionBoleta()"

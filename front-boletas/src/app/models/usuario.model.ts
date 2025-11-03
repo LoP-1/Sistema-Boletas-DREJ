@@ -1,3 +1,4 @@
+//modelo de usuario
 export interface Usuario {
   id?: number;
   nombre: string;

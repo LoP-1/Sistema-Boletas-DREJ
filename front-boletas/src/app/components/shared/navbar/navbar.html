@@ -1,11 +1,12 @@
-<nav class="bg-white shadow-md px-4 lg:px-6 py-3 sticky top-0 z-30 border-b border-blue-200" 
-     role="navigation" 
+<nav class="bg-white shadow-md px-4 lg:px-6 py-3 sticky top-0 z-30 border-b border-blue-200"
+     role="navigation"
      aria-label="Menú principal">
-  
+
   <div class="flex items-center justify-between">
     <!-- Logo y título -->
     <div class="flex items-center gap-2 lg:gap-3">
       <div class="p-1 lg:p-2 flex items-center justify-center">
+        <!-- Imagen del logo (estática en la carpeta de assets) -->
         <img src="logo-drej.png" alt="Logo DREJ" class="h-8 lg:h-12 w-auto" />
       </div>
       <span class="text-sm sm:text-base lg:text-xl font-bold text-blue-700 tracking-wide">
@@ -13,84 +14,95 @@
       </span>
     </div>
 
-    <!-- Menú Desktop -->
+    <!-- Menú Desktop (oculto en móviles con 'hidden md:flex') -->
     <ul class="hidden md:flex gap-2 lg:gap-4 xl:gap-6 items-center">
+      <!-- Enlaces con routerLink: permiten navegación cliente-side con Angular Router -->
       <li>
-        <a routerLink="/dashboard/inicio" 
+        <a routerLink="/dashboard/inicio"
            routerLinkActive="font-bold text-blue-700 underline underline-offset-8"
            class="text-gray-700 hover:text-blue-700 px-2 lg:px-3 py-2 rounded transition focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 text-sm lg:text-base whitespace-nowrap">
           Inicio
         </a>
       </li>
+
+      <!-- Ejemplo de data-tour para integrar un tour (atributo usado por librerías de tours) -->
       <li data-tour="boletas-desktop">
-        <a routerLink="/dashboard/boletas" 
+        <a routerLink="/dashboard/boletas"
            routerLinkActive="font-bold text-blue-700 underline underline-offset-8"
            class="text-gray-700 hover:text-blue-700 px-2 lg:px-3 py-2 rounded transition focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 text-sm lg:text-base whitespace-nowrap">
           Boletas
         </a>
       </li>
+
+      <!-- Links solo visibles para ADMIN: se controla desde la propiedad 'rol' en el componente -->
       <li *ngIf="rol === 'ADMIN'">
-        <a routerLink="/dashboard/admin" 
+        <a routerLink="/dashboard/admin"
            routerLinkActive="font-bold text-blue-700 underline underline-offset-8"
            class="text-gray-700 hover:text-blue-700 px-2 lg:px-3 py-2 rounded transition focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 text-sm lg:text-base whitespace-nowrap">
           Usuarios
         </a>
       </li>
+
       <li *ngIf="rol === 'ADMIN'">
-        <a routerLink="/dashboard/gestion-boletas" 
+        <a routerLink="/dashboard/gestion-boletas"
            routerLinkActive="font-bold text-blue-700 underline underline-offset-8"
            class="text-gray-700 hover:text-blue-700 px-2 lg:px-3 py-2 rounded transition focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 text-sm lg:text-base whitespace-nowrap">
           Gestionar
         </a>
       </li>
+
       <li *ngIf="rol === 'ADMIN'">
-        <a routerLink="/dashboard/subir-boleta" 
+        <a routerLink="/dashboard/subir-boleta"
            routerLinkActive="font-bold text-blue-700 underline underline-offset-8"
            class="text-gray-700 hover:text-blue-700 px-2 lg:px-3 py-2 rounded transition focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 text-sm lg:text-base whitespace-nowrap">
           Subir
         </a>
       </li>
+
+      <!-- Enlace a perfil (siempre visible) -->
       <li>
         <a routerLink="/dashboard/perfil"
            class="tour-nav-perfil text-gray-700 hover:text-blue-700 px-2 lg:px-3 py-2 rounded transition focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 text-sm lg:text-base whitespace-nowrap">
           Perfil
         </a>
       </li>
+
+      <!-- Botón de Logout: llama al método logout() del componente -->
       <li>
-          <button
-    (click)="logout()"
-    class="text-gray-700 hover:text-red-600 px-2 lg:px-3 py-2 rounded transition focus:outline-none focus-visible:ring-2 focus-visible:ring-red-500 text-sm lg:text-base whitespace-nowrap flex items-center gap-1">
-    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/>
-    </svg>
-    Salir
-  </button>
+        <button (click)="logout()"
+                class="text-gray-700 hover:text-red-600 px-2 lg:px-3 py-2 rounded transition focus:outline-none focus-visible:ring-2 focus-visible:ring-red-500 text-sm lg:text-base whitespace-nowrap flex items-center gap-1">
+          <!-- Icono SVG simple -->
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/>
+          </svg>
+          Salir
+        </button>
       </li>
     </ul>
 
-    <!-- Botón menú hamburguesa (Mobile) - AÑADIDO data-tour -->
-    <button 
-      data-tour="menu-hamburguesa"
-      class="md:hidden p-2 rounded-lg hover:bg-blue-50 transition focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
-      (click)="toggleMenu()"
-      [attr.aria-expanded]="menuOpen"
-      aria-label="Toggle navigation menu">
+    <!-- Botón hamburguesa para móviles -->
+    <button data-tour="menu-hamburguesa"
+            class="md:hidden p-2 rounded-lg hover:bg-blue-50 transition focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
+            (click)="toggleMenu()"
+            [attr.aria-expanded]="menuOpen"
+            aria-label="Toggle navigation menu">
+      <!-- Icono cambia según menuOpen (abre/cierra) -->
       <svg class="w-6 h-6 text-blue-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path *ngIf="!menuOpen" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+        <path *ngIf="!menuOpen" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
               d="M4 6h16M4 12h16M4 18h16"/>
-        <path *ngIf="menuOpen" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+        <path *ngIf="menuOpen" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
               d="M6 18L18 6M6 6l12 12"/>
       </svg>
     </button>
   </div>
 
-  <!-- Menú Mobile Desplegable -->
-  <div 
-    *ngIf="menuOpen"
-    class="md:hidden mt-3 pb-3 border-t border-blue-100 pt-3 animate-slideDown">
+  <!-- Menú Mobile desplegable: se muestra cuando menuOpen === true -->
+  <div *ngIf="menuOpen" class="md:hidden mt-3 pb-3 border-t border-blue-100 pt-3 animate-slideDown">
     <ul class="flex flex-col gap-2">
+      <!-- Cada enlace cierra el menú móvil al hacer click (closeMenu()) -->
       <li>
-        <a routerLink="/dashboard/inicio" 
+        <a routerLink="/dashboard/inicio"
            routerLinkActive="bg-blue-100 text-blue-700 font-semibold"
            [routerLinkActiveOptions]="{ exact: true }"
            (click)="closeMenu()"
@@ -98,6 +110,7 @@
           Inicio
         </a>
       </li>
+
       <li>
         <a routerLink="/dashboard/boletas"
            routerLinkActive="bg-blue-100 text-blue-700 font-semibold"
@@ -107,8 +120,10 @@
           Boletas
         </a>
       </li>
+
+      <!-- Opciones admin (solo si rol === 'ADMIN') -->
       <li *ngIf="rol === 'ADMIN'">
-        <a routerLink="/dashboard/admin" 
+        <a routerLink="/dashboard/admin"
            routerLinkActive="bg-blue-100 text-blue-700 font-semibold"
            [routerLinkActiveOptions]="{ exact: true }"
            (click)="closeMenu()"
@@ -116,8 +131,9 @@
           Usuarios
         </a>
       </li>
+
       <li *ngIf="rol === 'ADMIN'">
-        <a routerLink="/dashboard/gestion-boletas" 
+        <a routerLink="/dashboard/gestion-boletas"
            routerLinkActive="bg-blue-100 text-blue-700 font-semibold"
            [routerLinkActiveOptions]="{ exact: true }"
            (click)="closeMenu()"
@@ -125,8 +141,9 @@
           Gestionar Boletas
         </a>
       </li>
+
       <li *ngIf="rol === 'ADMIN'">
-        <a routerLink="/dashboard/subir-boleta" 
+        <a routerLink="/dashboard/subir-boleta"
            routerLinkActive="bg-blue-100 text-blue-700 font-semibold"
            [routerLinkActiveOptions]="{ exact: true }"
            (click)="closeMenu()"
@@ -134,6 +151,7 @@
           Subir Boleta
         </a>
       </li>
+
       <li>
         <a routerLink="/dashboard/perfil"
            routerLinkActive="bg-blue-100 text-blue-700 font-semibold"
@@ -143,15 +161,13 @@
           Perfil
         </a>
       </li>
-      <li>
-  <button
-    (click)="logout(); closeMenu()"
-    class="w-full text-left block text-gray-700 hover:bg-red-50 hover:text-red-700 px-4 py-2.5 rounded transition flex items-center gap-2">
-    Cerrar Sesión
-  </button>
-</li>
-      <!-- Agregar antes del cierre de la lista del menú móvil -->
 
+      <li>
+        <button (click)="logout(); closeMenu()"
+                class="w-full text-left block text-gray-700 hover:bg-red-50 hover:text-red-700 px-4 py-2.5 rounded transition flex items-center gap-2">
+          Cerrar Sesión
+        </button>
+      </li>
     </ul>
   </div>
 </nav>

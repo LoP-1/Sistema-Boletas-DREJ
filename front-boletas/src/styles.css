@@ -1,8 +1,7 @@
 @import "tailwindcss";
-
-/* Importar Driver.js */
 @import 'driver.js/dist/driver.css';
 
+/*Estilos generales del sistema*/
 /* Personalización del tour */
 .driver-popover {
   background: white;

@@ -1,3 +1,4 @@
+//modelo de persona
 export interface PersonaDTO {
   id?: number;
   apellidos: string;

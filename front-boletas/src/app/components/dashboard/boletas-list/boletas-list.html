@@ -1,17 +1,26 @@
+<!--
+  boletas-list.html
+  Vista de "Tus boletas" con diseño responsive (años → meses → boletas).
+  Comentarios simples en español para entender cada bloque y las variables Angular usadas.
+-->
+
 <div class="min-h-screen bg-gradient-to-br from-blue-50 to-blue-100 py-10 px-3 md:px-8">
   <div class="max-w-7xl mx-auto bg-white rounded-3xl shadow-2xl border border-blue-100 overflow-hidden">
-    <!-- Header -->
+    <!-- Header: título y búsqueda -->
     <div class="p-6 md:p-8 bg-gradient-to-r from-blue-100 to-blue-50 border-b border-blue-100">
       <div class="flex items-center justify-between gap-4 flex-wrap">
         <div>
           <h2 class="text-2xl md:text-3xl font-extrabold text-blue-900 tracking-tight">Tus boletas</h2>
           <p class="text-gray-600">Explora y busca por establecimiento, cargo, estado, mes o año</p>
         </div>
+
+        <!-- Campo de filtro global -->
         <div class="w-full md:w-auto flex-1 md:flex-none relative">
+          <!-- filtro es el modelo ([(ngModel)]="filtro") -->
           <input [(ngModel)]="filtro" placeholder="Buscar en tus boletas..."
             class="w-full pl-10 pr-4 py-2 border border-blue-200 rounded-xl focus:ring-2 focus:ring-blue-300 outline-none transition" />
           <svg class="w-5 h-5 text-blue-400 absolute left-3 top-2.5" fill="none" stroke="currentColor" stroke-width="2"
-            viewBox="0 0 24 24">
+            viewBox="0 0 24 24" aria-hidden="true">
             <path stroke-linecap="round" stroke-linejoin="round"
               d="m21 21-4.35-4.35M17 10.5A6.5 6.5 0 1 1 4 10.5a6.5 6.5 0 0 1 13 0z" />
           </svg>
@@ -20,17 +29,20 @@
     </div>
 
     <div class="p-6 md:p-8">
-      <!-- Tarjetas de Año -->
+      <!-- Años disponibles: se muestra cuando no hay year seleccionado -->
       <ng-container *ngIf="!selectedYear">
         <h3 class="text-xl md:text-2xl font-semibold text-blue-800 mb-6">Años disponibles</h3>
+
+        <!-- Se renderiza con getKeys(filteredGrouped) -->
         <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
           <ng-container *ngFor="let anio of getKeys(filteredGrouped)">
+            <!-- selectYear(anio) → establece selectedYear -->
             <div (click)="selectYear(anio)"
               class="cursor-pointer bg-white hover:bg-blue-50 transition shadow-lg rounded-2xl p-6 flex flex-col items-center group border-2 border-blue-100 hover:border-blue-400">
               <div class="text-5xl font-bold text-blue-700 group-hover:text-blue-900 transition">{{ anio }}</div>
               <div class="mt-3 text-sm text-gray-600 group-hover:text-blue-700">{{ getKeys(filteredGrouped[anio]).length }} meses</div>
               <svg class="mt-3 w-7 h-7 text-blue-400 group-hover:text-blue-700 transition" fill="none"
-                stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
               </svg>
             </div>
@@ -38,18 +50,21 @@
         </div>
       </ng-container>
 
-      <!-- Tarjetas de Mes con colores -->
+      <!-- Meses de un año (se muestra cuando selectedYear está definido y no hay selectedMonth) -->
       <ng-container *ngIf="selectedYear && !selectedMonth">
         <div class="w-full flex items-center mb-6">
           <button (click)="backToYears()"
             class="flex items-center gap-2 text-blue-600 bg-white px-4 py-2 rounded-lg shadow hover:bg-blue-100 transition font-semibold mr-3 border border-blue-200">
-            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <!-- Botón para volver a la vista de años -->
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
             </svg>
             Volver
           </button>
           <h3 class="text-xl md:text-2xl font-extrabold text-blue-900 tracking-tight">Meses de {{ selectedYear }}</h3>
         </div>
+
+        <!-- Muestra meses con colores: usa getMonthColorClasses(mes) -->
         <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4">
           <ng-container *ngFor="let mes of getKeys(filteredGrouped[selectedYear])">
             <div (click)="selectMonth(mes)"
@@ -58,7 +73,7 @@
               <div class="text-2xl font-bold transition">{{ mes }}</div>
               <div class="mt-2 text-xs font-medium">{{ filteredGrouped[selectedYear][mes].length }} boletas</div>
               <svg class="mt-3 w-6 h-6 transition" fill="none" stroke="currentColor" stroke-width="2"
-                viewBox="0 0 24 24">
+                viewBox="0 0 24 24" aria-hidden="true">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
               </svg>
             </div>
@@ -66,19 +81,20 @@
         </div>
       </ng-container>
 
-      <!-- Responsive: Tarjetas en modo celular -->
+      <!-- Boletas de un mes seleccionado -->
       <ng-container *ngIf="selectedYear && selectedMonth">
         <div class="w-full flex items-center mb-6">
           <button (click)="backToMonths()"
             class="flex items-center gap-2 text-blue-600 bg-white px-4 py-2 rounded-lg shadow hover:bg-blue-100 transition font-semibold mr-3 border border-blue-200">
-            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
             </svg>
             Volver
           </button>
           <h3 class="text-xl md:text-2xl font-extrabold text-blue-900 tracking-tight">Boletas de {{ selectedMonth }} {{ selectedYear }}</h3>
         </div>
-        <!-- Tarjetas: solo en móvil -->
+
+        <!-- Móvil: tarjetas verticales -->
         <div class="md:hidden flex flex-col gap-4">
           <ng-container *ngFor="let boleta of filteredGrouped[selectedYear][selectedMonth]">
             <div class="bg-white rounded-2xl shadow-lg border-2 border-blue-100 p-4 flex flex-col gap-2">
@@ -87,12 +103,15 @@
                   <div class="font-bold text-blue-900">{{ boleta.establecimiento || '—' }}</div>
                   <div class="text-sm text-gray-600">{{ boleta.cargo }}</div>
                 </div>
+                <!-- Estado con color según texto -->
                 <span class="px-2 py-1 rounded-full text-xs font-semibold"
                   [ngClass]="{
                     'bg-green-100 text-green-700': boleta.estado.toUpperCase().includes('ACTIV') || boleta.estado.toUpperCase().includes('HABIL'),
                     'bg-red-100 text-red-600': !(boleta.estado.toUpperCase().includes('ACTIV') || boleta.estado.toUpperCase().includes('HABIL'))
                   }">{{ boleta.estado }}</span>
               </div>
+
+              <!-- Resumen de totales -->
               <div class="flex flex-wrap gap-2 mt-2">
                 <div class="bg-blue-50 rounded px-2 py-1 text-blue-700 text-xs font-semibold">
                   S/ {{ boleta.total_liquido | number:'1.2-2' }} líquido
@@ -104,6 +123,7 @@
                   S/ {{ boleta.total_descuentos | number:'1.2-2' }} descuentos
                 </div>
               </div>
+
               <div class="mt-2">
                 <div class="text-xs text-gray-500">
                   <span *ngIf="boleta.tipo_servidor || boleta.tipo_pensionista">
@@ -112,6 +132,8 @@
                   <span *ngIf="boleta.tipo_pension"> · {{ boleta.tipo_pension }}</span>
                 </div>
               </div>
+
+              <!-- Acciones: ver detalle (abre modal) y agregar (al carrito) -->
               <div class="flex gap-2 justify-center mt-2">
                 <button (click)="openModalAndAdd(boleta)"
                   class="bg-blue-600 text-white px-3 py-1.5 rounded-lg text-xs font-semibold shadow hover:bg-blue-700 transition whitespace-nowrap">
@@ -125,7 +147,8 @@
             </div>
           </ng-container>
         </div>
-        <!-- Tabla: solo en escritorio -->
+
+        <!-- Escritorio: tabla con detalles -->
         <div class="hidden md:block overflow-x-auto w-full rounded-xl shadow-lg">
           <table class="min-w-full bg-white rounded-xl text-sm">
             <thead class="bg-blue-100 text-blue-900">
@@ -151,14 +174,10 @@
                     <div class="font-medium">{{ boleta.cargo }}</div>
                   </td>
                   <td class="py-3 px-3 text-gray-700">
-                    <div class="text-xs">
-                      {{ boleta.tipo_servidor || boleta.tipo_pensionista || '—' }}
-                    </div>
+                    <div class="text-xs">{{ boleta.tipo_servidor || boleta.tipo_pensionista || '—' }}</div>
                   </td>
                   <td class="py-3 px-3 text-gray-700">
-                    <div class="text-xs" *ngIf="boleta.tipo_pension">
-                      {{ boleta.tipo_pension }}
-                    </div>
+                    <div class="text-xs" *ngIf="boleta.tipo_pension">{{ boleta.tipo_pension }}</div>
                     <div class="text-xs text-gray-400 italic" *ngIf="!boleta.tipo_pension">—</div>
                   </td>
                   <td class="py-3 px-3 text-right">
@@ -197,7 +216,7 @@
     </div>
   </div>
 
-  <!-- Modal emergente de detalle de boleta -->
+  <!-- Modal emergente: componente independiente (BoletaDetalle) -->
   <app-boleta-detail-modal *ngIf="modalBoleta" [boleta]="modalBoleta" (close)="closeModal()">
   </app-boleta-detail-modal>
 </div>
