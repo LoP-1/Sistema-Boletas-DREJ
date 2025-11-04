@@ -12,27 +12,37 @@ export class TourService {
   constructor() {
     // Configuración inicial del driver (texto de botones, estilo y callback)
     this.driverObj = driver({
-      showProgress: true,                       // muestra indicador "1 of N"
-      showButtons: ['next', 'previous', 'close'], // botones visibles
+      showProgress: true,
+      showButtons: ['next', 'previous', 'close'],
       nextBtnText: 'Siguiente →',
       prevBtnText: '← Anterior',
       doneBtnText: '✓ Entendido',
-      progressText: '{{current}} de {{total}}', // texto del progreso
-      popoverClass: 'driverjs-theme',           // clase CSS custom del popover
-      // Cuando el tour comienza a destruirse, marcamos como completado y destruimos el objeto
+      progressText: '{{current}} de {{total}}',
+      popoverClass: 'driverjs-theme',
+      // Cuando el tour comienza a destruirse, marcamos como completado.
+      // NOTA: no llamar a destroy() aquí porque este callback puede ser llamado
+      // por el propio driver durante su ciclo de vida y provocar doble destrucción.
       onDestroyStarted: () => {
         this.markTourAsCompleted();
-        this.driverObj.destroy();
       }
     });
   }
 
   // Inicia el tour adaptado a móvil o escritorio según el ancho de ventana
   startUserTour() {
+    // No iniciar si ya se marcó como visto
+    if (!this.shouldShowTour()) {
+      return;
+    }
+
+    // Marcar inmediatamente para evitar que un F5 vuelva a mostrar el tour mientras el usuario lo ve.
+    // Si prefieres esperar hasta que el usuario complete/ cierre el tour, puedes eliminar esta línea
+    // y enganchar un callback más específico del driver al evento 'done' o 'destroy' si existe.
+    this.markTourAsCompleted();
+
     const isMobile = window.innerWidth < 768;
 
     if (isMobile) {
-      // Configuración de pasos para móviles (selector de elementos responsive)
       this.driverObj.setConfig({
         steps: [
           {
@@ -58,7 +68,6 @@ export class TourService {
         ]
       });
     } else {
-      // Pasos para desktop (targets diferentes)
       this.driverObj.setConfig({
         steps: [
           {

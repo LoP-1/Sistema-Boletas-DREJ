@@ -85,9 +85,9 @@ export class AdminService {
   // ---- PERSONAS (ADMIN) ----
 
   // Listar personas paginadas
-  listarPersonas(page: number = 0, size: number = 30): Observable<PagePersonaDTO> {
+  listarPersonas(): Observable<PagePersonaDTO> {
     return this.http.get<PagePersonaDTO>(
-      `${this.apiUrl}/personas?page=${page}&size=${size}`,
+      `${this.apiUrl}/personas`,
       { headers: this.getAuthHeaders() }
     );
   }
