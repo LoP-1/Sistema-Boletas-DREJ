@@ -42,6 +42,9 @@ RE_CONCEPT = re.compile(
 RE_TOTALS = re.compile(r'T-REMUN\s+([\d.,]+)\s+T-DSCTO\s+([\d.,]+)\s+T-LIQUI\s+([\d.,]+)')
 RE_MIMP = re.compile(r'MImponible\s+([\d.,]+)')
 
+# Extensiones de archivo soportadas
+EXTENSIONES_SOPORTADAS = ['.lis', '.lit', '.txt']
+
 def limpiar_monto(txt: str) -> float:
     txt = txt.strip().replace(',', '')
     try:
@@ -220,6 +223,9 @@ def parse_boleta(bloque: str, origen: str) -> Dict[str, Any]:
     return d
 
 def procesar_archivo(ruta: Path) -> List[Dict[str, Any]]:
+    """
+    Procesa un archivo de boletas (.lis, .lit o .txt)
+    """
     with ruta.open('r', encoding='latin-1', errors='replace') as f:
         contenido = f.read()
     boletas = partir_boletas(contenido)
@@ -233,8 +239,23 @@ def procesar_archivo(ruta: Path) -> List[Dict[str, Any]]:
     return out
 
 def iter_registros(directorio: Path) -> Generator[Dict[str, Any], None, None]:
-    archivos = sorted(directorio.rglob('*.lis'))
+    """
+    Itera sobre todos los archivos con extensiones soportadas (.lis, .lit, .txt)
+    """
+    archivos = []
+    
+    # Buscar archivos con todas las extensiones soportadas
+    for extension in EXTENSIONES_SOPORTADAS:
+        archivos.extend(directorio.rglob(f'*{extension}'))
+    
+    # Ordenar todos los archivos encontrados
+    archivos = sorted(archivos)
+    
+    print(f"📂 Encontrados {len(archivos)} archivos para procesar")
+    print(f"📋 Extensiones: {', '.join(EXTENSIONES_SOPORTADAS)}")
+    
     for p in archivos:
+        print(f"   Procesando: {p.name}")
         for r in procesar_archivo(p):
             yield r
 
@@ -247,17 +268,65 @@ def guardar_json_simple(
     total = 0
     arr = []
     sin_dni = []
+    errores = []
+    
     for r in registros:
-        if skip_errors and "error" in r:
-            continue
+        if "error" in r:
+            errores.append(r)
+            if skip_errors:
+                continue
+        
         if "documento_identidad" not in r or not r["documento_identidad"]:
             sin_dni.append(r)
             continue
+        
         arr.append(r)
         total += 1
+    
+    # Guardar archivo principal
     with open(destino, "w", encoding="utf-8") as f:
         json.dump(arr, f, ensure_ascii=False, separators=(",", ":"), indent=2)
+    
+    # Guardar registros sin DNI
     if sin_dni_path and sin_dni:
         with open(sin_dni_path, "w", encoding="utf-8") as f:
             json.dump(sin_dni, f, ensure_ascii=False, separators=(",", ":"), indent=2)
+        print(f"⚠️  {len(sin_dni)} registros sin DNI guardados en: {sin_dni_path}")
+    
+    # Guardar errores si existen
+    if errores:
+        errores_path = destino.parent / "errores.json"
+        with open(errores_path, "w", encoding="utf-8") as f:
+            json.dump(errores, f, ensure_ascii=False, separators=(",", ":"), indent=2)
+        print(f"❌ {len(errores)} registros con errores guardados en: {errores_path}")
+    
     return total
+
+
+# Ejemplo de uso
+if __name__ == "__main__":
+    if len(sys.argv) < 2:
+        print("Uso: python script.py <directorio_con_archivos>")
+        print(f"Extensiones soportadas: {', '.join(EXTENSIONES_SOPORTADAS)}")
+        sys.exit(1)
+    
+    directorio = Path(sys.argv[1])
+    
+    if not directorio.exists():
+        print(f"❌ El directorio no existe: {directorio}")
+        sys.exit(1)
+    
+    print(f"🚀 Iniciando procesamiento de archivos en: {directorio}")
+    print(f"📁 Buscando archivos: {', '.join(EXTENSIONES_SOPORTADAS)}")
+    print("-" * 60)
+    
+    destino = Path("boletas_procesadas.json")
+    sin_dni = Path("boletas_sin_dni.json")
+    
+    registros = iter_registros(directorio)
+    total = guardar_json_simple(registros, destino, skip_errors=True, sin_dni_path=sin_dni)
+    
+    print("-" * 60)
+    print(f"✅ Procesamiento completado!")
+    print(f"📊 Total de boletas procesadas: {total}")
+    print(f"💾 Archivo generado: {destino}")

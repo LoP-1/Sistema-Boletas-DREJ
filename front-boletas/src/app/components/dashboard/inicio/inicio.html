@@ -71,14 +71,11 @@
                   </p>
                 </div>
 
-                <!-- Estado de la boleta: color verde si incluye "ACTIV"/"HABIL", rojo en otro caso -->
+                <!-- Estado de la boleta: usando la función helper -->
                 <span
                   class="text-[11px] font-bold px-2.5 py-1 rounded-full shadow-sm"
-                  [ngClass]="{
-                    'bg-green-100 text-green-700': boleta.estado.toUpperCase().includes('ACTIV') || boleta.estado.toUpperCase().includes('HABIL'),
-                    'bg-red-100 text-red-600': !(boleta.estado.toUpperCase().includes('ACTIV') || boleta.estado.toUpperCase().includes('HABIL'))
-                  }">
-                  {{ boleta.estado }}
+                  [ngClass]="getEstadoClasses(boleta.estado)">
+                  {{ boleta.estado || 'Sin estado' }}
                 </span>
               </div>
             </div>

@@ -110,6 +110,21 @@ export class Inicio implements OnInit {
     return meses[mes] || 0;
   }
 
+  // Función helper para verificar si el estado es activo (maneja null/undefined)
+  esEstadoActivo(estado: string | null | undefined): boolean {
+    if (!estado) return false;
+    const estadoUpper = estado.toUpperCase();
+    return estadoUpper.includes('ACTIV') || estadoUpper.includes('HABIL');
+  }
+
+  // Función helper para obtener clases del estado
+  getEstadoClasses(estado: string | null | undefined): string {
+    if (this.esEstadoActivo(estado)) {
+      return 'bg-green-100 text-green-700';
+    }
+    return 'bg-red-100 text-red-600';
+  }
+
   // Métodos que devuelven clases CSS según el índice (0,1,2)
   // Usados en la plantilla para aplicar el esquema de colores correspondiente
   getCardColorClass(index: number): string {

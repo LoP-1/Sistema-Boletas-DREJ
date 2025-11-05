@@ -62,6 +62,20 @@ export class BoletasList implements OnInit {
     this.loadBoletasForLoggedUser();
   }
 
+  // Funciones helper para manejar estados null/undefined
+  esEstadoActivo(estado: string | null | undefined): boolean {
+    if (!estado) return false;
+    const estadoUpper = estado.toUpperCase();
+    return estadoUpper.includes('ACTIV') || estadoUpper.includes('HABIL');
+  }
+
+  getEstadoClasses(estado: string | null | undefined): string {
+    if (this.esEstadoActivo(estado)) {
+      return 'bg-gradient-to-r from-emerald-100 to-emerald-50 text-emerald-700 border border-emerald-200';
+    }
+    return 'bg-gradient-to-r from-rose-100 to-rose-50 text-rose-700 border border-rose-200';
+  }
+
   // Carga boletas del usuario actual:
   // 1) obtiene el DNI del AuthService
   // 2) consulta PersonaService para obtener la persona
