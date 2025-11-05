@@ -123,8 +123,8 @@
       </div>
 
       <!-- Móvil: Tarjetas mejoradas -->
-      <div *ngIf="boletasFiltradas.length > 0" class="md:hidden divide-y divide-slate-200">
-        <div *ngFor="let boleta of boletasFiltradas" class="p-5 hover:bg-gradient-to-r hover:from-blue-50/50 hover:to-transparent transition-all">
+      <div *ngIf="boletasPaginadas.length > 0" class="md:hidden divide-y divide-slate-200">
+        <div *ngFor="let boleta of boletasPaginadas; trackBy: trackByBoleta" class="p-5 hover:bg-gradient-to-r hover:from-blue-50/50 hover:to-transparent transition-all">
           
           <!-- Encabezado de la tarjeta con gradiente -->
           <div class="flex items-start justify-between mb-3">
@@ -219,7 +219,7 @@
       </div>
 
       <!-- Escritorio: Tabla mejorada -->
-      <div *ngIf="boletasFiltradas.length > 0" class="hidden md:block overflow-x-auto">
+      <div *ngIf="boletasPaginadas.length > 0" class="hidden md:block overflow-x-auto">
         <table class="min-w-full">
           <thead class="bg-gradient-to-r from-blue-50 via-indigo-50 to-blue-50 border-b-2 border-blue-200">
             <tr>
@@ -247,7 +247,7 @@
             </tr>
           </thead>
           <tbody class="divide-y divide-slate-200">
-            <tr *ngFor="let boleta of boletasFiltradas; trackBy: trackByBoleta" class="hover:bg-gradient-to-r hover:from-blue-50/30 hover:to-transparent transition-all">
+            <tr *ngFor="let boleta of boletasPaginadas; trackBy: trackByBoleta" class="hover:bg-gradient-to-r hover:from-blue-50/30 hover:to-transparent transition-all">
               <td class="py-4 px-4">
                 <div class="font-bold text-slate-800 text-base">{{ boleta.mes }} {{ boleta.anio }}</div>
               </td>
@@ -296,6 +296,66 @@
             </tr>
           </tbody>
         </table>
+      </div>
+
+      <!-- PAGINACIÓN -->
+      <div *ngIf="boletasFiltradas.length > 0" class="border-t border-slate-200 bg-gradient-to-r from-slate-50 to-blue-50 px-6 py-4">
+        <div class="flex flex-col md:flex-row items-center justify-between gap-4">
+          
+          <!-- Info de página -->
+          <div class="text-sm text-slate-600 font-medium">
+            Mostrando 
+            <span class="font-bold text-blue-600">{{ (paginaActual - 1) * boletasPorPagina + 1 }}</span> 
+            a 
+            <span class="font-bold text-blue-600">{{ Math.min(paginaActual * boletasPorPagina, totalBoletasFiltradas) }}</span>
+            de 
+            <span class="font-bold text-blue-600">{{ totalBoletasFiltradas }}</span> 
+            boletas
+          </div>
+
+          <!-- Controles de paginación -->
+          <div class="flex items-center gap-2">
+            <!-- Botón anterior -->
+            <button 
+              (click)="paginaAnterior()"
+              [disabled]="paginaActual === 1"
+              class="inline-flex items-center gap-2 px-4 py-2 bg-white border-2 border-slate-300 text-slate-700 rounded-lg hover:bg-slate-50 transition font-semibold shadow-sm disabled:opacity-40 disabled:cursor-not-allowed disabled:hover:bg-white">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" />
+              </svg>
+              Anterior
+            </button>
+
+            <!-- Números de página -->
+            <div class="hidden sm:flex items-center gap-1">
+              <button 
+                *ngFor="let p of paginas"
+                (click)="irAPagina(p)"
+                [class]="p === paginaActual 
+                  ? 'bg-gradient-to-r from-blue-600 to-indigo-600 text-white font-bold shadow-md' 
+                  : 'bg-white text-slate-700 hover:bg-slate-50 border-2 border-slate-300'"
+                class="w-10 h-10 rounded-lg transition-all flex items-center justify-center font-semibold">
+                {{ p }}
+              </button>
+            </div>
+
+            <!-- Indicador móvil de página actual -->
+            <div class="sm:hidden px-4 py-2 bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-lg font-bold">
+              {{ paginaActual }} / {{ totalPaginas }}
+            </div>
+
+            <!-- Botón siguiente -->
+            <button 
+              (click)="paginaSiguiente()"
+              [disabled]="paginaActual === totalPaginas"
+              class="inline-flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-lg hover:from-blue-700 hover:to-indigo-700 transition font-semibold shadow-sm disabled:opacity-40 disabled:cursor-not-allowed disabled:from-slate-300 disabled:to-slate-300">
+              Siguiente
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
+              </svg>
+            </button>
+          </div>
+        </div>
       </div>
     </div>
 

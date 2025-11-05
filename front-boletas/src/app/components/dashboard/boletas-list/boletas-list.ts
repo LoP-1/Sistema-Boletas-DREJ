@@ -23,14 +23,23 @@ export class BoletasList implements OnInit {
   private cdr = inject(ChangeDetectorRef);
   private carritoService = inject(Carrito);
 
+  // Exponer Math para usar en el template
+  Math = Math;
+
   // Datos básicos
   boletas: BoletaDTO[] = []; // todas las boletas del usuario
   boletasFiltradas: BoletaDTO[] = []; // boletas después de aplicar filtros
+  boletasPaginadas: BoletaDTO[] = []; // boletas de la página actual
   
   // Filtros
   filtro = '';
   filtroAnio = '';
   filtroMes = '';
+  
+  // Paginación
+  paginaActual = 1;
+  boletasPorPagina = 10;
+  totalPaginas = 0;
   
   // Opciones para los selectores
   todosLosAnios: string[] = [];
@@ -56,7 +65,7 @@ export class BoletasList implements OnInit {
   // Carga boletas del usuario actual:
   // 1) obtiene el DNI del AuthService
   // 2) consulta PersonaService para obtener la persona
-  // 3) lista boletas con BoletaService y agrupa
+  // 3) lista boletas con BoletaService
   loadBoletasForLoggedUser() {
     this.loading = true;
     const dni = this.authService.getDni();
@@ -135,12 +144,10 @@ export class BoletasList implements OnInit {
 
     // Ordenar por fecha descendente (más reciente primero)
     resultado.sort((a, b) => {
-      // Primero comparar por año
       const anioA = parseInt(a.anio || '0');
       const anioB = parseInt(b.anio || '0');
       if (anioA !== anioB) return anioB - anioA;
       
-      // Si el año es igual, comparar por mes
       const mesIndexA = this.todosLosMeses.indexOf(a.mes || '');
       const mesIndexB = this.todosLosMeses.indexOf(b.mes || '');
       return mesIndexB - mesIndexA;
@@ -148,7 +155,72 @@ export class BoletasList implements OnInit {
 
     this.boletasFiltradas = resultado;
     this.totalBoletasFiltradas = resultado.length;
+    
+    // Calcular paginación
+    this.totalPaginas = Math.ceil(this.totalBoletasFiltradas / this.boletasPorPagina);
+    
+    // Resetear a página 1 cuando cambian los filtros
+    this.paginaActual = 1;
+    
+    // Actualizar boletas paginadas
+    this.actualizarBoletasPaginadas();
+    
     this.cdr.detectChanges();
+  }
+
+  actualizarBoletasPaginadas() {
+    const inicio = (this.paginaActual - 1) * this.boletasPorPagina;
+    const fin = inicio + this.boletasPorPagina;
+    this.boletasPaginadas = this.boletasFiltradas.slice(inicio, fin);
+  }
+
+  // Navegación de paginación
+  irAPagina(pagina: number) {
+    if (pagina < 1 || pagina > this.totalPaginas) return;
+    this.paginaActual = pagina;
+    this.actualizarBoletasPaginadas();
+    this.cdr.detectChanges();
+    
+    // Scroll suave al inicio
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  paginaAnterior() {
+    this.irAPagina(this.paginaActual - 1);
+  }
+
+  paginaSiguiente() {
+    this.irAPagina(this.paginaActual + 1);
+  }
+
+  // Generar array de números de página para mostrar
+  get paginas(): number[] {
+    const maxPaginasVisibles = 5;
+    const paginas: number[] = [];
+    
+    if (this.totalPaginas <= maxPaginasVisibles) {
+      // Si hay pocas páginas, mostrar todas
+      for (let i = 1; i <= this.totalPaginas; i++) {
+        paginas.push(i);
+      }
+    } else {
+      // Mostrar páginas alrededor de la actual
+      let inicio = Math.max(1, this.paginaActual - 2);
+      let fin = Math.min(this.totalPaginas, this.paginaActual + 2);
+      
+      // Ajustar si estamos al principio o al final
+      if (this.paginaActual <= 3) {
+        fin = maxPaginasVisibles;
+      } else if (this.paginaActual >= this.totalPaginas - 2) {
+        inicio = this.totalPaginas - maxPaginasVisibles + 1;
+      }
+      
+      for (let i = inicio; i <= fin; i++) {
+        paginas.push(i);
+      }
+    }
+    
+    return paginas;
   }
 
   onFiltroAnioChange() {
@@ -175,7 +247,7 @@ export class BoletasList implements OnInit {
     this.modalBoleta = null;
   }
 
-  // Agregar boleta al carrito (usa el servicio Carrito)
+  // Agregar boleta al carrito
   addToCart(boleta: BoletaDTO) {
     console.log('Boleta que se agrega:', boleta);
     this.carritoService.addBoleta(boleta);
