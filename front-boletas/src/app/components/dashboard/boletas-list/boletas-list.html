@@ -1,222 +1,307 @@
-<!--
-  boletas-list.html
-  Vista de "Tus boletas" con diseño responsive (años → meses → boletas).
-  Comentarios simples en español para entender cada bloque y las variables Angular usadas.
--->
-
-<div class="min-h-screen bg-gradient-to-br from-blue-50 to-blue-100 py-10 px-3 md:px-8">
-  <div class="max-w-7xl mx-auto bg-white rounded-3xl shadow-2xl border border-blue-100 overflow-hidden">
-    <!-- Header: título y búsqueda -->
-    <div class="p-6 md:p-8 bg-gradient-to-r from-blue-100 to-blue-50 border-b border-blue-100">
-      <div class="flex items-center justify-between gap-4 flex-wrap">
-        <div>
-          <h2 class="text-2xl md:text-3xl font-extrabold text-blue-900 tracking-tight">Tus boletas</h2>
-          <p class="text-gray-600">Explora y busca por establecimiento, cargo, estado, mes o año</p>
+<div class="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50 py-8 px-4">
+  <div class="max-w-7xl mx-auto space-y-6">
+    
+    <!-- Header con filtros principales - MEJORADO -->
+    <div class="bg-white rounded-2xl shadow-lg p-6 border border-slate-200 relative overflow-hidden">
+      <!-- Decoración de fondo -->
+      <div class="absolute top-0 right-0 w-64 h-64 bg-gradient-to-br from-blue-100 to-indigo-100 rounded-full -mr-32 -mt-32 opacity-30"></div>
+      
+      <div class="relative space-y-4">
+        <div class="flex items-start justify-between">
+          <div>
+            <div class="flex items-center gap-3">
+              <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center shadow-lg">
+                <svg class="w-7 h-7 text-white" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+                </svg>
+              </div>
+              <div>
+                <h2 class="text-3xl font-bold text-slate-800">Mis Boletas de Pago</h2>
+                <p class="text-slate-600 mt-1">Busca y consulta tus boletas fácilmente</p>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Indicador de resultados destacado -->
+          <div class="hidden md:flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-blue-50 to-indigo-50 rounded-lg border border-blue-200">
+            <svg class="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/>
+            </svg>
+            <div>
+              <div class="text-xs text-slate-600 font-medium">Total encontradas</div>
+              <div class="text-xl font-bold text-blue-600">{{ totalBoletasFiltradas }}</div>
+            </div>
+          </div>
         </div>
 
-        <!-- Campo de filtro global -->
-        <div class="w-full md:w-auto flex-1 md:flex-none relative">
-          <!-- filtro es el modelo ([(ngModel)]="filtro") -->
-          <input [(ngModel)]="filtro" placeholder="Buscar en tus boletas..."
-            class="w-full pl-10 pr-4 py-2 border border-blue-200 rounded-xl focus:ring-2 focus:ring-blue-300 outline-none transition" />
-          <svg class="w-5 h-5 text-blue-400 absolute left-3 top-2.5" fill="none" stroke="currentColor" stroke-width="2"
-            viewBox="0 0 24 24" aria-hidden="true">
-            <path stroke-linecap="round" stroke-linejoin="round"
-              d="m21 21-4.35-4.35M17 10.5A6.5 6.5 0 1 1 4 10.5a6.5 6.5 0 0 1 13 0z" />
-          </svg>
+        <!-- Filtros superiores mejorados -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+          
+          <!-- Búsqueda de texto con icono -->
+          <div class="space-y-2">
+            <label class="flex items-center gap-2 text-sm font-semibold text-slate-700">
+              <svg class="w-4 h-4 text-slate-500" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="m21 21-4.35-4.35M17 10.5A6.5 6.5 0 1 1 4 10.5a6.5 6.5 0 0 1 13 0z" />
+              </svg>
+              Buscar por texto
+            </label>
+            <div class="relative group">
+              <svg class="w-5 h-5 text-slate-400 absolute left-4 top-1/2 -translate-y-1/2 group-focus-within:text-blue-500 transition" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="m21 21-4.35-4.35M17 10.5A6.5 6.5 0 1 1 4 10.5a6.5 6.5 0 0 1 13 0z" />
+              </svg>
+              <input [(ngModel)]="filtro" (ngModelChange)="aplicarFiltros()"
+                placeholder="Cargo, Periodos, años..."
+                class="w-full pl-12 pr-4 py-3 text-base border-2 border-slate-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition shadow-sm hover:border-slate-400" />
+            </div>
+          </div>
+
+          <!-- Selector de AÑO con icono -->
+          <div class="space-y-2">
+            <label class="flex items-center gap-2 text-sm font-semibold text-slate-700">
+              <svg class="w-4 h-4 text-slate-500" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+              </svg>
+              Año
+            </label>
+            <select [(ngModel)]="filtroAnio" (ngModelChange)="onFiltroAnioChange()"
+              class="w-full px-4 py-3 text-base border-2 border-slate-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none bg-white transition shadow-sm hover:border-slate-400 cursor-pointer">
+              <option value="">Todos los años</option>
+              <option *ngFor="let anio of todosLosAnios" [value]="anio">{{ anio }}</option>
+            </select>
+          </div>
+
+          <!-- Selector de MES con icono -->
+          <div class="space-y-2">
+            <label class="flex items-center gap-2 text-sm font-semibold text-slate-700">
+              <svg class="w-4 h-4 text-slate-500" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+              </svg>
+              Mes
+            </label>
+            <select [(ngModel)]="filtroMes" (ngModelChange)="onFiltroMesChange()"
+              class="w-full px-4 py-3 text-base border-2 border-slate-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none bg-white transition shadow-sm hover:border-slate-400 cursor-pointer">
+              <option value="">Todos los meses</option>
+              <option *ngFor="let mes of todosLosMeses" [value]="mes">{{ mes }}</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Botones de acción -->
+        <div class="flex flex-wrap items-center gap-3 pt-2">
+          <button *ngIf="filtro || filtroAnio || filtroMes" 
+            (click)="limpiarFiltros()"
+            class="inline-flex items-center gap-2 px-4 py-2 bg-blue-200 text-slate-700 rounded-lg hover:bg-blue-300 transition font-semibold shadow-sm hover:shadow">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+            </svg>
+            Limpiar filtros
+          </button>
+          
+          <!-- Indicador móvil -->
+          <div class="md:hidden flex items-center gap-2 text-sm text-slate-600 font-medium px-3 py-1.5 bg-blue-50 rounded-lg">
+            <svg class="w-4 h-4 text-blue-600" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/>
+            </svg>
+            <span class="text-blue-600 font-bold">{{ totalBoletasFiltradas }}</span> boleta(s)
+          </div>
         </div>
       </div>
     </div>
 
-    <div class="p-6 md:p-8">
-      <!-- Años disponibles: se muestra cuando no hay year seleccionado -->
-      <ng-container *ngIf="!selectedYear">
-        <h3 class="text-xl md:text-2xl font-semibold text-blue-800 mb-6">Años disponibles</h3>
+    <!-- Resultados -->
+    <div class="bg-white rounded-2xl shadow-lg border border-slate-200 overflow-hidden">
+      
+      <!-- Si no hay resultados -->
+      <div *ngIf="boletasFiltradas.length === 0" class="p-12 text-center">
+        <div class="inline-flex items-center justify-center w-24 h-24 rounded-full bg-slate-100 mb-4">
+          <svg class="w-12 h-12 text-slate-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+          </svg>
+        </div>
+        <p class="text-xl font-bold text-slate-700 mb-2">No se encontraron boletas</p>
+        <p class="text-slate-500">Intenta ajustar los filtros de búsqueda</p>
+      </div>
 
-        <!-- Se renderiza con getKeys(filteredGrouped) -->
-        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-          <ng-container *ngFor="let anio of getKeys(filteredGrouped)">
-            <!-- selectYear(anio) → establece selectedYear -->
-            <div (click)="selectYear(anio)"
-              class="cursor-pointer bg-white hover:bg-blue-50 transition shadow-lg rounded-2xl p-6 flex flex-col items-center group border-2 border-blue-100 hover:border-blue-400">
-              <div class="text-5xl font-bold text-blue-700 group-hover:text-blue-900 transition">{{ anio }}</div>
-              <div class="mt-3 text-sm text-gray-600 group-hover:text-blue-700">{{ getKeys(filteredGrouped[anio]).length }} meses</div>
-              <svg class="mt-3 w-7 h-7 text-blue-400 group-hover:text-blue-700 transition" fill="none"
-                stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
-              </svg>
+      <!-- Móvil: Tarjetas mejoradas -->
+      <div *ngIf="boletasFiltradas.length > 0" class="md:hidden divide-y divide-slate-200">
+        <div *ngFor="let boleta of boletasFiltradas" class="p-5 hover:bg-gradient-to-r hover:from-blue-50/50 hover:to-transparent transition-all">
+          
+          <!-- Encabezado de la tarjeta con gradiente -->
+          <div class="flex items-start justify-between mb-3">
+            <div class="flex-1">
+              <div class="flex items-center gap-2 mb-1">
+                <svg class="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+                </svg>
+                <span class="text-lg font-bold text-slate-800">{{ boleta.mes }} {{ boleta.anio }}</span>
+              </div>
+              <div class="text-sm text-slate-600">{{ boleta.establecimiento || '—' }}</div>
             </div>
-          </ng-container>
-        </div>
-      </ng-container>
+            <span class="inline-flex items-center px-3 py-1.5 rounded-full text-sm font-bold shadow-sm whitespace-nowrap ml-2"
+              [ngClass]="{
+                'bg-gradient-to-r from-emerald-100 to-emerald-50 text-emerald-700 border border-emerald-200': boleta.estado.toUpperCase().includes('ACTIV') || boleta.estado.toUpperCase().includes('HABIL'),
+                'bg-gradient-to-r from-rose-100 to-rose-50 text-rose-700 border border-rose-200': !(boleta.estado.toUpperCase().includes('ACTIV') || boleta.estado.toUpperCase().includes('HABIL'))
+              }">
+              {{ boleta.estado }}
+            </span>
+          </div>
 
-      <!-- Meses de un año (se muestra cuando selectedYear está definido y no hay selectedMonth) -->
-      <ng-container *ngIf="selectedYear && !selectedMonth">
-        <div class="w-full flex items-center mb-6">
-          <button (click)="backToYears()"
-            class="flex items-center gap-2 text-blue-600 bg-white px-4 py-2 rounded-lg shadow hover:bg-blue-100 transition font-semibold mr-3 border border-blue-200">
-            <!-- Botón para volver a la vista de años -->
-            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
-            </svg>
-            Volver
-          </button>
-          <h3 class="text-xl md:text-2xl font-extrabold text-blue-900 tracking-tight">Meses de {{ selectedYear }}</h3>
-        </div>
-
-        <!-- Muestra meses con colores: usa getMonthColorClasses(mes) -->
-        <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4">
-          <ng-container *ngFor="let mes of getKeys(filteredGrouped[selectedYear])">
-            <div (click)="selectMonth(mes)"
-              class="cursor-pointer hover:scale-105 transition-transform shadow-lg rounded-2xl p-5 flex flex-col items-center group border-2"
-              [ngClass]="getMonthColorClasses(mes)">
-              <div class="text-2xl font-bold transition">{{ mes }}</div>
-              <div class="mt-2 text-xs font-medium">{{ filteredGrouped[selectedYear][mes].length }} boletas</div>
-              <svg class="mt-3 w-6 h-6 transition" fill="none" stroke="currentColor" stroke-width="2"
-                viewBox="0 0 24 24" aria-hidden="true">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
+          <!-- Cargo con icono -->
+          <div class="mb-3 pb-3 border-b border-slate-200">
+            <div class="flex items-center gap-2 text-sm text-slate-500 mb-1">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
               </svg>
+              Cargo
             </div>
-          </ng-container>
-        </div>
-      </ng-container>
+            <div class="text-base font-bold text-slate-700">{{ boleta.cargo }}</div>
+          </div>
 
-      <!-- Boletas de un mes seleccionado -->
-      <ng-container *ngIf="selectedYear && selectedMonth">
-        <div class="w-full flex items-center mb-6">
-          <button (click)="backToMonths()"
-            class="flex items-center gap-2 text-blue-600 bg-white px-4 py-2 rounded-lg shadow hover:bg-blue-100 transition font-semibold mr-3 border border-blue-200">
-            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
-            </svg>
-            Volver
-          </button>
-          <h3 class="text-xl md:text-2xl font-extrabold text-blue-900 tracking-tight">Boletas de {{ selectedMonth }} {{ selectedYear }}</h3>
-        </div>
-
-        <!-- Móvil: tarjetas verticales -->
-        <div class="md:hidden flex flex-col gap-4">
-          <ng-container *ngFor="let boleta of filteredGrouped[selectedYear][selectedMonth]">
-            <div class="bg-white rounded-2xl shadow-lg border-2 border-blue-100 p-4 flex flex-col gap-2">
-              <div class="flex justify-between items-center">
-                <div>
-                  <div class="font-bold text-blue-900">{{ boleta.establecimiento || '—' }}</div>
-                  <div class="text-sm text-gray-600">{{ boleta.cargo }}</div>
+          <!-- Montos mejorados con iconos y gradientes -->
+          <div class="grid grid-cols-3 gap-3 mb-4">
+            <div class="relative overflow-hidden bg-gradient-to-br from-blue-50 to-blue-100/50 rounded-xl p-3 text-center border-2 border-blue-200 shadow-sm">
+              <div class="absolute top-0 right-0 w-16 h-16 bg-blue-200 rounded-full -mr-8 -mt-8 opacity-30"></div>
+              <div class="relative">
+                <div class="flex items-center justify-center gap-1 text-xs text-blue-600 font-bold mb-1">
+                  <svg class="w-3 h-3" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                  </svg>
+                  Líquido
                 </div>
-                <!-- Estado con color según texto -->
-                <span class="px-2 py-1 rounded-full text-xs font-semibold"
+                <div class="text-sm font-bold text-blue-700">S/ {{ boleta.total_liquido | number:'1.2-2' }}</div>
+              </div>
+            </div>
+            <div class="relative overflow-hidden bg-gradient-to-br from-emerald-50 to-emerald-100/50 rounded-xl p-3 text-center border-2 border-emerald-200 shadow-sm">
+              <div class="absolute top-0 right-0 w-16 h-16 bg-emerald-200 rounded-full -mr-8 -mt-8 opacity-30"></div>
+              <div class="relative">
+                <div class="flex items-center justify-center gap-1 text-xs text-emerald-600 font-bold mb-1">
+                  <svg class="w-3 h-3" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M7 11l5-5m0 0l5 5m-5-5v12"/>
+                  </svg>
+                  Ingresos
+                </div>
+                <div class="text-sm font-bold text-emerald-700">S/ {{ boleta.total_remuneraciones | number:'1.2-2' }}</div>
+              </div>
+            </div>
+            <div class="relative overflow-hidden bg-gradient-to-br from-rose-50 to-rose-100/50 rounded-xl p-3 text-center border-2 border-rose-200 shadow-sm">
+              <div class="absolute top-0 right-0 w-16 h-16 bg-rose-200 rounded-full -mr-8 -mt-8 opacity-30"></div>
+              <div class="relative">
+                <div class="flex items-center justify-center gap-1 text-xs text-rose-600 font-bold mb-1">
+                  <svg class="w-3 h-3" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M17 13l-5 5m0 0l-5-5m5 5V6"/>
+                  </svg>
+                  Descuentos
+                </div>
+                <div class="text-sm font-bold text-rose-700">S/ {{ boleta.total_descuentos | number:'1.2-2' }}</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Botones de acción mejorados -->
+          <div class="flex gap-3">
+            <button (click)="openModalAndAdd(boleta)"
+              class="flex-1 inline-flex items-center justify-center gap-2 bg-gradient-to-r from-blue-600 to-indigo-600 text-white px-4 py-3 rounded-xl text-base font-bold shadow-md hover:shadow-lg hover:from-blue-700 hover:to-indigo-700 transition-all">
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+                <path stroke-linecap="round" stroke-linejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
+              </svg>
+              Ver Detalle
+            </button>
+            <button (click)="addToCart(boleta)"
+              class="flex-1 inline-flex items-center justify-center gap-2 bg-gradient-to-r from-emerald-600 to-green-600 text-white px-4 py-3 rounded-xl text-base font-bold shadow-md hover:shadow-lg hover:from-emerald-700 hover:to-green-700 transition-all">
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/>
+              </svg>
+              Agregar
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Escritorio: Tabla mejorada -->
+      <div *ngIf="boletasFiltradas.length > 0" class="hidden md:block overflow-x-auto">
+        <table class="min-w-full">
+          <thead class="bg-gradient-to-r from-blue-50 via-indigo-50 to-blue-50 border-b-2 border-blue-200">
+            <tr>
+              <th class="py-4 px-4 text-left font-bold text-slate-700 text-base">
+                <div class="flex items-center gap-2">
+                  <svg class="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+                  </svg>
+                  Período
+                </div>
+              </th>
+              <th class="py-4 px-4 text-left font-bold text-slate-700 text-base">
+                <div class="flex items-center gap-2">
+                  <svg class="w-5 h-5 text-slate-600" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+                  </svg>
+                  Cargo
+                </div>
+              </th>
+              <th class="py-4 px-4 text-right font-bold text-slate-700 text-base">Total Líquido</th>
+              <th class="py-4 px-4 text-right font-bold text-slate-700 text-base">Ingresos</th>
+              <th class="py-4 px-4 text-right font-bold text-slate-700 text-base">Descuentos</th>
+              <th class="py-4 px-4 text-center font-bold text-slate-700 text-base">Estado</th>
+              <th class="py-4 px-4 text-center font-bold text-slate-700 text-base">Acciones</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-slate-200">
+            <tr *ngFor="let boleta of boletasFiltradas; trackBy: trackByBoleta" class="hover:bg-gradient-to-r hover:from-blue-50/30 hover:to-transparent transition-all">
+              <td class="py-4 px-4">
+                <div class="font-bold text-slate-800 text-base">{{ boleta.mes }} {{ boleta.anio }}</div>
+              </td>
+              <td class="py-4 px-4">
+                <div class="text-slate-700 text-base">{{ boleta.cargo }}</div>
+              </td>
+              <td class="py-4 px-4 text-right">
+                <div class="inline-flex items-center gap-1 font-bold text-blue-700 text-base">
+                  S/ {{ boleta.total_liquido | number:'1.2-2' }}
+                </div>
+              </td>
+              <td class="py-4 px-4 text-right">
+                <div class="font-bold text-emerald-700 text-base">S/ {{ boleta.total_remuneraciones | number:'1.2-2' }}</div>
+              </td>
+              <td class="py-4 px-4 text-right">
+                <div class="font-bold text-rose-700 text-base">S/ {{ boleta.total_descuentos | number:'1.2-2' }}</div>
+              </td>
+              <td class="py-4 px-4 text-center">
+                <span class="inline-flex items-center px-3 py-1.5 rounded-full text-sm font-bold shadow-sm"
                   [ngClass]="{
-                    'bg-green-100 text-green-700': boleta.estado.toUpperCase().includes('ACTIV') || boleta.estado.toUpperCase().includes('HABIL'),
-                    'bg-red-100 text-red-600': !(boleta.estado.toUpperCase().includes('ACTIV') || boleta.estado.toUpperCase().includes('HABIL'))
-                  }">{{ boleta.estado }}</span>
-              </div>
-
-              <!-- Resumen de totales -->
-              <div class="flex flex-wrap gap-2 mt-2">
-                <div class="bg-blue-50 rounded px-2 py-1 text-blue-700 text-xs font-semibold">
-                  S/ {{ boleta.total_liquido | number:'1.2-2' }} líquido
+                    'bg-gradient-to-r from-emerald-100 to-emerald-50 text-emerald-700 border border-emerald-200': boleta.estado.toUpperCase().includes('ACTIV') || boleta.estado.toUpperCase().includes('HABIL'),
+                    'bg-gradient-to-r from-rose-100 to-rose-50 text-rose-700 border border-rose-200': !(boleta.estado.toUpperCase().includes('ACTIV') || boleta.estado.toUpperCase().includes('HABIL'))
+                  }">
+                  {{ boleta.estado }}
+                </span>
+              </td>
+              <td class="py-4 px-4">
+                <div class="flex gap-2 justify-center">
+                  <button (click)="openModalAndAdd(boleta)"
+                    class="inline-flex items-center gap-1.5 bg-gradient-to-r from-blue-600 to-indigo-600 text-white px-4 py-2 rounded-lg text-sm font-bold shadow-sm hover:shadow-md hover:from-blue-700 hover:to-indigo-700 transition-all">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+                      <path stroke-linecap="round" stroke-linejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
+                    </svg>
+                    Ver Detalle
+                  </button>
+                  <button (click)="addToCart(boleta)"
+                    class="inline-flex items-center gap-1.5 bg-gradient-to-r from-emerald-600 to-green-600 text-white px-4 py-2 rounded-lg text-sm font-bold shadow-sm hover:shadow-md hover:from-emerald-700 hover:to-green-700 transition-all">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/>
+                    </svg>
+                    Agregar
+                  </button>
                 </div>
-                <div class="bg-green-50 rounded px-2 py-1 text-green-700 text-xs font-semibold">
-                  S/ {{ boleta.total_remuneraciones | number:'1.2-2' }} ingresos
-                </div>
-                <div class="bg-red-50 rounded px-2 py-1 text-red-600 text-xs font-semibold">
-                  S/ {{ boleta.total_descuentos | number:'1.2-2' }} descuentos
-                </div>
-              </div>
-
-              <div class="mt-2">
-                <div class="text-xs text-gray-500">
-                  <span *ngIf="boleta.tipo_servidor || boleta.tipo_pensionista">
-                    {{ boleta.tipo_servidor || boleta.tipo_pensionista }}
-                  </span>
-                  <span *ngIf="boleta.tipo_pension"> · {{ boleta.tipo_pension }}</span>
-                </div>
-              </div>
-
-              <!-- Acciones: ver detalle (abre modal) y agregar (al carrito) -->
-              <div class="flex gap-2 justify-center mt-2">
-                <button (click)="openModalAndAdd(boleta)"
-                  class="bg-blue-600 text-white px-3 py-1.5 rounded-lg text-xs font-semibold shadow hover:bg-blue-700 transition whitespace-nowrap">
-                  Ver detalle
-                </button>
-                <button (click)="addToCart(boleta)"
-                  class="bg-green-100 text-green-700 px-3 py-1.5 rounded-lg text-xs font-semibold shadow hover:bg-green-200 transition whitespace-nowrap">
-                  Agregar
-                </button>
-              </div>
-            </div>
-          </ng-container>
-        </div>
-
-        <!-- Escritorio: tabla con detalles -->
-        <div class="hidden md:block overflow-x-auto w-full rounded-xl shadow-lg">
-          <table class="min-w-full bg-white rounded-xl text-sm">
-            <thead class="bg-blue-100 text-blue-900">
-              <tr>
-                <th class="py-3 px-3 text-left font-semibold">Establecimiento</th>
-                <th class="py-3 px-3 text-left font-semibold">Cargo</th>
-                <th class="py-3 px-3 text-left font-semibold">Tipo Servidor/Pensionista</th>
-                <th class="py-3 px-3 text-left font-semibold">Tipo de Pensión</th>
-                <th class="py-3 px-3 text-right font-semibold">Total Líquido</th>
-                <th class="py-3 px-3 text-right font-semibold">Total Ingresos</th>
-                <th class="py-3 px-3 text-right font-semibold">Total Descuentos</th>
-                <th class="py-3 px-3 text-center font-semibold">Estado</th>
-                <th class="py-3 px-3 text-center font-semibold">Acciones</th>
-              </tr>
-            </thead>
-            <tbody>
-              <ng-container *ngFor="let boleta of filteredGrouped[selectedYear][selectedMonth]">
-                <tr class="border-b last:border-0 hover:bg-blue-50 transition">
-                  <td class="py-3 px-3 text-gray-800">
-                    <div class="font-medium">{{ boleta.establecimiento || '—' }}</div>
-                  </td>
-                  <td class="py-3 px-3 text-gray-800">
-                    <div class="font-medium">{{ boleta.cargo }}</div>
-                  </td>
-                  <td class="py-3 px-3 text-gray-700">
-                    <div class="text-xs">{{ boleta.tipo_servidor || boleta.tipo_pensionista || '—' }}</div>
-                  </td>
-                  <td class="py-3 px-3 text-gray-700">
-                    <div class="text-xs" *ngIf="boleta.tipo_pension">{{ boleta.tipo_pension }}</div>
-                    <div class="text-xs text-gray-400 italic" *ngIf="!boleta.tipo_pension">—</div>
-                  </td>
-                  <td class="py-3 px-3 text-right">
-                    <div class="font-bold text-green-700">S/ {{ boleta.total_liquido | number:'1.2-2' }}</div>
-                  </td>
-                  <td class="py-3 px-3 text-right text-blue-700 font-semibold">
-                    S/ {{ boleta.total_remuneraciones | number:'1.2-2' }}
-                  </td>
-                  <td class="py-3 px-3 text-right text-red-600 font-semibold">
-                    S/ {{ boleta.total_descuentos | number:'1.2-2' }}
-                  </td>
-                  <td class="py-3 px-3 text-center">
-                    <span class="px-2 py-1 rounded-full text-xs font-semibold" [ngClass]="{
-                            'bg-green-100 text-green-700': boleta.estado.toUpperCase().includes('ACTIV') || boleta.estado.toUpperCase().includes('HABIL'),
-                            'bg-red-100 text-red-600': !(boleta.estado.toUpperCase().includes('ACTIV') || boleta.estado.toUpperCase().includes('HABIL'))
-                          }">{{ boleta.estado }}</span>
-                  </td>
-                  <td class="py-3 px-3">
-                    <div class="flex gap-2 justify-center flex-wrap">
-                      <button (click)="openModalAndAdd(boleta)"
-                        class="bg-blue-600 text-white px-3 py-1.5 rounded-lg text-xs font-semibold shadow hover:bg-blue-700 transition whitespace-nowrap">
-                        Ver detalle
-                      </button>
-                      <button (click)="addToCart(boleta)"
-                        class="bg-green-100 text-green-700 px-3 py-1.5 rounded-lg text-xs font-semibold shadow hover:bg-green-200 transition whitespace-nowrap">
-                        Agregar
-                      </button>
-                    </div>
-                  </td>
-                </tr>
-              </ng-container>
-            </tbody>
-          </table>
-        </div>
-      </ng-container>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
     </div>
+
   </div>
 
-  <!-- Modal emergente: componente independiente (BoletaDetalle) -->
+  <!-- Modal -->
   <app-boleta-detail-modal *ngIf="modalBoleta" [boleta]="modalBoleta" (close)="closeModal()">
   </app-boleta-detail-modal>
 </div>

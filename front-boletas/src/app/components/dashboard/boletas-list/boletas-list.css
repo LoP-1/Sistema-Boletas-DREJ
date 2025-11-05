@@ -1,21 +1,84 @@
+/* Mejorar legibilidad para usuarios 50+ */
 :host {
   display: block;
 }
 
+/* Animaciones suaves */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Tamaños de fuente más grandes */
 table {
   border-collapse: separate;
   border-spacing: 0;
-  border-radius: 0.75rem;
-  overflow: hidden;
 }
 
-/* Estilos responsive para la tabla */
-@media (max-width: 768px) {
-  table {
-    font-size: 0.75rem;
-  }
-  
-  th, td {
-    padding: 0.5rem 0.25rem !important;
-  }
+/* Contraste mejorado */
+select, input {
+  font-size: 16px; /* Evita zoom en iOS */
+}
+
+/* Placeholders más transparentes */
+input::placeholder {
+  opacity: 0.4;
+  color: #5d6879; /* slate-400 */
+}
+
+input:focus::placeholder {
+  opacity: 0.3;
+}
+
+select::placeholder {
+  opacity: 0.4;
+  color: #8399b8;
+}
+
+/* Botones más grandes y táctiles */
+button, a {
+  min-height: 44px; /* Tamaño táctil recomendado */
+  font-weight: 600;
+}
+
+/* Espaciado generoso */
+td, th {
+  line-height: 1.6;
+}
+
+/* Transiciones suaves y elegantes */
+* {
+  transition-property: background-color, border-color, color, transform, box-shadow;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 200ms;
+}
+
+/* Efectos hover mejorados */
+button:hover, a:hover {
+  transform: translateY(-1px);
+}
+
+button:active, a:active {
+  transform: translateY(0);
+}
+
+/* Filas de tabla con efecto suave */
+tbody tr:hover {
+  transform: translateX(2px);
+}
+
+/* Inputs con foco mejorado */
+input:focus, select:focus {
+  transform: translateY(-1px);
+}
+
+/* Gradientes suaves en hover */
+.group:hover .group-hover\:scale-110 {
+  transform: scale(1.1);
 }
