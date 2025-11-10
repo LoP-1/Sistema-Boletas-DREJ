@@ -19,7 +19,7 @@ export class BoletaDetalle {
   onClose() {
     this.close.emit();
   }
-
+  //envia el objeto boleta al carrito
   onAddToCart() {
     if (this.boleta) this.addToCart.emit(this.boleta);
   }
@@ -41,23 +41,26 @@ export class BoletaDetalle {
       .sort((a, b) => b.monto - a.monto);
   }
 
+  //recorrer los conceptos y extraer los egresos
   get egresos(): ConceptoDTO[] {
     return (this.boleta?.conceptos || [])
       .filter(c => (c.tipo || '').toLowerCase() === 'descuento')
       .slice()
       .sort((a, b) => b.monto - a.monto);
   }
-
+  //sumar los ingresos para calcular el total
   get totalIngresosCalc(): number {
     if (this.boleta?.total_remuneraciones != null) return this.boleta.total_remuneraciones;
     return this.ingresos.reduce((s, c) => s + (c.monto || 0), 0);
   }
 
+  //calcular el total de los egresos , sumando igual que antes
   get totalEgresosCalc(): number {
     if (this.boleta?.total_descuentos != null) return this.boleta.total_descuentos;
     return this.egresos.reduce((s, c) => s + (c.monto || 0), 0);
   }
 
+  //calcular el total liquido
   get totalLiquidoCalc(): number {
     if (this.boleta?.total_liquido != null) return this.boleta.total_liquido;
     return this.totalIngresosCalc - this.totalEgresosCalc;
@@ -72,6 +75,7 @@ export class BoletaDetalle {
     return `${this.boleta.mes} ${this.boleta.anio}`;
   }
 
+  //poner estilos a los estados
   get estadoChipClasses(): string {
     const estado = (this.boleta?.estado || '').toLowerCase();
     if (estado.includes('habil')) return 'bg-emerald-100 text-emerald-700 ring-1 ring-emerald-300';

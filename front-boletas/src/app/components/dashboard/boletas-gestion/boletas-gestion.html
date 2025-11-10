@@ -1,13 +1,17 @@
 <div class="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50 py-8 px-4">
+  <!-- Contenedor principal: ancho máximo y espaciado entre secciones -->
   <div class="max-w-7xl mx-auto space-y-6">
 
     <!-- Header -->
+    <!-- Encabezado con título, descripción y botón para recargar personas -->
     <div class="bg-white rounded-2xl shadow-lg p-6 border border-slate-200">
       <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
         <div>
           <h1 class="text-3xl font-bold text-slate-800">Gestión de Personas y Boletas</h1>
           <p class="text-slate-600 text-sm mt-1">Administra personas y sus boletas de pago</p>
         </div>
+         <!-- Boton que llama a la funcion cargar personas-->
+         <!-- Botón Recargar: ejecuta cargarPersonas() -->
         <button (click)="cargarPersonas()"
           class="inline-flex items-center gap-2 px-5 py-2.5 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition font-semibold shadow-sm">
           <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
@@ -19,6 +23,7 @@
     </div>
 
     <!-- Búsqueda -->
+    <!-- Barra de búsqueda: enlazada a filtro y onFiltroChange() -->
     <div class="bg-white rounded-2xl shadow-lg p-4 border border-slate-200">
       <div class="relative">
         <svg class="w-5 h-5 text-slate-400 absolute left-4 top-1/2 -translate-y-1/2" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
@@ -31,6 +36,7 @@
     </div>
 
     <!-- Loading -->
+    <!-- Indicador global de carga de personas -->
     <div *ngIf="personaLoading" class="bg-white rounded-2xl shadow-lg p-8 text-center border border-slate-200">
       <div class="inline-flex items-center gap-3 text-blue-600">
         <svg class="animate-spin h-6 w-6" fill="none" viewBox="0 0 24 24">
@@ -42,6 +48,7 @@
     </div>
 
     <!-- Tabla -->
+    <!-- Lista paginada de personas; cada fila puede expandirse para mostrar boletas -->
     <div *ngIf="!personaLoading" class="bg-white rounded-2xl shadow-lg overflow-hidden border border-slate-200">
       <div class="overflow-x-auto">
         <table class="min-w-full">
@@ -58,6 +65,8 @@
             <ng-container *ngFor="let p of paginatedPersonas; trackBy: trackByPersona">
               <tr class="hover:bg-slate-50 transition">
                 <td class="py-3 px-4">
+                  <!-- Botón de expandir/contraer boletas -->
+                  <!-- toggleExpand(id): alterna la vista de boletas para esta persona -->
                   <button (click)="toggleExpand(p.id!, $event)"
                     class="w-8 h-8 rounded-lg border border-slate-300 flex items-center justify-center hover:bg-blue-50 hover:border-blue-400 transition">
                     <svg class="w-4 h-4 text-slate-600 transition-transform" 
@@ -77,6 +86,7 @@
                   <span class="text-slate-600 text-sm">{{p.fecha_nacimiento | date:'dd/MM/yyyy'}}</span>
                 </td>
                 <td class="py-3 px-4">
+                  <!-- Acciones sobre persona: editar y eliminar -->
                   <div class="flex gap-2">
                     <button (click)="mostrarEditarPersona(p, $event)"
                       class="px-3 py-1.5 bg-blue-600 text-white rounded-lg text-xs font-semibold hover:bg-blue-700 transition shadow-sm">
@@ -91,6 +101,7 @@
               </tr>
 
               <!-- Loading boletas -->
+              <!-- Indicador de carga de boletas para persona específica -->
               <tr *ngIf="isExpanded(p.id) && loadingPersonaId === p.id" class="bg-blue-50">
                 <td colspan="5" class="py-6 text-center">
                   <div class="inline-flex items-center gap-3 text-blue-600">
@@ -104,6 +115,7 @@
               </tr>
 
               <!-- Boletas -->
+              <!-- Lista de boletas para la persona expandida; acciones por boleta -->
               <ng-container *ngIf="isExpanded(p.id) && loadingPersonaId !== p.id">
                 <ng-container *ngIf="boletasFiltradas(p.id!).length > 0; else noBoletas">
                   <tr *ngFor="let b of boletasFiltradas(p.id!); trackBy: trackByBoleta"
@@ -122,6 +134,7 @@
                       <div class="text-sm text-slate-700">{{b.cargo}}</div>
                     </td>
                     <td class="py-3 px-4">
+                      <!-- Acciones por boleta: imprimir, editar, eliminar -->
                       <div class="flex gap-2">
                         <button (click)="imprimirBoleta(b, $event)"
                           class="px-3 py-1.5 bg-emerald-600 text-white rounded-lg text-xs font-semibold hover:bg-emerald-700 transition shadow-sm">
@@ -153,6 +166,7 @@
       </div>
 
       <!-- Paginación -->
+      <!-- Navegación entre páginas de personas -->
       <div class="bg-slate-50 px-6 py-4 border-t border-slate-200 flex items-center justify-between">
         <button (click)="goToPrevPage()" [disabled]="personaPage===0"
           class="px-5 py-2 rounded-lg bg-white border border-slate-300 text-slate-700 font-semibold disabled:opacity-40 disabled:cursor-not-allowed hover:bg-slate-50 transition shadow-sm">
@@ -170,6 +184,7 @@
   </div>
 
   <!-- Modal Persona -->
+  <!-- Modal para editar/crear persona; contiene formulario con validación básica -->
   <div *ngIf="showEditarPersonaModal && editandoPersona"
     class="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 p-4">
     <div class="bg-white rounded-2xl shadow-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
@@ -184,6 +199,7 @@
         <p class="text-slate-500 text-sm mt-1">ID: {{editandoPersona.id}}</p>
       </div>
 
+      <!-- Formulario persona: ngSubmit llama a guardarPersona() -->
       <form (ngSubmit)="guardarPersona()" class="p-6 space-y-5">
         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div class="space-y-2">
@@ -223,6 +239,7 @@
   </div>
 
   <!-- Modal Boleta -->
+  <!-- Modal para editar boleta: varias secciones colapsables para organizar datos -->
   <div *ngIf="showEditarBoletaModal && editandoBoleta"
     class="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 p-4">
     <div class="bg-white rounded-2xl shadow-2xl max-w-5xl w-full max-h-[90vh] overflow-y-auto">
@@ -237,6 +254,7 @@
         <p class="text-slate-500 text-sm mt-1">ID: {{editandoBoleta.id}} — {{editandoBoleta.mes}}/{{editandoBoleta.anio}}</p>
       </div>
 
+      <!-- Formulario boleta: cada sección puede abrirse/cerrarse con toggleSeccionBoleta() -->
       <form (ngSubmit)="guardarBoleta()" class="p-6 space-y-4">
         
         <!-- Sección Básica -->
@@ -250,6 +268,7 @@
             </svg>
           </button>
           
+          <!-- Campos básicos: mes, año, estado, archivo -->
           <div *ngIf="seccionesBoletaAbiertas.basica" class="px-5 pb-5 pt-2 space-y-4 bg-white">
             <div class="grid grid-cols-3 gap-3">
               <div class="space-y-1">
@@ -299,6 +318,7 @@
             </svg>
           </button>
 
+          <!-- Campos laborales: establecimiento y cargo -->
           <div *ngIf="seccionesBoletaAbiertas.laboral" class="px-5 pb-5 pt-2 space-y-3 bg-white">
             <div class="grid grid-cols-2 gap-3">
               <div class="space-y-1">
@@ -326,6 +346,7 @@
             </svg>
           </button>
 
+          <!-- Campo régimen pensionario -->
           <div *ngIf="seccionesBoletaAbiertas.pension" class="px-5 pb-5 pt-2 bg-white">
             <div class="space-y-1">
               <label class="block text-xs font-semibold text-slate-700">Régimen Pensionario</label>
@@ -346,6 +367,7 @@
             </svg>
           </button>
 
+          <!-- Campos económicos: totales e imponible -->
           <div *ngIf="seccionesBoletaAbiertas.economica" class="px-5 pb-5 pt-2 space-y-3 bg-white">
             <div class="grid grid-cols-2 gap-3">
               <div class="space-y-1">
@@ -383,6 +405,7 @@
             </svg>
           </button>
 
+          <!-- Cuenta principal -->
           <div *ngIf="seccionesBoletaAbiertas.cuentas" class="px-5 pb-5 pt-2 bg-white">
             <div class="space-y-1">
               <label class="block text-xs font-semibold text-slate-700">Cuenta Principal</label>

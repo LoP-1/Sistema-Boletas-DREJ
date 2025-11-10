@@ -20,7 +20,8 @@ export class Inicio implements OnInit {
   boletasRecientes: BoletaDTO[] = [];        // máximo 3 boletas ordenadas por fecha
   modalBoleta: BoletaDTO | null = null;      // boleta seleccionada para ver en modal
 
-  // Paleta de colores para las tarjetas (3 esquemas suaves)
+  // Paleta de colores para las tarjetas
+  // se usaran mas abajo
   private colorSchemes = [
     {
       card: 'bg-gradient-to-br from-blue-50 to-blue-100',
@@ -127,6 +128,7 @@ export class Inicio implements OnInit {
 
   // Métodos que devuelven clases CSS según el índice (0,1,2)
   // Usados en la plantilla para aplicar el esquema de colores correspondiente
+  // en resumen sirven para cambiar los colores
   getCardColorClass(index: number): string {
     return this.colorSchemes[index]?.card || this.colorSchemes[0].card;
   }
