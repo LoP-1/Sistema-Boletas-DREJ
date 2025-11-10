@@ -51,7 +51,7 @@ export class Login {
   mostrarEmergente(msj: string) {
     this.mensaje = msj;
     this.showEmergente = true;
-    this.cd.detectChanges(); // fuerza actualización de la vista
+    this.cd.detectChanges();
     setTimeout(() => {
       this.showEmergente = false;
       this.cd.detectChanges();

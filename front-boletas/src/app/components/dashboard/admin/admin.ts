@@ -153,6 +153,7 @@ export class Admin implements OnInit {
         this.nuevaPass = '';
         this.cd.detectChanges();
       },
+      //mensaje de error
       error: () => {
         this.mensaje = 'Error cambiando contraseña';
         this.cd.detectChanges();
