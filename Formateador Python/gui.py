@@ -17,7 +17,7 @@ COLORS = {
     'border': '#4a4a5e'
 }
 
-def centrar_ventana(root, ancho=1000, alto=800):
+def centrar_ventana(root, ancho=700, alto=700):
     root.update_idletasks()
     pantalla_w = root.winfo_screenwidth()
     pantalla_h = root.winfo_screenheight()
@@ -185,7 +185,7 @@ def generar_json():
 root = tk.Tk()
 root.title("Exportador de Boletas • JSON")
 root.configure(bg=COLORS['bg_primary'])
-centrar_ventana(root, ancho=700, alto=500)
+centrar_ventana(root, ancho=700, alto=700)
 
 # Intentar mejorar DPI awareness en Windows
 try:
